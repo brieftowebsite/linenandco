@@ -1,0 +1,735 @@
+{%- comment -%}
+  LC Curtain Product Profile
+  Purpose: No-block curtain-specific PDP profile section.
+  Placement: directly underneath lc-main-product on ready-made curtain product templates.
+  Data source priority:
+    1. product.metafields.custom.product_profile.value
+    2. Shopify standard/taxonomy metafields
+    3. product title/options/tags/media fallbacks
+{%- endcomment -%}
+
+{%- liquid
+  assign pp = product.metafields.custom.product_profile.value
+  assign htm = product.metafields.custom.how_to_measure.value
+  assign colour_metaobjects = product.metafields.shopify['color-pattern'].value
+  assign heading_styles = product.metafields.shopify['curtain-heading-style'].value
+
+  assign product_title_down = product.title | downcase
+  assign product_tags_joined = product.tags | join: ' ' | downcase
+
+  assign is_ready_made_curtain = false
+  if product.template_suffix == 'lc-ready-made-curtain' or product_tags_joined contains 'ready-made curtains' or product_tags_joined contains 'ready made curtains'
+    assign is_ready_made_curtain = true
+  endif
+
+  assign curtain_type = 'Sheer'
+  if product_title_down contains 'blockout' or product_tags_joined contains 'blockout'
+    assign curtain_type = 'Blockout'
+  endif
+
+  assign current_heading = blank
+  if product_title_down contains 'eyelet' or product_tags_joined contains 'eyelet'
+    assign current_heading = 'Eyelet'
+  elsif product_title_down contains 'taped' or product_title_down contains 'tape' or product_tags_joined contains 'tape curtains' or product_tags_joined contains 'taped'
+    assign current_heading = 'Taped'
+  endif
+
+  if current_heading == blank and heading_styles != blank
+    for heading_style in heading_styles
+      assign current_heading = heading_style.label.value | default: heading_style.name.value | default: heading_style.title.value | default: heading_style.system.handle | replace: '-', ' ' | capitalize
+      break
+    endfor
+  endif
+
+  assign profile_name = pp.product_name | default: pp.name | default: product.title
+  assign profile_subtitle = pp.subtitle | default: product.metafields.custom.subtitle.value
+  assign profile_range = pp.range
+  assign profile_hero = pp.hero_image
+  assign profile_image_1 = pp.image_1
+  assign profile_image_2 = pp.image_2
+  assign profile_image_3 = pp.image_3
+
+  if profile_hero == blank and product.featured_media != blank
+    assign profile_hero = product.featured_media
+  endif
+
+  assign colour_option = blank
+  assign colour_option_index = 0
+  assign has_colour_option = false
+  for option in product.options_with_values
+    assign option_name_downcase = option.name | downcase | strip
+    if option_name_downcase == 'colour' or option_name_downcase == 'color'
+      assign colour_option = option
+      assign colour_option_index = forloop.index0
+      assign has_colour_option = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if is_ready_made_curtain -%}
+<section class="lc-curtain-profile" id="lc-curtain-profile-{{ section.id }}" data-section-id="{{ section.id }}">
+
+  <nav class="lc-curtain-nav" id="lc-curtain-nav-{{ section.id }}" aria-label="Curtain product sections">
+    <div class="lc-curtain-nav__inner">
+      <a href="#main" class="lc-curtain-nav__link lc-curtain-nav__link--shop" data-lc-scroll-top>
+        <span aria-hidden="true">←</span> Shop Product
+      </a>
+      <a href="#lc-curtain-room-{{ section.id }}" class="lc-curtain-nav__link">In The Room</a>
+      <a href="#lc-curtain-heading-{{ section.id }}" class="lc-curtain-nav__link">Heading</a>
+      <a href="#lc-curtain-swatches-{{ section.id }}" class="lc-curtain-nav__link">Swatches</a>
+      <a href="#lc-curtain-light-{{ section.id }}" class="lc-curtain-nav__link">Light & Privacy</a>
+      <a href="#lc-curtain-details-{{ section.id }}" class="lc-curtain-nav__link">Details</a>
+      <a href="#lc-curtain-measure-{{ section.id }}" class="lc-curtain-nav__link">Measure</a>
+      <a href="#lc-curtain-care-{{ section.id }}" class="lc-curtain-nav__link">Care</a>
+      <a href="#lc-curtain-help-{{ section.id }}" class="lc-curtain-nav__link">Help</a>
+    </div>
+  </nav>
+
+  <div class="lc-curtain-section lc-curtain-hero" id="lc-curtain-room-{{ section.id }}">
+    <div class="lc-curtain-hero__media">
+      {%- if profile_hero != blank -%}
+        <img
+          src="{{ profile_hero | image_url: width: 1800 }}"
+          srcset="{{ profile_hero | image_url: width: 900 }} 900w, {{ profile_hero | image_url: width: 1400 }} 1400w, {{ profile_hero | image_url: width: 1800 }} 1800w, {{ profile_hero | image_url: width: 2400 }} 2400w"
+          sizes="100vw"
+          alt="{{ profile_name | escape }} styled in a modern interior"
+          width="1800"
+          height="1013"
+          loading="lazy">
+      {%- endif -%}
+    </div>
+    <div class="lc-curtain-hero__copy">
+      <span class="lc-curtain-kicker">Curtain Profile</span>
+      <h2>{{ profile_name }}</h2>
+      {%- if profile_subtitle != blank -%}
+        <p>{{ profile_subtitle }}</p>
+      {%- elsif curtain_type == 'Sheer' -%}
+        <p>Soft daylight, gentle privacy and an easy ready-made finish for everyday rooms.</p>
+      {%- else -%}
+        <p>Practical ready-made curtain styling with stronger light control and a finished room feel.</p>
+      {%- endif -%}
+      <div class="lc-curtain-hero__chips">
+        {%- if current_heading != blank -%}<span>{{ current_heading }}</span>{%- endif -%}
+        <span>{{ curtain_type }}</span>
+        {%- if pp.available_colours != blank -%}<span>{{ pp.available_colours }}</span>{%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="lc-curtain-section lc-curtain-overview" id="lc-curtain-light-{{ section.id }}">
+    <div class="lc-curtain-section__inner">
+      <div class="lc-curtain-title-row">
+        <span class="lc-curtain-kicker">Light & Privacy</span>
+        {%- if curtain_type == 'Sheer' -%}
+          <h2>Softens the room without closing it off.</h2>
+        {%- else -%}
+          <h2>Designed for stronger light control.</h2>
+        {%- endif -%}
+      </div>
+
+      <div class="lc-curtain-feature-grid">
+        <article class="lc-curtain-feature-card">
+          <span>01</span>
+          {%- if curtain_type == 'Sheer' -%}
+            <h3>Light-filtering sheer</h3>
+            <p>Whittaker diffuses harsh daylight and gives the window a softer, more finished feel while keeping the room open and airy.</p>
+          {%- else -%}
+            <h3>More light control</h3>
+            <p>Blockout-ready styling helps reduce glare and gives the room a calmer, more private feel.</p>
+          {%- endif -%}
+        </article>
+        <article class="lc-curtain-feature-card">
+          <span>02</span>
+          <h3>Ready-made width</h3>
+          <p>A generous ready-made curtain drop gives large windows and sliding doors a fuller, more luxurious finish.</p>
+        </article>
+        <article class="lc-curtain-feature-card">
+          <span>03</span>
+          <h3>Easy room update</h3>
+          <p>Use on its own for a light layered look, or combine with heavier curtains when you want more privacy and control.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <div class="lc-curtain-section lc-curtain-heading" id="lc-curtain-heading-{{ section.id }}">
+    <div class="lc-curtain-section__inner">
+      <div class="lc-curtain-title-row lc-curtain-title-row--center">
+        <span class="lc-curtain-kicker">Heading Style</span>
+        <h2>Choose the finish that suits your window.</h2>
+      </div>
+
+      <div class="lc-curtain-heading-grid">
+        <article class="lc-curtain-heading-card{% if current_heading == 'Eyelet' %} is-active{% endif %}">
+          <div class="lc-curtain-heading-card__top">
+            <h3>Eyelet</h3>
+            {%- if current_heading == 'Eyelet' -%}<span>Current Product</span>{%- endif -%}
+          </div>
+          <p>Best for a curtain pole and a clean, modern fold. Easy to hang and ideal for relaxed contemporary spaces.</p>
+          <ul>
+            <li>Uses a pole</li>
+            <li>Visible silver eyelets</li>
+            <li>Softer wave-style drop</li>
+          </ul>
+        </article>
+
+        <article class="lc-curtain-heading-card{% if current_heading == 'Taped' %} is-active{% endif %}">
+          <div class="lc-curtain-heading-card__top">
+            <h3>Taped</h3>
+            {%- if current_heading == 'Taped' -%}<span>Current Product</span>{%- endif -%}
+          </div>
+          <p>Best for hooks, rings or tracks. Creates a classic gathered heading and a softer traditional curtain finish.</p>
+          <ul>
+            <li>Uses hooks or track gliders</li>
+            <li>Gathered taped heading</li>
+            <li>Flexible fullness control</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </div>
+
+  <div class="lc-curtain-section lc-curtain-swatches" id="lc-curtain-swatches-{{ section.id }}">
+    <div class="lc-curtain-section__inner">
+      <div class="lc-curtain-title-row lc-curtain-title-row--center">
+        <span class="lc-curtain-kicker">Fabric Swatches</span>
+        <h2>Available fabric colours.</h2>
+        <p>Swatches are pulled from the product colour-pattern metafield, so this section stays product-data driven.</p>
+      </div>
+
+      <div class="lc-curtain-swatch-grid">
+        {%- if colour_metaobjects != blank -%}
+          {%- for colour_meta in colour_metaobjects -%}
+            {%- liquid
+              assign colour_label = colour_meta.label.value | default: colour_meta.name.value | default: colour_meta.title.value
+              assign colour_handle = colour_meta.system.handle
+              if colour_label == blank and colour_handle != blank
+                assign colour_label = colour_handle | replace: '-', ' ' | capitalize
+              endif
+              if colour_label == blank
+                assign colour_label = 'Colour'
+              endif
+
+              assign colour_hex = colour_meta.color.value
+              assign swatch_image = colour_meta.image.value
+              assign colour_downcase = colour_label | downcase | strip
+              assign fallback_media = blank
+              assign variant_id = blank
+
+              if has_colour_option
+                for variant in product.variants
+                  assign variant_colour = variant.options[colour_option_index]
+                  if variant_colour == colour_label
+                    assign variant_id = variant.id
+                    break
+                  endif
+                endfor
+              endif
+
+              if swatch_image == blank
+                for media in product.media
+                  assign media_haystack = media.alt | append: ' ' | append: media.preview_image.src | downcase
+                  if media_haystack contains colour_downcase
+                    assign fallback_media = media
+                    break
+                  endif
+                endfor
+              endif
+            -%}
+
+            <article class="lc-curtain-swatch-card">
+              <a href="{{ product.url }}{% if variant_id != blank %}?variant={{ variant_id }}{% endif %}#main" class="lc-curtain-swatch-card__media" aria-label="Select {{ colour_label | escape }}">
+                {%- if swatch_image != blank -%}
+                  <img src="{{ swatch_image | image_url: width: 700 }}" alt="{{ profile_name | escape }} {{ colour_label | escape }} fabric swatch" width="700" height="700" loading="lazy">
+                {%- elsif fallback_media != blank and fallback_media.preview_image != blank -%}
+                  <img src="{{ fallback_media.preview_image | image_url: width: 700 }}" alt="{{ profile_name | escape }} {{ colour_label | escape }} fabric swatch" width="700" height="700" loading="lazy">
+                {%- elsif colour_hex != blank -%}
+                  <span class="lc-curtain-swatch-card__colour" style="background: {{ colour_hex }};"></span>
+                {%- else -%}
+                  <span class="lc-curtain-swatch-card__fallback">{{ colour_label | slice: 0, 1 | upcase }}</span>
+                {%- endif -%}
+              </a>
+              <div class="lc-curtain-swatch-card__body">
+                <h3>{{ colour_label }}</h3>
+                <a href="{{ product.url }}{% if variant_id != blank %}?variant={{ variant_id }}{% endif %}#main">Select {{ colour_label }}</a>
+              </div>
+            </article>
+          {%- endfor -%}
+        {%- elsif has_colour_option -%}
+          {%- for colour_label in colour_option.values -%}
+            {%- liquid
+              assign colour_downcase = colour_label | downcase | strip
+              assign fallback_media = blank
+              assign variant_id = blank
+              for variant in product.variants
+                assign variant_colour = variant.options[colour_option_index]
+                if variant_colour == colour_label
+                  assign variant_id = variant.id
+                  break
+                endif
+              endfor
+              for media in product.media
+                assign media_haystack = media.alt | append: ' ' | append: media.preview_image.src | downcase
+                if media_haystack contains colour_downcase
+                  assign fallback_media = media
+                  break
+                endif
+              endfor
+            -%}
+            <article class="lc-curtain-swatch-card">
+              <a href="{{ product.url }}{% if variant_id != blank %}?variant={{ variant_id }}{% endif %}#main" class="lc-curtain-swatch-card__media" aria-label="Select {{ colour_label | escape }}">
+                {%- if fallback_media != blank and fallback_media.preview_image != blank -%}
+                  <img src="{{ fallback_media.preview_image | image_url: width: 700 }}" alt="{{ profile_name | escape }} {{ colour_label | escape }} fabric swatch" width="700" height="700" loading="lazy">
+                {%- else -%}
+                  <span class="lc-curtain-swatch-card__fallback">{{ colour_label | slice: 0, 1 | upcase }}</span>
+                {%- endif -%}
+              </a>
+              <div class="lc-curtain-swatch-card__body">
+                <h3>{{ colour_label }}</h3>
+                <a href="{{ product.url }}{% if variant_id != blank %}?variant={{ variant_id }}{% endif %}#main">Select {{ colour_label }}</a>
+              </div>
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          <p class="lc-curtain-empty-note">No fabric swatches are linked yet.</p>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="lc-curtain-section lc-curtain-details" id="lc-curtain-details-{{ section.id }}">
+    <div class="lc-curtain-section__inner">
+      <div class="lc-curtain-title-row">
+        <span class="lc-curtain-kicker">Product Details</span>
+        <h2>Quick facts before you buy.</h2>
+      </div>
+
+      <div class="lc-curtain-detail-grid">
+        <div class="lc-curtain-detail"><span>Sold as</span><strong>{{ pp.weight | default: '1 curtain drop' }}</strong></div>
+        {%- if current_heading != blank -%}<div class="lc-curtain-detail"><span>Heading</span><strong>{{ current_heading }}</strong></div>{%- endif -%}
+        {%- if curtain_type != blank -%}<div class="lc-curtain-detail"><span>Light Control</span><strong>{{ pp.warmth_rating | default: curtain_type }}</strong></div>{%- endif -%}
+        {%- if pp.composition != blank -%}<div class="lc-curtain-detail"><span>Fabric</span><strong>{{ pp.composition }}</strong></div>{%- endif -%}
+        {%- if pp.weave_type != blank -%}<div class="lc-curtain-detail"><span>Texture</span><strong>{{ pp.weave_type }}</strong></div>{%- endif -%}
+        {%- if pp.available_colours != blank -%}<div class="lc-curtain-detail"><span>Colours</span><strong>{{ pp.available_colours }}</strong></div>{%- endif -%}
+
+        {%- for option in product.options_with_values -%}
+          {%- assign option_name_downcase = option.name | downcase -%}
+          {%- unless option_name_downcase == 'colour' or option_name_downcase == 'color' -%}
+            <div class="lc-curtain-detail"><span>{{ option.name }}</span><strong>{{ option.values | join: ', ' }}</strong></div>
+          {%- endunless -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+
+  <div class="lc-curtain-section lc-curtain-measure" id="lc-curtain-measure-{{ section.id }}">
+    <div class="lc-curtain-section__inner">
+      <div class="lc-curtain-title-row lc-curtain-title-row--center">
+        <span class="lc-curtain-kicker">How To Measure</span>
+        <h2>Keep it simple: width, drop, heading.</h2>
+        <p>Ready-made curtains are easier than custom curtains, but the right heading and drop still matter.</p>
+      </div>
+
+      <div class="lc-curtain-step-grid">
+        <article class="lc-curtain-step">
+          <span>1</span>
+          <h3>Measure the width</h3>
+          <p>Measure the full pole or track width, not only the glass. Sheers look better when they can gather softly across the full opening.</p>
+        </article>
+        <article class="lc-curtain-step">
+          <span>2</span>
+          <h3>Choose the drop</h3>
+          <p>Measure from the pole or track position down to where you want the curtain to finish. Select the closest ready-made drop.</p>
+        </article>
+        <article class="lc-curtain-step">
+          <span>3</span>
+          <h3>Match the heading</h3>
+          <p>Choose Eyelet for a curtain pole. Choose Taped for hooks, rings or tracks where you want a gathered finish.</p>
+        </article>
+      </div>
+
+      {%- if htm != blank and htm.note != blank -%}
+        <div class="lc-curtain-note rte">{{ htm.note | metafield_tag }}</div>
+      {%- else -%}
+        <div class="lc-curtain-note">For a fuller sheer look, avoid pulling the curtain flat. Sheer curtains are meant to gather.</div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="lc-curtain-section lc-curtain-care" id="lc-curtain-care-{{ section.id }}">
+    <div class="lc-curtain-section__inner lc-curtain-care__inner">
+      <div>
+        <span class="lc-curtain-kicker">Care</span>
+        <h2>Easy care for everyday use.</h2>
+      </div>
+      <div class="lc-curtain-care__copy rte">
+        {%- if pp.care_summary != blank -%}
+          {{ pp.care_summary | metafield_tag }}
+        {%- else -%}
+          <p>Wash at or below 30°C. Do not bleach, iron, dry clean or tumble dry. Always follow the care label on the curtain.</p>
+        {%- endif -%}
+        <div class="lc-curtain-care__chips">
+          {%- if pp.laundry_rating != blank -%}<span>{{ pp.laundry_rating }}</span>{%- else -%}<span>30°C wash</span>{%- endif -%}
+          {%- if pp.drying_method != blank -%}<span>{{ pp.drying_method }}</span>{%- else -%}<span>Do not tumble dry</span>{%- endif -%}
+          <span>Follow care label</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="lc-curtain-section lc-curtain-help" id="lc-curtain-help-{{ section.id }}">
+    <div class="lc-curtain-help__inner">
+      <span class="lc-curtain-help__label">Need Advice?</span>
+      <h2>Not sure which curtain heading or drop to choose?</h2>
+      <p>Send us your window width, drop and a photo of your track or pole. We’ll help you choose the right option.</p>
+      <div class="lc-curtain-help__buttons">
+        <a href="/pages/contact">Contact Us</a>
+        <a href="https://wa.me/+27662918292" target="_blank" rel="noopener">Chat on WhatsApp</a>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<style>
+  .lc-curtain-profile {
+    --lc-curtain-black: #000;
+    --lc-curtain-text: rgba(0,0,0,.86);
+    --lc-curtain-muted: rgba(0,0,0,.62);
+    --lc-curtain-line: rgba(0,0,0,.12);
+    --lc-curtain-bg: #f4f4f2;
+    background: #fff;
+    color: var(--lc-curtain-text);
+  }
+
+  .lc-curtain-nav {
+    position: sticky;
+    top: 0;
+    z-index: 95;
+    background: #000;
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .lc-curtain-nav__inner {
+    display: flex;
+    justify-content: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .lc-curtain-nav__inner::-webkit-scrollbar { display: none; }
+  .lc-curtain-nav__link {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 13px 17px;
+    color: rgba(255,255,255,.84);
+    text-decoration: none;
+    font-size: .64rem;
+    font-weight: 600;
+    letter-spacing: .11em;
+    text-transform: uppercase;
+    border-bottom: 3px solid transparent;
+    transition: color .18s ease, border-color .18s ease;
+    white-space: nowrap;
+  }
+  .lc-curtain-nav__link:hover,
+  .lc-curtain-nav__link.is-active { color: #fff; border-bottom-color: #fff; }
+  .lc-curtain-nav__link--shop { color: #fff; }
+
+  .lc-curtain-section { border-top: 1px solid var(--lc-curtain-line); scroll-margin-top: 90px; }
+  .lc-curtain-section__inner { max-width: var(--page-width, 1400px); margin: 0 auto; padding: 44px 48px; }
+  .lc-curtain-kicker {
+    display: inline-flex;
+    width: fit-content;
+    background: #000;
+    color: #fff;
+    padding: 4px 9px;
+    margin-bottom: 12px;
+    font-size: .62rem;
+    font-weight: 700;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+  .lc-curtain-title-row { max-width: 780px; margin-bottom: 26px; }
+  .lc-curtain-title-row--center { text-align: center; margin-left: auto; margin-right: auto; }
+  .lc-curtain-title-row--center .lc-curtain-kicker { margin-left: auto; margin-right: auto; }
+  .lc-curtain-title-row h2,
+  .lc-curtain-hero__copy h2,
+  .lc-curtain-care h2,
+  .lc-curtain-help h2 {
+    margin: 0;
+    font-size: clamp(1.15rem, 2.4vw, 2.05rem);
+    line-height: 1.16;
+    font-weight: 560;
+    letter-spacing: -.02em;
+  }
+  .lc-curtain-title-row p,
+  .lc-curtain-hero__copy p,
+  .lc-curtain-help p {
+    margin: 12px 0 0;
+    color: var(--lc-curtain-muted);
+    font-size: .88rem;
+    line-height: 1.65;
+  }
+
+  .lc-curtain-hero { position: relative; background: #111; }
+  .lc-curtain-hero__media { width: 100%; aspect-ratio: 16/9; overflow: hidden; background: #ececea; }
+  .lc-curtain-hero__media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lc-curtain-hero__copy {
+    position: absolute;
+    left: 48px;
+    bottom: 42px;
+    width: min(460px, calc(100% - 96px));
+    background: rgba(255,255,255,.90);
+    backdrop-filter: blur(10px);
+    padding: 26px 28px;
+    box-shadow: 0 18px 60px rgba(0,0,0,.18);
+  }
+  .lc-curtain-hero__chips,
+  .lc-curtain-care__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 18px;
+  }
+  .lc-curtain-hero__chips span,
+  .lc-curtain-care__chips span {
+    border: 1px solid rgba(0,0,0,.18);
+    padding: 7px 10px;
+    font-size: .61rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: rgba(0,0,0,.78);
+    background: #fff;
+  }
+
+  .lc-curtain-feature-grid,
+  .lc-curtain-heading-grid,
+  .lc-curtain-detail-grid,
+  .lc-curtain-step-grid { display: grid; gap: 18px; }
+  .lc-curtain-feature-grid { grid-template-columns: repeat(3, 1fr); }
+  .lc-curtain-heading-grid { grid-template-columns: repeat(2, 1fr); }
+  .lc-curtain-step-grid { grid-template-columns: repeat(3, 1fr); }
+  .lc-curtain-detail-grid { grid-template-columns: repeat(4, 1fr); }
+
+  .lc-curtain-feature-card,
+  .lc-curtain-heading-card,
+  .lc-curtain-detail,
+  .lc-curtain-step,
+  .lc-curtain-swatch-card {
+    background: #fff;
+    border: 1px solid var(--lc-curtain-line);
+  }
+  .lc-curtain-overview,
+  .lc-curtain-details { background: var(--lc-curtain-bg); }
+  .lc-curtain-feature-card,
+  .lc-curtain-heading-card,
+  .lc-curtain-step { padding: 24px; }
+  .lc-curtain-feature-card > span,
+  .lc-curtain-step > span {
+    display: inline-grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    margin-bottom: 16px;
+    background: #000;
+    color: #fff;
+    border-radius: 50%;
+    font-size: .66rem;
+    font-weight: 700;
+  }
+  .lc-curtain-feature-card h3,
+  .lc-curtain-heading-card h3,
+  .lc-curtain-step h3,
+  .lc-curtain-swatch-card h3 {
+    margin: 0 0 9px;
+    font-size: .95rem;
+    font-weight: 700;
+    color: rgba(0,0,0,.84);
+  }
+  .lc-curtain-feature-card p,
+  .lc-curtain-heading-card p,
+  .lc-curtain-step p,
+  .lc-curtain-care__copy p {
+    margin: 0;
+    color: var(--lc-curtain-muted);
+    font-size: .82rem;
+    line-height: 1.62;
+  }
+
+  .lc-curtain-heading-card { position: relative; }
+  .lc-curtain-heading-card.is-active { border-color: #000; box-shadow: inset 0 0 0 1px #000; }
+  .lc-curtain-heading-card__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+  .lc-curtain-heading-card__top h3 { margin: 0; font-size: 1.1rem; }
+  .lc-curtain-heading-card__top span {
+    background: #000;
+    color: #fff;
+    padding: 6px 9px;
+    font-size: .56rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .lc-curtain-heading-card ul { margin: 16px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+  .lc-curtain-heading-card li {
+    position: relative;
+    padding-left: 13px;
+    color: rgba(0,0,0,.68);
+    font-size: .76rem;
+    line-height: 1.4;
+  }
+  .lc-curtain-heading-card li:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: .55em;
+    width: 4px;
+    height: 4px;
+    background: #000;
+    border-radius: 50%;
+  }
+
+  .lc-curtain-swatch-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 18px; }
+  .lc-curtain-swatch-card { width: min(250px, 100%); overflow: hidden; background: #fff; }
+  .lc-curtain-swatch-card__media { display: block; aspect-ratio: 1/1; background: #f0f0ee; overflow: hidden; text-decoration: none; }
+  .lc-curtain-swatch-card__media img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .32s ease; }
+  .lc-curtain-swatch-card__media:hover img { transform: scale(1.035); }
+  .lc-curtain-swatch-card__fallback,
+  .lc-curtain-swatch-card__colour { display: grid; place-items: center; width: 100%; height: 100%; color: rgba(0,0,0,.55); font-size: 2rem; font-weight: 700; }
+  .lc-curtain-swatch-card__body { padding: 16px; text-align: center; display: grid; gap: 10px; }
+  .lc-curtain-swatch-card__body h3 { margin: 0; }
+  .lc-curtain-swatch-card__body a {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 32px;
+    border: 1px solid #000;
+    color: rgba(0,0,0,.82);
+    text-decoration: none;
+    font-size: .56rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: 0 10px;
+  }
+  .lc-curtain-swatch-card__body a:hover { background: #000; color: #fff; }
+  .lc-curtain-empty-note { color: var(--lc-curtain-muted); font-size: .85rem; text-align: center; }
+
+  .lc-curtain-detail { padding: 18px; display: grid; gap: 7px; min-height: 96px; }
+  .lc-curtain-detail span { color: rgba(0,0,0,.48); font-size: .58rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .lc-curtain-detail strong { color: rgba(0,0,0,.84); font-size: .82rem; line-height: 1.4; font-weight: 650; }
+
+  .lc-curtain-note {
+    margin: 24px auto 0;
+    max-width: 880px;
+    padding: 15px 18px;
+    background: rgba(0,0,0,.04);
+    color: rgba(0,0,0,.72);
+    font-size: .82rem;
+    line-height: 1.55;
+    font-style: italic;
+  }
+
+  .lc-curtain-care__inner { display: grid; grid-template-columns: .8fr 1.2fr; gap: 38px; align-items: start; }
+  .lc-curtain-care__copy { color: var(--lc-curtain-muted); }
+
+  .lc-curtain-help { background: #000; border-top: none; }
+  .lc-curtain-help__inner { max-width: 920px; margin: 0 auto; padding: 58px 48px; text-align: center; color: #fff; }
+  .lc-curtain-help__label { color: rgba(255,255,255,.68); font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+  .lc-curtain-help h2 { margin: 12px 0 0; color: #fff; }
+  .lc-curtain-help p { color: rgba(255,255,255,.78); max-width: 620px; margin: 13px auto 0; }
+  .lc-curtain-help__buttons { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-top: 26px; }
+  .lc-curtain-help__buttons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 24px;
+    border: 1px solid rgba(255,255,255,.46);
+    color: #fff;
+    text-decoration: none;
+    font-size: .68rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .lc-curtain-help__buttons a:hover { background: rgba(255,255,255,.12); }
+
+  @media screen and (max-width: 989px) {
+    .lc-curtain-feature-grid,
+    .lc-curtain-detail-grid { grid-template-columns: repeat(2, 1fr); }
+    .lc-curtain-hero__copy { left: 28px; bottom: 28px; width: min(440px, calc(100% - 56px)); }
+  }
+
+  @media screen and (max-width: 749px) {
+    .lc-curtain-nav__inner { justify-content: flex-start; }
+    .lc-curtain-nav__link { padding: 12px 14px; font-size: .58rem; }
+    .lc-curtain-section { scroll-margin-top: 76px; }
+    .lc-curtain-section__inner { padding: 32px 16px; }
+    .lc-curtain-hero__media { aspect-ratio: 4/5; }
+    .lc-curtain-hero__copy { position: static; width: auto; padding: 22px 16px; box-shadow: none; background: #fff; }
+    .lc-curtain-title-row { margin-bottom: 20px; }
+    .lc-curtain-feature-grid,
+    .lc-curtain-heading-grid,
+    .lc-curtain-step-grid,
+    .lc-curtain-care__inner { grid-template-columns: 1fr; }
+    .lc-curtain-detail-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    .lc-curtain-detail { min-height: 84px; padding: 14px; }
+    .lc-curtain-swatch-grid { justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; margin-left: -16px; margin-right: -16px; padding: 0 16px 12px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .lc-curtain-swatch-grid::-webkit-scrollbar { display: none; }
+    .lc-curtain-swatch-card { flex: 0 0 178px; width: 178px; }
+    .lc-curtain-help__inner { padding: 44px 16px; }
+    .lc-curtain-help__buttons { flex-direction: column; }
+  }
+</style>
+
+<script>
+(function() {
+  var section = document.getElementById('lc-curtain-profile-{{ section.id }}');
+  if (!section) return;
+
+  var topLinks = section.querySelectorAll('[data-lc-scroll-top]');
+  topLinks.forEach(function(link) {
+    link.addEventListener('click', function(event) {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  });
+
+  var navLinks = section.querySelectorAll('.lc-curtain-nav__link:not(.lc-curtain-nav__link--shop)');
+  var sections = [];
+  navLinks.forEach(function(link) {
+    var href = link.getAttribute('href');
+    if (!href || href.charAt(0) !== '#') return;
+    var target = document.querySelector(href);
+    if (target) sections.push({ link: link, target: target });
+  });
+
+  if (!sections.length) return;
+
+  function setActive() {
+    var y = window.scrollY + 120;
+    var active = sections[0];
+    sections.forEach(function(item) {
+      if (item.target.offsetTop <= y) active = item;
+    });
+    navLinks.forEach(function(link) { link.classList.remove('is-active'); });
+    if (active && active.link) active.link.classList.add('is-active');
+  }
+
+  window.addEventListener('scroll', setActive, { passive: true });
+  setActive();
+})();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LC Curtain Profile",
+  "settings": []
+}
+{% endschema %}
