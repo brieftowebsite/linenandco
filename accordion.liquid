@@ -1,28 +1,15 @@
-{%- capture icon -%}
-  {%- if block.settings.custom_icon != blank -%}
-  {%- capture sizes -%}(max-width: 699px) {{ block.settings.mobile_width }}px, {{ block.settings.width }}px{%- endcapture -%}
-    {%- capture widths -%}{{ block.settings.width }}, {{ block.settings.width | times: 2 | at_most: block.settings.custom_icon.width }}{%- endcapture -%}
-    {%- capture style -%}--image-mobile-max-width: {{ block.settings.mobile_width }}px; --image-max-width: {{ block.settings.width }}px{%- endcapture -%}
-    {{- block.settings.custom_icon | image_url: width: block.settings.custom_icon.width | image_tag: sizes: sizes, widths: widths, class: 'constrained-image', style: style -}}
-  {%- else -%}
-    {%- render 'icon' with block.settings.icon, width: block.settings.mobile_width, height: block.settings.mobile_width, class: 'sm:hidden' -%}
-    {%- render 'icon' with block.settings.icon, width: block.settings.width, height: block.settings.width, class: 'hidden sm:block' -%}
-  {%- endif -%}
-{%- endcapture -%}
+{%- liquid
+  assign accordion_title = block.settings.title | default: block.settings.page.title
+  assign accordion_content = block.settings.page.content | default: block.settings.liquid | default: block.settings.content
 
-{%- if icon != blank -%}
-  {%- assign position = block.settings.position -%}
-
-  <div class="justify-items-{{ position }}" {{ block.shopify_attributes }}>
-    <div style="{% render 'surface', text_color: block.settings.color %}">
-      {{- icon -}}
-    </div>
-  </div>
-{%- endif -%}
+  if accordion_title != blank and accordion_content != blank
+    render 'accordion', title: accordion_title, content: accordion_content, size: 'lg', prose_content: true, icon: block.settings.icon, custom_icon: block.settings.custom_icon, block: block
+  endif
+-%}
 
 {% schema %}
 {
-  "name": "t:blocks.icon.name",
+  "name": "Accordion",
   "tag": null,
   "settings": [
     {
@@ -30,6 +17,10 @@
       "id": "icon",
       "label": "t:global.icons.icon",
       "options": [
+        {
+          "value": "none",
+          "label": "t:global.icons.none"
+        },
         {
           "value": "picto-award-gift",
           "label": "t:global.icons.award_gift",
@@ -311,7 +302,7 @@
           "group": "t:global.icons.other_category"
         }
       ],
-      "default": "picto-coupon"
+      "default": "none"
     },
     {
       "type": "image_picker",
@@ -320,55 +311,33 @@
       "info": "t:global.icons.custom_icon_info"
     },
     {
-      "type": "range",
-      "id": "width",
-      "min": 24,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "t:global.icons.icon_width",
-      "default": 32
+      "type": "text",
+      "id": "title",
+      "label": "t:global.text.title",
+      "default": "Title"
     },
     {
-      "type": "range",
-      "id": "mobile_width",
-      "min": 24,
-      "max": 120,
-      "step": 4,
-      "unit": "px",
-      "label": "t:global.icons.mobile_icon_width",
-      "default": 24
+      "type": "richtext",
+      "id": "content",
+      "label": "t:global.text.content",
+      "default": "<p>Write content about your brand or products.</p>"
     },
     {
-      "type": "select",
-      "id": "position",
-      "label": "t:blocks.icon.position",
-      "options": [
-        {
-          "value": "start",
-          "label": "t:global.position.left"
-        },
-        {
-          "value": "center",
-          "label": "t:global.position.center"
-        },
-        {
-          "value": "end",
-          "label": "t:global.position.right"
-        }
-      ],
-      "default": "center"
+      "type": "liquid",
+      "id": "liquid",
+      "label": "t:global.code.liquid",
+      "info": "t:blocks.accordion.liquid_info"
     },
     {
-      "type": "color",
-      "id": "color",
-      "label": "t:blocks.icon.color",
-      "info": "t:blocks.icon.color_info"
+      "type": "page",
+      "id": "page",
+      "label": "t:blocks.accordion.page",
+      "info": "t:blocks.accordion.page_info"
     }
   ],
   "presets": [
     {
-      "name": "t:blocks.icon.name"
+      "name": "Accordion"
     }
   ]
 }

@@ -1,0 +1,23 @@
+{%- if block.settings.text != blank -%}
+  <p class="h6" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:blocks.subheading.name",
+  "tag": null,
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "t:global.text.text",
+      "default": "Subheading"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:blocks.subheading.name"
+    }
+  ]
+}
+{% endschema %}
