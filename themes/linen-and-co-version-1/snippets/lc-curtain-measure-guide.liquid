@@ -1,0 +1,39 @@
+{% doc %}
+Renders the three-step ready-made curtain measuring guide.
+
+@param {object} htm - Optional how-to-measure metaobject.
+{% enddoc %}
+
+<section class="lc-profile-section lc-curtain-measure-guide" id="lc-curtain-measure-guide">
+  <div class="lc-profile-section__inner">
+    <span class="lc-label">{{ 'curtain_profile.measure.label' | t }}</span>
+    <h2 class="lc-profile-section__heading">{{ 'curtain_profile.measure.heading' | t }}</h2>
+    <p class="lc-curtain-measure-guide__intro">{{ 'curtain_profile.measure.intro' | t }}</p>
+
+    <div class="lc-curtain-measure-guide__steps">
+      <article class="lc-curtain-measure-step">
+        <span class="lc-curtain-measure-step__number">01</span>
+        <h3>{{ 'curtain_profile.measure.width_title' | t }}</h3>
+        <p>{{ 'curtain_profile.measure.width_copy' | t }}</p>
+      </article>
+      <article class="lc-curtain-measure-step">
+        <span class="lc-curtain-measure-step__number">02</span>
+        <h3>{{ 'curtain_profile.measure.drop_title' | t }}</h3>
+        <p>{{ 'curtain_profile.measure.drop_copy' | t }}</p>
+      </article>
+      <article class="lc-curtain-measure-step">
+        <span class="lc-curtain-measure-step__number">03</span>
+        <h3>{{ 'curtain_profile.measure.heading_title' | t }}</h3>
+        <p>{{ 'curtain_profile.measure.heading_copy' | t }}</p>
+      </article>
+    </div>
+
+    <div class="lc-curtain-measure-guide__note rte">
+      {%- if htm != blank and htm.note != blank -%}
+        {{ htm.note | metafield_tag }}
+      {%- else -%}
+        <p>{{ 'curtain_profile.measure.note' | t }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

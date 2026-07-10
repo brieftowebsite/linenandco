@@ -31,10 +31,15 @@
     "curtain_colours": {
       "type": "lc-ready-made-curtain-colours-section",
       "settings": {}
+    },
+    "curtain_profile": {
+      "type": "lc-curtain-product-profile",
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "curtain_colours"
+    "curtain_colours",
+    "curtain_profile"
   ]
 }
