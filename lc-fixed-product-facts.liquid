@@ -1,0 +1,225 @@
+{%- liquid
+  assign pp = pp | default: product.metafields.custom.product_profile.value
+
+  assign single_colour_label = blank
+  assign colour_list = product.metafields.shopify['color-pattern'].value
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.colour.value
+  endif
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.colours.value
+  endif
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.color.value
+  endif
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.colors.value
+  endif
+
+  assign colour_options_count = 0
+
+  if colour_list != blank
+    for colour_option in colour_list
+      assign colour_handle = colour_option.system.handle
+      assign colour_label = colour_option.label.value | default: colour_option['label'].value | default: colour_option.name.value | default: colour_option['name'].value | default: colour_option.title.value | default: colour_option['title'].value
+
+      if colour_label == blank and colour_handle != blank
+        assign colour_label = colour_handle | replace: '-', ' ' | capitalize
+      endif
+
+      if colour_label == blank
+        assign colour_label = colour_option
+      endif
+
+      if colour_label != blank
+        assign colour_options_count = colour_options_count | plus: 1
+        assign single_colour_label = colour_label
+      endif
+    endfor
+  endif
+
+  if colour_options_count != 1
+    assign single_colour_label = blank
+  endif
+
+  if single_colour_label == blank
+    assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ','
+
+    for option in product.options_with_values
+      assign option_name_lower = option.name | downcase | strip
+      assign option_values_count = option.values | size
+
+      if option_values_count == 1
+        if option_name_lower == 'colour' or option_name_lower == 'color' or option_name_lower == 'colours' or option_name_lower == 'colors' or color_label_list contains option_name_lower
+          assign colour_option_value = option.values.first
+          assign single_colour_label = colour_option_value.name | default: colour_option_value
+          break
+        endif
+      endif
+    endfor
+  endif
+
+  assign single_size_label = blank
+  assign size_label_list = 'general.label.size' | t | replace: ', ', ',' | downcase | split: ','
+
+  for option in product.options_with_values
+    assign option_name_lower = option.name | downcase | strip
+    assign option_values_count = option.values | size
+
+    if option_values_count == 1
+      if option_name_lower == 'size' or option_name_lower == 'sizes' or option_name_lower == 'bedding size' or option_name_lower == 'bedding sizes' or size_label_list contains option_name_lower
+        assign size_option_value = option.values.first
+        assign single_size_label = size_option_value.name | default: size_option_value
+        break
+      endif
+    endif
+  endfor
+
+  if single_size_label == blank
+    assign size_values = product.metafields.shopify['bedding-size'].value
+
+    if size_values == blank
+      assign size_values = product.metafields.shopify['bed-size'].value
+    endif
+
+    if size_values == blank
+      assign size_values = product.metafields.shopify['size'].value
+    endif
+
+    if size_values == blank
+      assign size_values = product.metafields.shopify['sizes'].value
+    endif
+
+    if size_values == blank
+      assign size_values = product.metafields.custom.bedding_size.value
+    endif
+
+    if size_values == blank
+      assign size_values = product.metafields.custom.bedding_sizes.value
+    endif
+
+    if size_values == blank
+      assign size_values = product.metafields.custom.bed_size.value
+    endif
+
+    if size_values == blank
+      assign size_values = product.metafields.custom.bed_sizes.value
+    endif
+
+    if size_values == blank
+      assign size_values = product.metafields.custom.size.value
+    endif
+
+    if size_values == blank
+      assign size_values = product.metafields.custom.sizes.value
+    endif
+
+    assign size_values_count = 0
+
+    if size_values != blank
+      for size_entry in size_values
+        assign size_entry_handle = size_entry.system.handle
+        assign size_value_label = size_entry.label.value | default: size_entry['label'].value | default: size_entry.name.value | default: size_entry['name'].value | default: size_entry.title.value | default: size_entry['title'].value | default: size_entry.value
+
+        if size_value_label == blank and size_entry_handle != blank
+          assign size_value_label = size_entry_handle | replace: '-', ' ' | capitalize
+        endif
+
+        if size_value_label == blank
+          assign size_value_label = size_entry
+        endif
+
+        if size_value_label != blank
+          assign size_values_count = size_values_count | plus: 1
+          assign single_size_label = size_value_label
+        endif
+      endfor
+    endif
+
+    if size_values_count != 1
+      assign single_size_label = blank
+    endif
+  endif
+
+  assign fabric_value = product.metafields.custom.fabric.value | default: product.metafields.custom.fabric | default: product.metafields.custom.composition.value | default: product.metafields.custom.composition
+
+  assign product_title_downcase = product.title | downcase
+  assign product_handle_downcase = product.handle | downcase
+  assign suppress_tog = false
+
+  if product_title_downcase contains 'duvet cover' or product_handle_downcase contains 'duvet-cover'
+    assign suppress_tog = true
+  endif
+
+  assign tog_value = pp.tog_rating | default: product.metafields.custom.tog_rating.value
+  assign tog_display = blank
+
+  if tog_value != blank and suppress_tog == false
+    assign tog_display = tog_value
+    assign tog_display_downcase = tog_display | downcase
+
+    if tog_display_downcase == 'n/a' or tog_display_downcase == 'na' or tog_display_downcase == 'none'
+      assign tog_display = blank
+    else
+      unless tog_display_downcase contains 'tog'
+        assign tog_display = tog_display | append: ' TOG'
+      endunless
+    endif
+  endif
+
+  assign fixed_fact_count = 0
+
+  if single_colour_label != blank
+    assign fixed_fact_count = fixed_fact_count | plus: 1
+  endif
+
+  if single_size_label != blank
+    assign fixed_fact_count = fixed_fact_count | plus: 1
+  endif
+
+  if fabric_value != blank
+    assign fixed_fact_count = fixed_fact_count | plus: 1
+  endif
+
+  if tog_display != blank
+    assign fixed_fact_count = fixed_fact_count | plus: 1
+  endif
+
+-%}
+
+{%- if fixed_fact_count > 0 -%}
+  <div class="lc-fixed-product-facts" aria-label="Product details">
+    {%- if single_colour_label != blank -%}
+      <span class="lc-fixed-product-facts__item lc-fixed-product-facts__item--colour">
+        <span class="lc-fixed-product-facts__label">Colour:</span>
+        <span class="lc-fixed-product-facts__value">{{ single_colour_label | escape }}</span>
+      </span>
+    {%- endif -%}
+
+    {%- if single_size_label != blank -%}
+      <span class="lc-fixed-product-facts__item">
+        <span class="lc-fixed-product-facts__label">Size:</span>
+        <span class="lc-fixed-product-facts__value">{{ single_size_label | escape }}</span>
+      </span>
+    {%- endif -%}
+
+    {%- if fabric_value != blank -%}
+      <span class="lc-fixed-product-facts__item">
+        <span class="lc-fixed-product-facts__label">Fabric:</span>
+        <span class="lc-fixed-product-facts__value">{{ fabric_value | escape }}</span>
+      </span>
+    {%- endif -%}
+
+    {%- if tog_display != blank -%}
+      <span class="lc-fixed-product-facts__item">
+        <span class="lc-fixed-product-facts__label">TOG:</span>
+        <span class="lc-fixed-product-facts__value">{{ tog_display | escape }}</span>
+      </span>
+    {%- endif -%}
+
+  </div>
+{%- endif -%}

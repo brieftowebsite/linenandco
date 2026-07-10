@@ -1,0 +1,145 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-non-variant-colour-selector.liquid
+  Purpose: Metafield-driven colour picker for products where
+           Colour/Color is no longer a real variant option.
+
+  Data source, in priority order:
+    product.metafields.shopify['color-pattern'].value
+    product.metafields.custom.colour.value
+    product.metafields.custom.colours.value
+    product.metafields.custom.color.value
+    product.metafields.custom.colors.value
+
+  Behavior:
+    - Renders only when colour metafield data exists.
+    - Does not render while Colour/Color is still a real variant option.
+    - Submits the selected option as properties[Colour].
+    - Adds gallery matching keys so the PDP script can select the matching image.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign colour_list = product.metafields.shopify['color-pattern'].value
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.colour.value
+  endif
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.colours.value
+  endif
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.color.value
+  endif
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.colors.value
+  endif
+
+  assign has_colour_variant = false
+
+  for option in product.options_with_values
+    assign option_name = option.name | downcase | strip
+
+    if option_name == 'colour' or option_name == 'color' or option_name == 'colours' or option_name == 'colors'
+      assign has_colour_variant = true
+    endif
+  endfor
+
+  assign selected_colour_label = blank
+  assign colour_options_count = 0
+
+  if colour_list != blank
+    for colour_option in colour_list
+      assign colour_handle = colour_option.system.handle
+      assign colour_label = colour_option.label.value | default: colour_option['label'].value | default: colour_option.name.value | default: colour_option['name'].value | default: colour_option.title.value | default: colour_option['title'].value
+
+      if colour_label == blank and colour_handle != blank
+        assign colour_label = colour_handle | replace: '-', ' ' | capitalize
+      endif
+
+      if colour_label == blank
+        assign colour_label = colour_option
+      endif
+
+      if selected_colour_label == blank and colour_label != blank
+        assign selected_colour_label = colour_label
+      endif
+
+      if colour_label != blank
+        assign colour_options_count = colour_options_count | plus: 1
+      endif
+    endfor
+  endif
+-%}
+
+{%- if colour_list != blank and has_colour_variant == false and colour_options_count > 1 -%}
+  <fieldset class="lc-non-variant-colour-selector variant-picker__option v-stack gap-2" data-non-variant-option="Colour">
+    <div class="variant-picker__option-info h-stack justify-between gap-2">
+      <div class="h-stack gap-1">
+        <legend style="font-weight: bold; font-size: 14px;">Colour:</legend>
+        {%- if selected_colour_label != blank -%}
+          <span data-lc-selected-non-variant-label>{{ selected_colour_label }}</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="lc-non-variant-colour-selector__values variant-picker__option-values h-stack gap-2.5 wrap">
+      {%- for colour_option in colour_list -%}
+        {%- liquid
+          assign colour_handle = colour_option.system.handle
+          assign colour_label = colour_option.label.value | default: colour_option['label'].value | default: colour_option.name.value | default: colour_option['name'].value | default: colour_option.title.value | default: colour_option['title'].value
+
+          if colour_label == blank and colour_handle != blank
+            assign colour_label = colour_handle | replace: '-', ' ' | capitalize
+          endif
+
+          if colour_label == blank
+            assign colour_label = colour_option
+          endif
+
+          assign gallery_media_id = blank
+          assign gallery_media_key = colour_label | handle
+          assign gallery_image_url = blank
+          assign gallery_image_alt = blank
+          assign colour_label_downcase = colour_label | downcase | strip
+
+          if colour_handle == blank
+            assign colour_handle = gallery_media_key
+          endif
+
+          assign colour_handle_downcase = colour_handle | downcase | strip
+
+          for media in product.media
+            assign media_alt_downcase = media.alt | downcase | strip
+            assign media_src = media.preview_image | image_url: width: 80
+            assign media_src_downcase = media_src | downcase
+
+            if media_alt_downcase contains colour_label_downcase or media_alt_downcase contains colour_handle_downcase or media_src_downcase contains colour_handle_downcase
+              assign gallery_media_id = media.id
+              assign gallery_image_url = media.preview_image | image_url: width: 360
+              assign gallery_image_alt = media.alt | default: colour_label
+              break
+            endif
+          endfor
+
+          assign input_id_prefix = 'metafield-colour-' | append: forloop.index
+        -%}
+
+        {%- if colour_label != blank -%}
+          {%- liquid
+            render 'option-value', type: 'swatch_underline', form: product_form_id, param_name: 'properties[Colour]', label: colour_label, selected: forloop.first, color_metaobject: colour_option, submitted_value: colour_label, gallery_media_id: gallery_media_id, gallery_media_key: gallery_media_key, gallery_image_url: gallery_image_url, gallery_image_alt: gallery_image_alt, id_prefix: input_id_prefix
+          -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <input type="hidden" form="{{ product_form_id }}" name="properties[_lc_non_variant_image]" value="" disabled data-non-variant-cart-image-property>
+    <input type="hidden" form="{{ product_form_id }}" name="properties[_lc_non_variant_image_alt]" value="" disabled data-non-variant-cart-image-alt-property>
+    <input type="hidden" form="{{ product_form_id }}" name="properties[_lc_non_variant_media_id]" value="" disabled data-non-variant-cart-media-id-property>
+  </fieldset>
+{%- elsif colour_list != blank and has_colour_variant == false and colour_options_count == 1 and selected_colour_label != blank -%}
+  <input type="hidden" form="{{ product_form_id }}" name="properties[Colour]" value="{{ selected_colour_label | escape }}">
+{%- endif -%}

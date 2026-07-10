@@ -1,0 +1,70 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-breadcrumbs.liquid
+  Purpose: One-line breadcrumb trail for PDP navigation.
+
+  Usage:
+    {%- render 'lc-breadcrumbs', product: product -%}
+
+  Behavior:
+    - Renders Home / Collection / Product.
+    - Uses the current collection when available.
+    - Falls back to the product's first collection.
+    - Keeps the current product title as plain text.
+
+  Assets:
+    - Styles: assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- assign breadcrumb_collection = collection -%}
+
+{%- if breadcrumb_collection == blank and product.collections.size > 0 -%}
+  {%- assign breadcrumb_collection = product.collections.first -%}
+{%- endif -%}
+
+<nav class="lc-breadcrumbs" aria-label="Breadcrumb">
+  <ol class="lc-breadcrumbs__list" itemscope itemtype="https://schema.org/BreadcrumbList">
+    <li
+      class="lc-breadcrumbs__item lc-breadcrumbs__item--home"
+      itemprop="itemListElement"
+      itemscope
+      itemtype="https://schema.org/ListItem"
+    >
+      <a href="{{ routes.root_url }}" class="lc-breadcrumbs__link" itemprop="item">
+        <span itemprop="name">Home</span>
+      </a>
+      <meta itemprop="position" content="1">
+    </li>
+
+    {%- if breadcrumb_collection != blank -%}
+      <li class="lc-breadcrumbs__item lc-breadcrumbs__item--sep" aria-hidden="true">/</li>
+
+      <li
+        class="lc-breadcrumbs__item lc-breadcrumbs__item--collection"
+        itemprop="itemListElement"
+        itemscope
+        itemtype="https://schema.org/ListItem"
+      >
+        <a href="{{ breadcrumb_collection.url }}" class="lc-breadcrumbs__link" itemprop="item">
+          <span itemprop="name">{{ breadcrumb_collection.title | escape }}</span>
+        </a>
+        <meta itemprop="position" content="2">
+      </li>
+    {%- endif -%}
+
+    <li class="lc-breadcrumbs__item lc-breadcrumbs__item--sep" aria-hidden="true">/</li>
+
+    <li
+      class="lc-breadcrumbs__item lc-breadcrumbs__item--current"
+      aria-current="page"
+      itemprop="itemListElement"
+      itemscope
+      itemtype="https://schema.org/ListItem"
+    >
+      <span itemprop="name">{{ product.title | escape }}</span>
+      <meta itemprop="position" content="{% if breadcrumb_collection != blank %}3{% else %}2{% endif %}">
+    </li>
+  </ol>
+</nav>
+

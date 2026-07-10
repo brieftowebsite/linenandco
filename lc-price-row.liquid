@@ -1,0 +1,143 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-price-row.liquid
+  Purpose: Product price row with optional pack size and rating.
+
+  Usage:
+    {%- render 'lc-price-row', product: product -%}
+
+  Behavior:
+    - Renders the current variant price through the theme price-list snippet.
+    - Shows pack label when variant pack configuration is populated.
+    - Renders the product rating when rating data exists.
+
+  Data sources:
+    - Variant metafield: current_variant.metafields.custom.pack_configuration
+    - Variant metafield: current_variant.metafields.custom.pack_quantity
+    - Legacy fallback: current_variant.metafields.custom.pack_size
+    - Legacy fallback: product.metafields.custom.pack_size
+
+  Assets:
+    - Styles: assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign pack_configuration = current_variant.metafields.custom.pack_configuration.value
+  assign pack_quantity = current_variant.metafields.custom.pack_quantity.value | plus: 0
+  assign legacy_pack_size = current_variant.metafields.custom.pack_size.value | default: product.metafields.custom.pack_size.value
+  assign normalized_pack_configuration = pack_configuration | strip | downcase
+  assign normalized_legacy_pack_size = legacy_pack_size | strip | downcase
+  assign price_row_meta = ''
+
+  if pack_configuration != blank
+    if normalized_pack_configuration contains 'set'
+      assign price_row_meta = 'Set'
+    elsif normalized_pack_configuration == 'pack' and pack_quantity > 1
+      assign price_row_meta = 'Pack of ' | append: pack_quantity
+    else
+      assign price_row_meta = pack_configuration
+    endif
+  endif
+
+  if price_row_meta == blank and legacy_pack_size != blank
+    if normalized_legacy_pack_size contains 'set'
+      assign price_row_meta = 'Set'
+    else
+      assign price_row_meta = legacy_pack_size
+    endif
+  endif
+-%}
+
+{%- capture sale_badge_markup -%}
+  {%- render 'product-badges',
+    product: product,
+    variant: current_variant,
+    types: 'discount',
+    context: 'product'
+  -%}
+{%- endcapture -%}
+{%- assign sale_badge_markup = sale_badge_markup | strip -%}
+
+<div class="lc-price-row" data-lc-price-row>
+  <div class="lc-price-row__price">
+    {%- if sale_badge_markup != blank -%}
+      <span class="lc-price-row__sale-badge">{{ sale_badge_markup }}</span>
+    {%- endif -%}
+
+    {%- render 'price-list',
+      product: product,
+      variant: current_variant,
+      context: 'product'
+    -%}
+    <span class="lc-price-row__vat">Incl VAT</span>
+  </div>
+
+  <div class="lc-price-row__pack" data-variant-meta {% if price_row_meta == blank %}hidden{% endif %}>
+    {{ price_row_meta | escape }}
+  </div>
+
+  <script type="application/json" data-variant-price-row-meta>
+    {
+      "fallback": {
+        "pack": {{ product.metafields.custom.pack_size.value | json }},
+        "productTitle": {{ product.title | json }}
+      },
+      "variants": {
+        {%- for variant in product.variants -%}
+          {%- liquid
+            assign variant_pack_configuration = variant.metafields.custom.pack_configuration.value
+            assign variant_pack_quantity = variant.metafields.custom.pack_quantity.value | plus: 0
+            assign variant_pack = variant.metafields.custom.pack_size.value
+            assign normalized_variant_pack_configuration = variant_pack_configuration | strip | downcase
+            assign normalized_variant_pack = variant_pack | strip | downcase
+            assign variant_pack_label = ''
+
+            if variant_pack_configuration != blank
+              if normalized_variant_pack_configuration contains 'set'
+                assign variant_pack_label = 'Set'
+              elsif normalized_variant_pack_configuration == 'pack' and variant_pack_quantity > 1
+                assign variant_pack_label = 'Pack of ' | append: variant_pack_quantity
+              else
+                assign variant_pack_label = variant_pack_configuration
+              endif
+            endif
+
+            if variant_pack_label == blank and variant_pack != blank
+              if normalized_variant_pack contains 'set'
+                assign variant_pack_label = 'Set'
+              else
+                assign variant_pack_label = variant_pack
+              endif
+            endif
+          -%}
+          "{{ variant.id }}": {
+            "pack_configuration": {{ variant_pack_label | json }},
+            "pack_quantity": {{ variant_pack_quantity | json }},
+            "pack": {{ variant_pack | json }},
+            "options": [
+              {%- for option_value in variant.options -%}
+                {
+                  "name": {{ product.options[forloop.index0] | json }},
+                  "value": {{ option_value | json }}
+                }{% unless forloop.last %},{% endunless %}
+              {%- endfor -%}
+            ],
+            "title": {{ variant.title | json }}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      }
+    }
+  </script>
+
+  <div class="lc-price-row__rating">
+    {%- render 'product-rating',
+      product: product,
+      show_empty: false,
+      display_mode: 'rating',
+      show_placeholder: false,
+      show_single_star: false
+    -%}
+  </div>
+</div>

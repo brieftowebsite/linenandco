@@ -1,0 +1,86 @@
+{% doc %}
+@param {product} product - Product object with custom.blind_trust_stripe metaobject references
+{% enddoc %}
+
+{%- liquid
+  assign trust_stripes = product.metafields.custom.blind_trust_stripe.value | default: product.metafields.custom.blind_trust_strip.value
+  assign strip = trust_stripes | first
+
+  assign shipping_title = strip.trust_shipping_title | default: 'Shipping'
+  assign shipping_subtitle = strip.trust_shipping_subtitle | default: 'Nationwide Delivery'
+  assign shipping_url = strip.trust_shipping_link.value.url | default: strip.trust_shipping_link.value | default: '/pages/shipping-policy'
+
+  assign warranty_title = strip.trust_warranty_title | default: 'Warranty'
+  assign warranty_subtitle = strip.trust_warranty_subtitle | default: '3 Year Limited Warranty'
+  assign warranty_url = strip.trust_warranty_link.value.url | default: strip.trust_warranty_link.value | default: '/pages/support-and-faq#warranty'
+
+  assign payment_title = strip.trust_payment_title | default: 'Secure Payment'
+  assign payment_subtitle = strip.trust_payment_subtitle | default: 'Powered by Yoco'
+  assign payment_url = strip.trust_payment_link.value.url | default: strip.trust_payment_link.value | default: '/pages/support-and-faq#payment-security'
+
+  assign lead_title = strip.trust_lead_time_title | default: 'Made To Order'
+  assign lead_subtitle = strip.trust_lead_time_subtitle | default: '7-14 Business Days'
+  assign lead_url = strip.trust_lead_time_link.value.url | default: strip.trust_lead_time_link.value | default: '/pages/lead-time'
+
+  assign note = strip.trust_strip_note | default: 'Lead time depends on quantities and level of customisation.'
+  assign note = note | replace: ' Learn more.', '' | replace: ' Learn more', ''
+-%}
+
+{%- if strip != blank -%}
+  <div class="lc-trust-strip lc-blind-trust-strip product-trust-strip">
+    <div class="lc-trust-strip__items product-trust-strip__items">
+      <a href="{{ shipping_url }}" class="lc-trust-item trust-item" aria-label="{{ shipping_title | escape }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="1" y="3" width="15" height="13" rx="1"/>
+          <path d="M16 8h4l3 5v3h-7V8z"/>
+          <circle cx="5.5" cy="18.5" r="2.5"/>
+          <circle cx="18.5" cy="18.5" r="2.5"/>
+        </svg>
+        <span class="lc-trust-item__label trust-item__label">
+          {{ shipping_title | escape }}
+          <span class="lc-trust-item__sub trust-item__sub">{{ shipping_subtitle | escape }}</span>
+        </span>
+      </a>
+
+      <a href="{{ warranty_url }}" class="lc-trust-item trust-item" aria-label="{{ warranty_title | escape }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="m9 12 2 2 4-5"/>
+        </svg>
+        <span class="lc-trust-item__label trust-item__label">
+          {{ warranty_title | escape }}
+          <span class="lc-trust-item__sub trust-item__sub">{{ warranty_subtitle | escape }}</span>
+        </span>
+      </a>
+
+      <a href="{{ payment_url }}" class="lc-trust-item trust-item" aria-label="{{ payment_title | escape }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+        <span class="lc-trust-item__label trust-item__label">
+          {{ payment_title | escape }}
+          <span class="lc-trust-item__sub trust-item__sub">{{ payment_subtitle | escape }}</span>
+        </span>
+      </a>
+
+      <a href="{{ lead_url }}" class="lc-trust-item trust-item" aria-label="{{ lead_title | escape }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <polyline points="12 6 12 12 16 14"/>
+        </svg>
+        <span class="lc-trust-item__label trust-item__label">
+          {{ lead_title | escape }}
+          <span class="lc-trust-item__sub trust-item__sub">{{ lead_subtitle | escape }}</span>
+        </span>
+      </a>
+    </div>
+
+    {%- if note != blank -%}
+      <p class="lc-trust-strip__note trust-strip__mto-note">
+        {{ note | escape }}
+        <a href="{{ lead_url }}">Learn more &rarr;</a>
+      </p>
+    {%- endif -%}
+  </div>
+{%- endif -%}

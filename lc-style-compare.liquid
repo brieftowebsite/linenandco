@@ -1,0 +1,56 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-style-compare.liquid
+  Purpose: Renders the PDP style / colour comparison section.
+  ============================================================
+{%- endcomment -%}
+
+{%- assign styles = st | default: product.metafields.custom.styles.value -%}
+
+{%- if styles != blank -%}
+  {%- assign section_title = styles.title | default: 'Compare Styles' -%}
+  <section class="lc-profile-section lc-style-compare" id="lc-compare-styles">
+    <div class="lc-profile-section__inner">
+      <h2 class="lc-profile-section__heading">{{ section_title | escape }}</h2>
+
+      {%- if styles.intro != blank -%}
+        <p class="lc-style-compare__intro">{{ styles.intro | escape }}</p>
+      {%- endif -%}
+
+      <div class="lc-style-compare__grid">
+        {%- for i in (1..5) -%}
+          {%- assign label_key = 'label_' | append: i -%}
+          {%- assign image_key = 'image_' | append: i -%}
+          {%- assign label = styles[label_key] -%}
+          {%- assign image = styles[image_key] -%}
+
+          {%- if label != blank or image != blank -%}
+            <div class="lc-style-compare__item">
+              {%- if image != blank -%}
+                <div class="lc-style-compare__img-wrap">
+                  <img
+                    src="{{ image | image_url: width: 420 }}"
+                    srcset="
+                      {{ image | image_url: width: 280 }} 280w,
+                      {{ image | image_url: width: 420 }} 420w,
+                      {{ image | image_url: width: 700 }} 700w
+                    "
+                    sizes="(max-width: 749px) 170px, (max-width: 1199px) 220px, 240px"
+                    alt="{{ label | default: section_title | escape }} - {{ product.title | escape }} - Linen and Co"
+                    width="600"
+                    height="600"
+                    loading="lazy"
+                  >
+                </div>
+              {%- endif -%}
+
+              {%- if label != blank -%}
+                <p class="lc-style-compare__label">{{ label | escape }}</p>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}

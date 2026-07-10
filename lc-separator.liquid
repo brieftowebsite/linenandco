@@ -1,0 +1,17 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-separator.liquid
+  Purpose: Combined Action Row: Renders a visual divider line or 
+           blank spacing gap between sections on the PDP.
+  Variables:
+    - style {String}  'line' (default) renders a visual hairline HR
+                      'gap'            renders a blank layout spacer div
+  Assets:   Driven completely by assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- if style == 'gap' -%}
+  <div class="lc-separator lc-separator--gap" aria-hidden="true"></div>
+{%- else -%}
+  <hr class="lc-separator" aria-hidden="true">
+{%- endif -%}

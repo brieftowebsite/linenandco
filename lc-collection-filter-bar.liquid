@@ -1,0 +1,167 @@
+{% doc %}
+Renders the desktop collection filter bar with each Shopify filter as a horizontal popover.
+
+@param {collection} results - The collection whose filters should render.
+@param {boolean} show_filters - Whether storefront filters should be shown.
+@param {string} [context] - Unique context used to keep form control IDs distinct.
+@example
+{% render 'lc-collection-filter-bar', results: collection, show_filters: true, context: 'toolbar' %}
+{% enddoc %}
+
+{%- liquid
+  assign color_label_list = 'general.label.color' | t | replace: ', ', ',' | downcase | split: ','
+  assign context = context | default: 'toolbar'
+  assign active_values_count = 0
+
+  for filter in results.filters
+    if filter.type == 'price_range'
+      if filter.max_value.value != blank or filter.min_value.value != blank
+        assign active_values_count = active_values_count | plus: 1
+      endif
+    else
+      assign active_values_count = active_values_count | plus: filter.active_values.size
+    endif
+  endfor
+
+  assign id_prefix = 'facets-' | append: context
+-%}
+
+<facets-form update-on-change section-id="{{ section.id }}" class="lc-collection-filter-bar">
+  <form method="GET" action="{{ request.path }}" class="lc-collection-filter-bar__form">
+    <input type="hidden" name="page" value="">
+
+    {%- if results.current_type != blank or results.current_vendor != blank -%}
+      <input type="hidden" name="q" value="{{ results.current_vendor | default: results.current_type | escape }}">
+    {%- endif -%}
+
+    {%- if results.sort_by != blank -%}
+      <input type="hidden" name="sort_by" value="{{ results.sort_by }}">
+    {%- endif -%}
+
+    {%- if show_filters -%}
+      <span class="lc-collection-filter-bar__label heading text-xxs">
+        {{- 'collection.faceting.filter_button' | t -}}
+      </span>
+
+      {%- for filter in results.filters -%}
+        {%- liquid
+          assign filter_index = forloop.index
+          assign downcase_label = filter.label | downcase
+          assign filter_active_count = filter.active_values.size
+
+          if filter.type == 'price_range'
+            assign filter_active_count = 0
+
+            if filter.max_value.value != blank or filter.min_value.value != blank
+              assign filter_active_count = 1
+            endif
+          endif
+
+          assign popover_id = id_prefix | append: '-popover-' | append: forloop.index
+        -%}
+
+        {%- capture filter_content -%}
+          {%- if filter.type == 'boolean' or filter.param_name == 'filter.v.availability' -%}
+            {%- if filter.param_name == 'filter.v.availability' -%}
+              <div class="checkbox-control">
+                <input id="{{ id_prefix }}-availability" type="checkbox" class="switch" name="{{ filter.param_name }}" value="1" {% if filter.active_values.size > 0 %}checked{% endif %}>
+                <label for="{{ id_prefix }}-availability" class="text-subdued">{{- 'collection.faceting.in_stock_only' | t -}}</label>
+              </div>
+            {%- else -%}
+              <div class="v-stack gap-2.5">
+                {%- for filter_value in filter.values -%}
+                  {%- liquid
+                    if section.settings.show_filter_values_count
+                      assign label = filter_value.label | append: ' (' | append: filter_value.count | append: ')'
+                    else
+                      assign label = filter_value.label
+                    endif
+
+                    assign boolean_index = forloop.index
+                  -%}
+
+                  <div class="checkbox-control">
+                    <input id="{{ id_prefix }}-{{ filter_value.param_name }}-{{ boolean_index }}" type="checkbox" class="switch" name="{{ filter_value.param_name }}" value="{{ filter_value.value }}" {% if filter_value.active %}checked{% endif %}>
+                    <label for="{{ id_prefix }}-{{ filter_value.param_name }}-{{ boolean_index }}" class="text-subdued">{{ label }}</label>
+                  </div>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            {%- case filter.type -%}
+              {%- when 'list' -%}
+                {%- liquid
+                  if filter.presentation == 'image'
+                    assign wrapper_class_list = 'v-stack gap-2'
+                  elsif filter.presentation == 'swatch' or color_label_list contains downcase_label
+                    assign wrapper_class_list = 'h-stack wrap gap-2'
+                  else
+                    assign wrapper_class_list = 'v-stack gap-2.5'
+                  endif
+                -%}
+
+                <div class="{{ wrapper_class_list }}">
+                  {% liquid
+                    for filter_value in filter.values
+                      assign value_id_prefix = id_prefix | append: '-' | append: filter_index | append: '-' | append: forloop.index
+
+                      if filter.presentation == 'image'
+                        render 'option-value', type: 'image_filter', filter_value: filter_value, id_prefix: value_id_prefix
+                      elsif filter.presentation == 'swatch' or color_label_list contains downcase_label
+                        render 'option-value', type: 'swatch', filter_value: filter_value, show_tooltip: true, id_prefix: value_id_prefix
+                      else
+                        if section.settings.show_filter_values_count
+                          assign label = filter_value.label | append: ' (' | append: filter_value.count | append: ')'
+                        else
+                          assign label = filter_value.label
+                        endif
+
+                        render 'checkbox', hide_checkbox: true, label: label, name: filter_value.param_name, value: filter_value.value, checked: filter_value.active, id_prefix: value_id_prefix
+                      endif
+                    endfor
+                  %}
+                </div>
+
+              {%- when 'price_range' -%}
+                {%- render 'price-range', filter: filter -%}
+            {%- endcase -%}
+          {%- endif -%}
+        {%- endcapture -%}
+
+        {%- if filter_content != blank -%}
+          <div class="lc-collection-filter-bar__item">
+            <button
+              type="button"
+              aria-controls="{{ popover_id }}"
+              class="lc-collection-filter-bar__button heading text-xxs {% if filter_active_count > 0 %}is-active{% endif %}"
+            >
+              <span>
+                {{- filter.label -}}
+                {%- if filter_active_count > 0 %} ({{ filter_active_count }}){% endif -%}
+              </span>
+              {%- render 'icon' with 'chevron-down' -%}
+            </button>
+
+            <x-popover
+              id="{{ popover_id }}"
+              class="popover popover--bottom-start color-scheme color-scheme--dialog lc-collection-filter-popover"
+            >
+              <p class="h4" slot="header">{{ filter.label }}</p>
+              <div class="lc-collection-filter-popover__content">
+                {{- filter_content -}}
+              </div>
+            </x-popover>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if active_values_count > 0 -%}
+        <facet-link>
+          <a href="{{ results.url }}" class="lc-collection-filter-bar__clear link-faded">
+            {{- 'collection.faceting.clear_filters' | t -}}
+          </a>
+        </facet-link>
+      {%- endif -%}
+    {%- endif -%}
+  </form>
+</facets-form>

@@ -1,0 +1,57 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-product-description.liquid
+  Purpose: Combined Action Row: Renders full-width editorial description 
+           matrix sections (What Is It) with alternating split columns.
+  Requires:
+    - product {Object} Shopify product object
+    - pp      {Object} product_profile metaobject value (optional)
+    - hide_id {Boolean} Toggles element id attributes to prevent duplicate DOM targets
+  Assets:   Driven completely by assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign profile_hero = pp.hero_image
+  assign calculated_name = pp.product_name | default: pp.name | default: product.title
+  assign calculated_subtitle = pp.subtitle
+  assign description_content = pp.description | default: pp.what_is_it
+-%}
+
+{%- if description_content != blank -%}
+<section class="lc-profile-section lc-product-description"{% unless hide_id %} id="lc-what-is-it"{% endunless %}>
+  <div class="lc-profile-section__split">
+    
+    {%- if profile_hero != blank -%}
+    <div class="lc-profile-section__image">
+      {%- comment -%} Upgraded to serving fluid browser-optimized sizes using responsive srcsets {%- endcomment -%}
+      <img
+        src="{{ profile_hero | image_url: width: 700 }}"
+        srcset="
+          {{ profile_hero | image_url: width: 500 }} 500w,
+          {{ profile_hero | image_url: width: 700 }} 700w,
+          {{ profile_hero | image_url: width: 1400 }} 1400w
+        "
+        sizes="(max-width: 749px) 100vw, 50vw"
+        alt="{{ calculated_name | escape }}"
+        width="1600"
+        height="896"
+        loading="lazy"
+        style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    {%- endif -%}
+    
+    <div class="lc-profile-section__text">
+      <span class="lc-label">Description</span>
+      <h2 class="lc-profile-section__heading">{{ calculated_name | escape }}</h2>
+      {%- if calculated_subtitle != blank -%}
+        <p class="lc-profile-section__subtitle">{{ calculated_subtitle | escape }}</p>
+      {%- endif -%}
+      <div class="rte lc-body-text lc-bullets">
+        {{ description_content | metafield_tag }}
+      </div>
+    </div>
+
+  </div>
+</section>
+{%- endif -%}

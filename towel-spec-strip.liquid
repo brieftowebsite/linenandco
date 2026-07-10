@@ -1,0 +1,152 @@
+{% comment %}
+  ============================================================
+  SNIPPET: towel-spec-strip.liquid
+  Store:   Linen and Co (linenco.co.za)
+  Purpose: Displays towel specification icons above the fold
+           on the Product Detail Page (PDP) as the "Key Features"
+           section. Fully metafield-driven via the towel_profile
+           metaobject.
+  Usage:   {% render 'towel-spec-strip', towel: towel %}
+  ============================================================
+{% endcomment %}
+
+{% assign feature_1 = towel.feature_1 %}
+{% assign feature_2 = towel.feature_2 %}
+{% assign feature_3 = towel.feature_3 %}
+{% assign feature_4 = towel.feature_4 %}
+{% assign feature_5 = towel.feature_5 %}
+{% assign feature_6 = towel.feature_6 %}
+
+<h2 class="towel-spec-heading">Key Features</h2>
+
+<div class="towel-spec-strip">
+
+  {% if feature_1 != blank %}
+  <div class="spec-item">
+    <svg class="spec-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <!-- Cotton / Material icon -->
+      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+      <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10A15.3 15.3 0 0 1 8 12a15.3 15.3 0 0 1 4-10z"/>
+    </svg>
+    <span class="spec-text">{{ feature_1 }}</span>
+  </div>
+  {% endif %}
+
+  {% if feature_2 != blank %}
+  <div class="spec-item">
+    <svg class="spec-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <!-- Snag Proof / Shield icon -->
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    <span class="spec-text">{{ feature_2 }}</span>
+  </div>
+  {% endif %}
+
+  {% if feature_3 != blank %}
+  <div class="spec-item">
+    <svg class="spec-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <!-- Commercial Laundry / Home icon -->
+      <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+      <polyline points="9 22 9 12 15 12 15 22"/>
+    </svg>
+    <span class="spec-text">{{ feature_3 }}</span>
+  </div>
+  {% endif %}
+
+  {% if feature_4 != blank %}
+  <div class="spec-item">
+    <svg class="spec-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <!-- Tumble Dry / Clock icon -->
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M12 8v4l3 3"/>
+    </svg>
+    <span class="spec-text">{{ feature_4 }}</span>
+  </div>
+  {% endif %}
+
+  {% if feature_5 != blank %}
+  <div class="spec-item">
+    <svg class="spec-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <!-- Ultra Absorbent / Droplet icon -->
+      <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+    </svg>
+    <span class="spec-text">{{ feature_5 }}</span>
+  </div>
+  {% endif %}
+
+  {% if feature_6 != blank %}
+  <div class="spec-item">
+    <svg class="spec-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <!-- Colour Fast / Palette icon -->
+      <circle cx="12" cy="12" r="10"/>
+      <circle cx="12" cy="12" r="3"/>
+      <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+    </svg>
+    <span class="spec-text">{{ feature_6 }}</span>
+  </div>
+  {% endif %}
+
+</div>
+
+{% assign tp = product.metafields.custom.towel_profile.value %}
+{% if tp != blank %}
+<div class="fabric-compare-prompt">
+  Not sure which towel is right for you?
+  <a href="/pages/compare-towels" class="fabric-compare-link">Compare Towels</a>
+</div>
+{% endif %}
+
+<style>
+.towel-spec-heading {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 8px 0;
+  letter-spacing: 0.01em;
+}
+.towel-spec-strip {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px 24px;
+  padding: 20px 0;
+  margin: 16px 0;
+}
+.spec-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.spec-svg {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+  color: #555;
+}
+.spec-text {
+  font-size: 13px;
+  color: #1a1a1a;
+  line-height: 1.4;
+}
+.fabric-compare-prompt {
+  font-size: 13px;
+  color: #555;
+  padding: 12px 0 4px;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 8px;
+}
+.fabric-compare-link {
+  color: #1a1a1a;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-weight: 500;
+  margin-left: 4px;
+}
+.fabric-compare-link:hover { opacity: 0.6; }
+@media (max-width: 749px) {
+  .towel-spec-strip {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px 16px;
+  }
+  .spec-text { font-size: 12px; }
+}
+</style>

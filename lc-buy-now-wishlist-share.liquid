@@ -1,0 +1,95 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-buy-now-wishlist-share.liquid
+  Purpose: Buy now, wishlist, and copy link actions for the PDP.
+
+  Usage:
+    {%- render 'lc-buy-now-wishlist-share',
+      product: product,
+      product_form_id: product_form_id
+    -%}
+
+  Behavior:
+    - Buy Now submits the current product form and redirects to checkout.
+    - Wishlist toggles the product in local browser storage.
+    - Copy Link copies the product URL and briefly shows a copied state.
+
+  Assets:
+    - Styles: assets/lc-main-product.css
+    - Interactions: assets/lc-main-product.js
+  ============================================================
+{%- endcomment -%}
+
+{%- assign copy_url = canonical_url | default: product.url | prepend: shop.url -%}
+
+<div class="lc-actions-panel-desktop-row">
+  <div class="lc-actions-panel__purchasing-group">
+    <button
+      type="submit"
+      class="lc-action-btn lc-action-btn--buynow"
+      aria-label="Buy it now"
+      form="{{ product_form_id }}"
+      name="return_to"
+      value="/checkout"
+    >
+      Buy Now
+    </button>
+
+    <button
+      type="button"
+      class="lc-action-btn lc-action-btn--wishlist"
+      aria-label="Add to wishlist"
+      aria-pressed="false"
+      data-wishlist-toggle
+      data-product-form-id="{{ product_form_id }}"
+      data-product-id="{{ product.id }}"
+      data-product-handle="{{ product.handle | escape }}"
+      data-product-title="{{ product.title | escape }}"
+      data-product-url="{{ product.url }}"
+      data-product-image="{{ product.featured_image | image_url: width: 600 }}"
+      data-product-price="{{ product.selected_or_first_available_variant.price | money }}"
+    >
+      <svg
+        class="lc-action-btn__heart"
+        width="14"
+        height="14"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"/>
+      </svg>
+      <span class="lc-action-btn__wishlist-label">Add to wishlist</span>
+    </button>
+  </div>
+
+  <button
+    type="button"
+    class="lc-action-btn lc-action-btn--copy-link"
+    aria-label="Copy product link"
+    aria-pressed="false"
+    data-copy-link
+    data-copy-url="{{ copy_url | escape }}"
+  >
+    <svg
+      class="lc-action-btn__copy-icon"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M10 13a5 5 0 0 0 7.07 0l2.83-2.83a5 5 0 0 0-7.07-7.07L11.5 4.43"/>
+      <path d="M14 11a5 5 0 0 0-7.07 0L4.1 13.83a5 5 0 0 0 7.07 7.07l1.33-1.33"/>
+    </svg>
+    <span class="lc-action-btn__copy-label">Copy Link</span>
+  </button>
+</div>

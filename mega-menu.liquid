@@ -1,0 +1,153 @@
+{%- comment -%}
+  ----------------------------------------------------------------------------------------------------------------------
+  MEGA MENU COMPONENT
+  ----------------------------------------------------------------------------------------------------------------------
+
+  Render the mega-menu. The mega-menu is a kind of menu optimized for showing a large number of items into several
+  columns.
+
+  ********************************************
+  Supported variables
+  ********************************************
+
+  * link: the link from which we need to render the mega-menu. The link must always be a second level link, but it can
+          also be empty (no links), which is the case if the merchant only want to show images, for instance.
+  * block: the block containing all the information about the menu to render
+{%- endcomment -%}
+
+<style>
+.mega-menu__linklist {
+  display: grid !important;
+  grid-template-columns: repeat(var(--mega-menu-column-count, 4), minmax(9.5rem, 13rem));
+  width: max-content;
+  max-width: min(70rem, calc(100vw - 4rem));
+  margin-inline: auto;
+  padding: 0;
+  gap: 1.35rem clamp(2rem, 3vw, 3.5rem) !important;
+  justify-content: center;
+}
+
+.mega-menu__linklist[data-column-count="1"] { --mega-menu-column-count: 1; }
+.mega-menu__linklist[data-column-count="2"] { --mega-menu-column-count: 2; }
+.mega-menu__linklist[data-column-count="3"] { --mega-menu-column-count: 3; }
+.mega-menu__linklist[data-column-count="4"] { --mega-menu-column-count: 4; }
+.mega-menu__linklist[data-column-count="5"] { --mega-menu-column-count: 5; }
+
+.mega-menu__linklist > li {
+  display: block !important;
+  width: 100%;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.mega-menu__linklist > li.v-stack {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 0.4rem !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+.mega-menu__linklist ul.v-stack.unstyled-list {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  width: 100%;
+  gap: 0.28rem !important;
+  margin-bottom: 0 !important;
+}
+
+.mega-menu__linklist ul.v-stack.unstyled-list li {
+  display: block !important;
+  width: 100%;
+  margin-bottom: 0 !important;
+  line-height: 1.1;
+}
+
+.mega-menu__linklist ul.v-stack.unstyled-list li a {
+  display: block !important;
+  white-space: normal !important;
+  padding: 0.08rem 0;
+  font-size: 0.84rem;
+  font-weight: 400 !important;
+  line-height: 1.25;
+  color: #707070 !important;
+}
+
+.mega-menu__linklist ul.v-stack.unstyled-list li a:hover {
+  color: #1c1c1c !important;
+}
+
+.mega-menu__category-heading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 0.28rem;
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.09em;
+  color: #000;
+  line-height: 1.12;
+}
+
+.mega-menu__linklist > li.v-stack > .mega-menu__category-heading {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #000;
+  line-height: 1.12;
+  padding: 0;
+  margin: 0 !important;
+}
+</style>
+
+<div class="mega-menu {% if block.settings.images_position == 'left' %}mega-menu--reverse{% endif %}" {{ block.shopify_attributes }}>
+  {%- if link.levels > 0 -%}
+    <ul class="mega-menu__linklist unstyled-list" data-column-count="{{ link.links.size | at_most: 5 }}">
+      {%- for sub_link in link.links -%}
+        {%- liquid
+          assign sub_link_has_destination = true
+          if sub_link.url == blank or sub_link.url == '#'
+            assign sub_link_has_destination = false
+          endif
+        -%}
+        <li class="v-stack justify-items-start">
+          {%- if sub_link_has_destination -%}
+            <a href="{{ sub_link.url }}" class="mega-menu__category-heading">{{ sub_link.title }}</a>
+          {%- else -%}
+            <span class="mega-menu__category-heading">{{ sub_link.title }}</span>
+          {%- endif -%}
+
+          {%- if sub_link.links.size > 0 -%}
+            <ul class="v-stack gap-2.5 unstyled-list">
+              {%- for sub_sub_link in sub_link.links -%}
+                {%- liquid
+                  assign sub_sub_link_has_destination = true
+                  if sub_sub_link.url == blank or sub_sub_link.url == '#'
+                    assign sub_sub_link_has_destination = false
+                  endif
+                -%}
+                <li>
+                  {%- if sub_sub_link_has_destination -%}
+                    <a href="{{ sub_sub_link.url }}" class="link-faded">{{ sub_sub_link.title }}</a>
+                  {%- else -%}
+                    <span class="link-faded">{{ sub_sub_link.title }}</span>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  {%- capture mega_menu_content -%}
+    {%- render 'mega-menu-images', context: 'menu', block: block -%}
+  {%- endcapture -%}
+
+  {%- if mega_menu_content != blank -%}
+    <div class="mega-menu__promo">
+      {{- mega_menu_content -}}
+    </div>
+  {%- endif -%}
+</div>

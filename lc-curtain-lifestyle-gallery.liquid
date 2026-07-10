@@ -1,0 +1,60 @@
+{% doc %}
+Renders the bottom lifestyle gallery from a curtain_profile metaobject.
+
+@param {object} profile - Curtain profile metaobject.
+@param {string} section_id - Parent section ID for stable anchors.
+{% enddoc %}
+
+{%- liquid
+  assign lifestyle_images = profile.lifestyle_images.value
+  assign lifestyle_captions = profile.lifestyle_captions.value
+  assign lifestyle_heading = profile.lifestyle_heading
+  assign lifestyle_intro = profile.lifestyle_intro
+-%}
+
+{%- if lifestyle_images != blank -%}
+  <div class="lc-curtain-section lc-curtain-lifestyle" id="lc-curtain-lifestyle-{{ section_id }}">
+    <div class="lc-curtain-section__inner">
+      <div class="lc-curtain-title-row">
+        <span class="lc-curtain-kicker">Lifestyle gallery</span>
+        {%- if lifestyle_heading != blank -%}
+          <h2>{{ lifestyle_heading | escape }}</h2>
+        {%- endif -%}
+        {%- if lifestyle_intro != blank -%}
+          <p>{{ lifestyle_intro | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="lc-curtain-lifestyle-grid">
+        {%- for lifestyle_image in lifestyle_images limit: 8 -%}
+          {%- liquid
+            assign lifestyle_caption = blank
+            if lifestyle_captions != blank
+              assign lifestyle_caption = lifestyle_captions[forloop.index0]
+            endif
+          -%}
+          <figure class="lc-curtain-lifestyle-card">
+            <div class="lc-curtain-lifestyle-card__image">
+              <img
+                src="{{ lifestyle_image | image_url: width: 900 }}"
+                srcset="
+                  {{ lifestyle_image | image_url: width: 500 }} 500w,
+                  {{ lifestyle_image | image_url: width: 700 }} 700w,
+                  {{ lifestyle_image | image_url: width: 900 }} 900w,
+                  {{ lifestyle_image | image_url: width: 1254 }} 1254w
+                "
+                sizes="(max-width: 749px) 100vw, 25vw"
+                alt="{{ lifestyle_caption | default: lifestyle_heading | default: profile.product_name | escape }}"
+                width="1254"
+                height="1254"
+                loading="lazy">
+            </div>
+            {%- if lifestyle_caption != blank -%}
+              <figcaption>{{ lifestyle_caption | escape }}</figcaption>
+            {%- endif -%}
+          </figure>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

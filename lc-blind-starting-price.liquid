@@ -1,0 +1,121 @@
+{% doc %}
+@param {product} product - Blind product object
+@param {string} [mode] - Output mode: display, amount, cents, table_key, or table_label
+{% enddoc %}
+
+{%- liquid
+  assign output_mode = mode | default: 'display'
+  assign vat_rate = product.metafields.custom.blind_vat_rate.value | default: product.metafields.custom.blind_vat_rate | default: 15
+  assign vat_multiplier = vat_rate | plus: 100 | divided_by: 100.0
+  assign pricing_key = product.metafields.custom.blind_pricing_key.value | default: product.metafields.custom.blind_pricing_key | default: product.template_suffix | default: product.handle
+  assign product_tags_text = product.tags | join: ' '
+  assign pricing_haystack = pricing_key | append: ' ' | append: product.template_suffix | append: ' ' | append: product.handle | append: ' ' | append: product.title | append: ' ' | append: product.type | append: ' ' | append: product_tags_text | downcase | replace: '&', 'and'
+  assign pricing_table_key = ''
+
+  case pricing_key
+    when 'roller-blockout', 'blind-roller-blockout', 'blockout-roller-blinds', 'roller-blinds'
+      assign pricing_table_key = 'roller-blockout'
+    when 'zebra-roller', 'blind-zebra-roller', 'zebra-blinds', 'zebra-blind'
+      assign pricing_table_key = 'zebra-roller'
+    when 'zebra-metallic', 'blind-zebra-metallic', 'metallic-zebra-blinds', 'metallic-zebra-blind'
+      assign pricing_table_key = 'zebra-metallic'
+    when 'zebra-triple-sheer', 'blind-zebra-triple-sheer', 'triple-sheer-zebra-blinds', 'tripple-sheer-zebra'
+      assign pricing_table_key = 'zebra-triple-sheer'
+    when 'eco-wood-50mm', 'blind-eco-wood-50mm', '50mm-eco-wood-venetian-blinds', 'eco-wood-venetian-blinds', 'ecowood-blind'
+      assign pricing_table_key = 'eco-wood-50mm'
+    when 'wooden-venetian-50mm', 'blind-wooden-venetian-50mm', '50mm-wood-venetian-blinds', '50mm-wooden-venetian-blinds', 'wood-blind'
+      assign pricing_table_key = 'wooden-venetian-50mm'
+    when 'aluwood-50mm', 'blind-aluwood-50mm', '50mm-aluminium-wood-grain-venetian-blinds', 'aluminium-wood-grain-venetian-blinds', 'aluminium-wood-grain-blin'
+      assign pricing_table_key = 'aluwood-50mm'
+    when 'aluminium-brushed-steel-50mm', 'blind-aluminium-brushed-steel-50mm', '50mm-aluminium-brushed-steel-venetian-blinds', 'aluminium-brush-steel-bli'
+      assign pricing_table_key = 'aluminium-brushed-steel-50mm'
+    when 'aluminium-plain-50mm', 'aluminium-venetian-50mm', '50mm-aluminium-venetian-blinds', 'blind-aluminium-venetian-50mm', 'blind-aluminium-plain-50mm'
+      assign pricing_table_key = 'aluminium-plain-50mm'
+  endcase
+
+  if pricing_table_key == ''
+    if pricing_haystack contains 'metallic'
+      assign pricing_table_key = 'zebra-metallic'
+    elsif pricing_haystack contains 'triple'
+      assign pricing_table_key = 'zebra-triple-sheer'
+    elsif pricing_haystack contains 'tripple'
+      assign pricing_table_key = 'zebra-triple-sheer'
+    elsif pricing_haystack contains 'zebra'
+      assign pricing_table_key = 'zebra-roller'
+    elsif pricing_haystack contains 'roller'
+      assign pricing_table_key = 'roller-blockout'
+    elsif pricing_haystack contains 'blockout'
+      assign pricing_table_key = 'roller-blockout'
+    elsif pricing_haystack contains 'eco'
+      assign pricing_table_key = 'eco-wood-50mm'
+    elsif pricing_haystack contains 'ecowood'
+      assign pricing_table_key = 'eco-wood-50mm'
+    elsif pricing_haystack contains 'aluwood'
+      assign pricing_table_key = 'aluwood-50mm'
+    elsif pricing_haystack contains 'wood-grain'
+      assign pricing_table_key = 'aluwood-50mm'
+    elsif pricing_haystack contains 'wood grain'
+      assign pricing_table_key = 'aluwood-50mm'
+    elsif pricing_haystack contains 'brushed'
+      assign pricing_table_key = 'aluminium-brushed-steel-50mm'
+    elsif pricing_haystack contains 'steel'
+      assign pricing_table_key = 'aluminium-brushed-steel-50mm'
+    elsif pricing_haystack contains 'aluminium'
+      assign pricing_table_key = 'aluminium-plain-50mm'
+    elsif pricing_haystack contains 'wood'
+      assign pricing_table_key = 'wooden-venetian-50mm'
+    endif
+  endif
+
+  assign starting_price_ex_vat = 0
+  assign pricing_table_label = ''
+
+  case pricing_table_key
+    when 'roller-blockout'
+      assign starting_price_ex_vat = 546
+      assign pricing_table_label = '38mm Classic Roller Printed Blockout'
+    when 'zebra-roller'
+      assign starting_price_ex_vat = 706
+      assign pricing_table_label = '38mm Cassette Zebra / Double Roller Group 1'
+    when 'zebra-metallic'
+      assign starting_price_ex_vat = 926
+      assign pricing_table_label = '38mm Cassette Zebra / Double Roller Group 3 Metallic'
+    when 'zebra-triple-sheer'
+      assign starting_price_ex_vat = 712
+      assign pricing_table_label = '38mm Cassette Triple Roller Triple Sheer'
+    when 'eco-wood-50mm'
+      assign starting_price_ex_vat = 616
+      assign pricing_table_label = 'Eco-Wood 50mm'
+    when 'wooden-venetian-50mm'
+      assign starting_price_ex_vat = 718
+      assign pricing_table_label = 'Wood 50mm'
+    when 'aluwood-50mm'
+      assign starting_price_ex_vat = 725
+      assign pricing_table_label = 'Venetian 50mm Aluwood Wood Grain'
+    when 'aluminium-brushed-steel-50mm'
+      assign starting_price_ex_vat = 670
+      assign pricing_table_label = 'Venetian 50mm Brushed'
+    when 'aluminium-plain-50mm'
+      assign starting_price_ex_vat = 601
+      assign pricing_table_label = 'Venetian 50mm Plain'
+  endcase
+
+  assign starting_price = starting_price_ex_vat | times: vat_multiplier
+  assign starting_price_amount = starting_price | ceil
+  assign starting_price_cents = starting_price_amount | times: 100
+-%}
+
+{%- if starting_price_ex_vat > 0 -%}
+  {%- case output_mode -%}
+    {%- when 'amount' -%}
+      {{- starting_price_amount -}}
+    {%- when 'cents' -%}
+      {{- starting_price_cents -}}
+    {%- when 'table_key' -%}
+      {{- pricing_table_key -}}
+    {%- when 'table_label' -%}
+      {{- pricing_table_label -}}
+    {%- else -%}
+      R{{- starting_price_amount -}}
+  {%- endcase -%}
+{%- endif -%}

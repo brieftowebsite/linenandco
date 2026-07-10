@@ -1,0 +1,258 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-key-features.liquid
+  Purpose: Product key feature scan list for PDPs.
+
+  Usage:
+    {%- render 'lc-key-features',
+      product: product,
+      pp: pp
+    -%}
+
+  Behavior:
+    - Uses the product_profile metaobject for profile details.
+    - Pulls fabric/composition from the Shopify product itself.
+    - Renders only populated product profile values.
+    - Includes a contextual comparison link.
+
+  Assets:
+    - Styles: assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign pp = pp | default: product.metafields.custom.product_profile.value
+
+  assign thread_count        = pp.thread_count
+  assign composition         = product.metafields.custom.fabric.value | default: product.metafields.custom.fabric | default: product.metafields.custom.composition.value | default: product.metafields.custom.composition
+  assign tog_rating          = pp.tog_rating
+  assign weight              = pp.weight
+  assign warmth_rating       = pp.warmth_rating
+  assign weave               = pp.weave_type
+  assign laundry_rating      = pp.laundry_rating
+  assign drying_method       = pp.drying_method
+  assign hypoallergenic      = pp.hypoallergenic
+  assign sustainability_note = pp.sustainability_note
+
+  assign feature_1 = pp.feature_1
+  assign feature_2 = pp.feature_2
+  assign feature_3 = pp.feature_3
+  assign feature_4 = pp.feature_4
+  assign feature_5 = pp.feature_5
+  assign feature_6 = pp.feature_6
+
+  assign thread_count_display = blank
+  if thread_count != blank
+    assign thread_count_display = thread_count
+    assign thread_count_downcase = thread_count_display | append: '' | downcase | strip
+    unless thread_count_downcase contains 'thread'
+      assign thread_count_display = thread_count_display | append: ' Thread Count'
+    endunless
+  endif
+
+  assign tog_display = blank
+  if tog_rating != blank
+    assign tog_display = tog_rating
+    assign tog_display_downcase = tog_display | append: '' | downcase | strip
+
+    if tog_display_downcase == 'n/a' or tog_display_downcase == 'na' or tog_display_downcase == 'none'
+      assign tog_display = blank
+    else
+      unless tog_display_downcase contains 'tog'
+        assign tog_display = tog_display | append: ' TOG'
+      endunless
+    endif
+  endif
+
+  assign warmth_display = blank
+  if warmth_rating != blank
+    assign warmth_display = warmth_rating
+    assign warmth_downcase = warmth_display | append: '' | downcase | strip
+    unless warmth_downcase contains 'warmth'
+      assign warmth_display = warmth_display | append: ' Warmth'
+    endunless
+  endif
+
+  assign weave_display = blank
+  if weave != blank
+    assign weave_display = weave
+    assign weave_downcase = weave_display | append: '' | downcase | strip
+    unless weave_downcase contains 'weave'
+      assign weave_display = weave_display | append: ' Weave'
+    endunless
+  endif
+
+  assign has_specs = false
+  if thread_count_display != blank or composition != blank or tog_display != blank or weight != blank or warmth_display != blank or weave_display != blank or laundry_rating != blank or drying_method != blank or hypoallergenic == true or hypoallergenic == 'true' or sustainability_note != blank or feature_1 != blank or feature_2 != blank or feature_3 != blank or feature_4 != blank or feature_5 != blank or feature_6 != blank
+    assign has_specs = true
+  endif
+-%}
+
+{%- if has_specs -%}
+  <div class="lc-key-features" id="lc-key-features-product">
+    <p class="lc-key-features__title">Key Features</p>
+
+    <div class="lc-key-features__grid">
+      {%- if thread_count_display != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+          <span class="lc-key-features__text">{{ thread_count_display | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if composition != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10A15.3 15.3 0 0 1 8 12a15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="lc-key-features__text">{{ composition | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if tog_display != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M14 14.76V3.5a2.5 2.5 0 0 0-5 0v11.26a4.5 4.5 0 1 0 5 0z"/>
+          </svg>
+          <span class="lc-key-features__text">{{ tog_display | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if weight != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 2a3 3 0 0 1 3 3H9a3 3 0 0 1 3-3z"/>
+            <path d="M5 5h14l1 14H4L5 5z"/>
+          </svg>
+          <span class="lc-key-features__text">{{ weight | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if warmth_display != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 2v8M12 18v4M4.93 4.93l5.66 5.66M13.41 13.41l5.66 5.66M2 12h4M18 12h4"/>
+            <circle cx="12" cy="12" r="3"/>
+          </svg>
+          <span class="lc-key-features__text">{{ warmth_display | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if weave_display != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <rect x="3" y="3" width="7" height="7"/>
+            <rect x="14" y="3" width="7" height="7"/>
+            <rect x="3" y="14" width="7" height="7"/>
+            <rect x="14" y="14" width="7" height="7"/>
+          </svg>
+          <span class="lc-key-features__text">{{ weave_display | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if laundry_rating != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span class="lc-key-features__text">{{ laundry_rating | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if drying_method != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v4l3 3"/>
+          </svg>
+          <span class="lc-key-features__text">{{ drying_method | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if hypoallergenic == true or hypoallergenic == 'true' -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span class="lc-key-features__text">Hypoallergenic</span>
+        </div>
+      {%- endif -%}
+
+      {%- if sustainability_note != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M2 12C2 6.48 6.48 2 12 2c4 0 7.4 2.37 9 5.8"/>
+            <path d="M22 12c0 5.52-4.48 10-10 10-4 0-7.4-2.37-9-5.8"/>
+            <polyline points="16 2 21 7 16 12"/>
+            <polyline points="8 22 3 17 8 12"/>
+          </svg>
+          <span class="lc-key-features__text">{{ sustainability_note | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if feature_1 != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+            <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10A15.3 15.3 0 0 1 8 12a15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="lc-key-features__text">{{ feature_1 | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if feature_2 != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          <span class="lc-key-features__text">{{ feature_2 | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if feature_3 != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+          <span class="lc-key-features__text">{{ feature_3 | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if feature_4 != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 8v4l3 3"/>
+          </svg>
+          <span class="lc-key-features__text">{{ feature_4 | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if feature_5 != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+          </svg>
+          <span class="lc-key-features__text">{{ feature_5 | escape }}</span>
+        </div>
+      {%- endif -%}
+
+      {%- if feature_6 != blank -%}
+        <div class="lc-key-features__item">
+          <svg class="lc-key-features__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+          <span class="lc-key-features__text">{{ feature_6 | escape }}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

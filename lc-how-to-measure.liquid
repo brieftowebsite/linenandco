@@ -1,0 +1,135 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-how-to-measure.liquid
+  Purpose: Renders the PDP How To Measure section.
+
+  Usage:
+    {%- render 'lc-how-to-measure',
+      htm: htm,
+      product: product
+    -%}
+
+  Behavior:
+    - Reads the assigned how_to_measure metaobject.
+    - Shows a centered label, heading, and intro.
+    - Renders measurement steps as equal image cards.
+    - Uses a horizontal scroll track on smaller screens.
+    - Shows size guide buttons when links are assigned.
+
+  Data source:
+    - product.metafields.custom.how_to_measure
+
+  Assets:
+    - Styles: assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- if htm != blank -%}
+  <section class="lc-profile-section lc-how-to-measure" id="lc-how-to-measure">
+    <div class="lc-profile-section__inner lc-htm-wrap">
+
+      <span class="lc-label">How To Measure</span>
+
+      {%- if htm.title != blank -%}
+        <h2 class="lc-profile-section__heading">{{ htm.title | escape }}</h2>
+      {%- endif -%}
+
+      {%- if htm.intro != blank -%}
+        <div class="lc-htm-intro rte">
+          {{ htm.intro | metafield_tag }}
+        </div>
+      {%- endif -%}
+
+      {%- liquid
+        assign has_steps = false
+
+        for i in (1..4)
+          assign step_title_key = 'step_' | append: i | append: '_title'
+          assign step_text_key = 'step_' | append: i | append: '_text'
+          assign step_image_key = 'step_' | append: i | append: '_image'
+
+          if htm[step_title_key] != blank or htm[step_text_key] != blank or htm[step_image_key] != blank
+            assign has_steps = true
+          endif
+        endfor
+      -%}
+
+      {%- if has_steps -%}
+        <div class="lc-htm-steps">
+          {%- for i in (1..4) -%}
+            {%- liquid
+              assign step_title_key = 'step_' | append: i | append: '_title'
+              assign step_text_key = 'step_' | append: i | append: '_text'
+              assign step_image_key = 'step_' | append: i | append: '_image'
+
+              assign step_title = htm[step_title_key]
+              assign step_text = htm[step_text_key]
+              assign step_image = htm[step_image_key]
+            -%}
+
+            {%- if step_title != blank or step_text != blank or step_image != blank -%}
+              <div class="lc-htm-step">
+                {%- if step_image != blank -%}
+                  <div class="lc-htm-step__image">
+                    <img
+                      src="{{ step_image | image_url: width: 420 }}"
+                      srcset="
+                        {{ step_image | image_url: width: 280 }} 280w,
+                        {{ step_image | image_url: width: 420 }} 420w,
+                        {{ step_image | image_url: width: 700 }} 700w
+                      "
+                      sizes="(max-width: 749px) 170px, (max-width: 1199px) 220px, 240px"
+                      alt="{{ step_title | default: 'How to measure step' | escape }}"
+                      width="600"
+                      height="600"
+                      loading="lazy"
+                    >
+                  </div>
+                {%- endif -%}
+
+                <div class="lc-htm-step__content">
+                  <span class="lc-htm-step__number">{{ i }}</span>
+
+                  {%- if step_title != blank -%}
+                    <h3 class="lc-htm-step__title">{{ step_title | escape }}</h3>
+                  {%- endif -%}
+
+                  {%- if step_text != blank -%}
+                    <div class="lc-htm-step__text rte">
+                      {{ step_text | metafield_tag }}
+                    </div>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if htm.note != blank -%}
+        <div class="lc-htm-note rte">
+          {{ htm.note | metafield_tag }}
+        </div>
+      {%- endif -%}
+
+      {%- if htm.size_guide_url != blank -%}
+        <div class="lc-htm-buttons">
+          {%- assign guide_value = htm.size_guide_url.value | default: htm.size_guide_url -%}
+
+          {%- if guide_value.size > 1 -%}
+            {%- for url in guide_value -%}
+              <a href="{{ url }}" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
+                View Size Guide
+              </a>
+            {%- endfor -%}
+          {%- else -%}
+            <a href="{{ guide_value }}" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
+              View Size Guide
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+  </section>
+{%- endif -%}

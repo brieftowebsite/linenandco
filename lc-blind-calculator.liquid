@@ -1,0 +1,207 @@
+{%- comment -%}
+  Linen and Co note 2026-06-28:
+  Blind products use this custom calculator for measurement-based pricing.
+  The Shopify variant price can stay at R0.00 so the calculator/cart script can supply the measured price.
+  Do not render the normal product price-list in this template unless the blind feed/cart strategy changes.
+{%- endcomment -%}
+
+{%- liquid
+  assign pricing_key = product.metafields.custom.blind_pricing_key.value | default: product.metafields.custom.blind_pricing_key | default: product.template_suffix | default: product.handle
+  assign blind_block_id = product.id
+  assign blind_heading = product.metafields.custom.blind_calculator_heading.value | default: product.metafields.custom.blind_calculator_heading | default: 'Enter your blind measurements'
+  assign blind_text = product.metafields.custom.blind_calculator_text.value | default: product.metafields.custom.blind_calculator_text | default: '<p>Enter the finished blind size in millimetres, then select where the blind will fit and which side the control must be on.</p>'
+  assign vat_rate = product.metafields.custom.blind_vat_rate.value | default: product.metafields.custom.blind_vat_rate | default: 15
+  assign min_width = product.metafields.custom.blind_min_width.value | default: product.metafields.custom.blind_min_width | default: 300
+  assign max_width = product.metafields.custom.blind_max_width.value | default: product.metafields.custom.blind_max_width | default: 3000
+  assign min_drop = product.metafields.custom.blind_min_drop.value | default: product.metafields.custom.blind_min_drop | default: 300
+  assign max_drop = product.metafields.custom.blind_max_drop.value | default: product.metafields.custom.blind_max_drop | default: 3000
+-%}
+
+{%- capture blind_starting_price_display -%}
+  {%- render 'lc-blind-starting-price', product: product, mode: 'display' -%}
+{%- endcapture -%}
+{%- assign blind_starting_price_display = blind_starting_price_display | strip -%}
+
+<blind-calculator
+  class="lc-blind-calculator"
+  data-product-title="{{ product.title | escape }}"
+  data-product-handle="{{ product.handle | escape }}"
+  data-product-type="{{ product.type | escape }}"
+  data-product-tags="{{ product.tags | join: ',' | escape }}"
+  data-template-suffix="{{ product.template_suffix | escape }}"
+  data-pricing-key="{{ pricing_key | escape }}"
+  data-vat-rate="{{ vat_rate | divided_by: 100.0 }}"
+  data-currency="{{ cart.currency.iso_code | default: shop.currency }}"
+>
+  <div class="lc-blind-calculator__header">
+    <h2 class="lc-blind-calculator__title">{{ blind_heading | escape }}</h2>
+    {%- if blind_text != blank -%}
+      <div class="lc-blind-calculator__text">{{ blind_text }}</div>
+    {%- endif -%}
+    <p class="lc-blind-calculator__text lc-blind-calculator__text--pricing-note" data-blind-pricing-note>
+      {%- if blind_starting_price_display != blank -%}
+        Made-to-measure pricing from <strong>{{ blind_starting_price_display }}</strong> incl. VAT. Enter your width and drop below for an instant calculated price.
+      {%- else -%}
+        Made-to-measure pricing: enter your width and drop below for an instant calculated price.
+      {%- endif -%}
+    </p>
+  </div>
+
+  <div class="lc-blind-calculator__fields">
+    <div class="lc-blind-calculator__field">
+      <label for="BlindWidth-{{ section.id }}-{{ blind_block_id }}">Width</label>
+      <div class="lc-blind-calculator__input-wrap">
+        <input
+          id="BlindWidth-{{ section.id }}-{{ blind_block_id }}"
+          class="lc-blind-calculator__input"
+          type="number"
+          inputmode="numeric"
+          min="{{ min_width }}"
+          max="{{ max_width }}"
+          step="1"
+          name="properties[Blind width mm]"
+          form="{{ product_form_id }}"
+          data-blind-width
+          placeholder="Enter width"
+        >
+        <span>mm</span>
+      </div>
+    </div>
+
+    <div class="lc-blind-calculator__field">
+      <label for="BlindDrop-{{ section.id }}-{{ blind_block_id }}">Drop / height</label>
+      <div class="lc-blind-calculator__input-wrap">
+        <input
+          id="BlindDrop-{{ section.id }}-{{ blind_block_id }}"
+          class="lc-blind-calculator__input"
+          type="number"
+          inputmode="numeric"
+          min="{{ min_drop }}"
+          max="{{ max_drop }}"
+          step="1"
+          name="properties[Blind drop mm]"
+          form="{{ product_form_id }}"
+          data-blind-drop
+          placeholder="Enter drop"
+        >
+        <span>mm</span>
+      </div>
+    </div>
+  </div>
+
+  <fieldset class="lc-blind-calculator__choice-group">
+    <legend>Where will the blind fit?</legend>
+    <label class="lc-blind-calculator__choice">
+      <input type="radio" name="properties[Blind fit type]" value="Inside window frame (reveal / recess)" form="{{ product_form_id }}" data-blind-fit checked>
+      <span>
+        <strong>Inside the window frame</strong>
+        <small>Also called reveal or recess fit.</small>
+      </span>
+    </label>
+    <label class="lc-blind-calculator__choice">
+      <input type="radio" name="properties[Blind fit type]" value="Outside window frame (face fix)" form="{{ product_form_id }}" data-blind-fit>
+      <span>
+        <strong>Outside the window frame</strong>
+        <small>Also called face fix. Best when covering the wall/frame around the opening.</small>
+      </span>
+    </label>
+  </fieldset>
+
+  <fieldset class="lc-blind-calculator__choice-group lc-blind-calculator__choice-group--compact">
+    <legend>Control side</legend>
+    <div class="lc-blind-calculator__inline-choices">
+      <label class="lc-blind-calculator__choice">
+        <input type="radio" name="properties[Blind control side]" value="Left" form="{{ product_form_id }}" data-blind-control checked>
+        <span><strong>Left</strong></span>
+      </label>
+      <label class="lc-blind-calculator__choice">
+        <input type="radio" name="properties[Blind control side]" value="Right" form="{{ product_form_id }}" data-blind-control>
+        <span><strong>Right</strong></span>
+      </label>
+    </div>
+  </fieldset>
+
+  <div class="lc-blind-calculator__summary" data-blind-result>
+    <div class="lc-blind-calculator__summary-row">
+      <span>Price incl. VAT</span>
+      <strong data-blind-price>-</strong>
+    </div>
+
+    <label class="lc-blind-calculator__quantity">
+      <span>Quantity</span>
+      <input type="number" min="1" step="1" value="1" name="quantity" form="{{ product_form_id }}" data-blind-quantity>
+    </label>
+
+    <div class="lc-blind-calculator__summary-row lc-blind-calculator__summary-row--total">
+      <span>Total amount</span>
+      <strong data-blind-total>-</strong>
+    </div>
+  </div>
+
+  <button class="button lc-blind-calculator__add" type="button" data-blind-submit-link aria-disabled="true" disabled>
+    Enter measurements to continue
+  </button>
+
+  <div class="lc-blind-calculator__disclaimer">
+    <strong>Made-to-measure blind order:</strong>
+    blinds are custom made to your measurements and cannot be returned or exchanged. Please check your colour, width, drop, fitting position and control side carefully before ordering. If supplier pricing has increased since the loaded price list, we reserve the right to adjust the price before production and will contact you before proceeding.
+  </div>
+
+  <div class="lc-blind-inline-confirm" data-blind-confirm-panel hidden>
+    <div class="lc-blind-inline-confirm__dialog" role="dialog" aria-modal="true" aria-labelledby="BlindConfirmTitle-{{ section.id }}-{{ blind_block_id }}">
+      <button class="lc-blind-inline-confirm__close" type="button" data-blind-confirm-close aria-label="Close">&times;</button>
+
+      <h3 id="BlindConfirmTitle-{{ section.id }}-{{ blind_block_id }}" class="lc-blind-inline-confirm__title">
+        <img
+          class="lc-blind-inline-confirm__swatch"
+          srcset=""
+          alt=""
+          width="56"
+          height="56"
+          data-blind-confirm-swatch
+          hidden
+        >
+        <span>Review your blind order</span>
+      </h3>
+
+      <p class="lc-blind-inline-confirm__text">
+        Please check the colour, measurements, fit, control side, quantity and calculated price before adding the blind specification to your cart.
+      </p>
+
+      <dl class="lc-blind-inline-confirm__details" data-blind-confirm-details></dl>
+
+      <div class="lc-blind-inline-confirm__actions">
+        <button class="button" type="button" data-blind-confirm-add>Add to Cart</button>
+        <button class="button button--outline" type="button" data-blind-confirm-edit>Back to edit</button>
+      </div>
+
+      <p class="lc-blind-inline-confirm__message" data-blind-confirm-message role="status"></p>
+    </div>
+  </div>
+
+  <input type="hidden" name="properties[Blind colour]" form="{{ product_form_id }}" data-blind-colour-property>
+  <input type="hidden" name="properties[_lc_blind_unit_price_incl_vat]" form="{{ product_form_id }}" data-blind-price-property>
+  <input type="hidden" name="properties[_lc_blind_total_incl_vat]" form="{{ product_form_id }}" data-blind-total-property>
+  <input type="hidden" name="properties[_lc_blind_price_list_price_ex_vat]" form="{{ product_form_id }}" data-blind-price-ex-vat-property>
+  <input type="hidden" name="properties[_lc_blind_pricing_table]" form="{{ product_form_id }}" data-blind-table-property>
+
+  <script type="application/json" data-blind-variant-meta>
+    {
+      "variants": {
+        {%- for variant in product.variants -%}
+          "{{ variant.id }}": {
+            "options": [
+              {%- for option_value in variant.options -%}
+                {
+                  "name": {{ product.options[forloop.index0] | json }},
+                  "value": {{ option_value | json }}
+                }{% unless forloop.last %},{% endunless %}
+              {%- endfor -%}
+            ]
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      }
+    }
+  </script>
+
+</blind-calculator>

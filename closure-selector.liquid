@@ -1,0 +1,211 @@
+{% comment %}
+  Snippet: closure-selector.liquid
+  Usage: {% render 'closure-selector', product: product, product_form_id: product_form_id %}
+  Place this block AFTER variant pickers and BEFORE quantity/ATC.
+  Only renders if the product has a closure_types metafield.
+  Shows always if no Style option exists. Shows/hides based on Style if Style option exists.
+{% endcomment %}
+
+{% assign closure = product.metafields.custom.closure_types.value %}
+
+{% if closure != blank %}
+  {% assign closure_img_1_label = closure.closure_label_1.value %}
+  {% assign closure_img_2_label = closure.closure_label_2.value %}
+
+  {% if closure_img_1_label != blank or closure_img_2_label != blank %}
+
+    <div class="closure-selector" id="closure-selector-{{ product.id }}" style="display:none;">
+      <p class="closure-selector__label">
+        <strong>Closure Type:</strong>
+        <span class="closure-selector__selected-value">— Please select</span>
+      </p>
+      <div class="closure-selector__buttons">
+        {% if closure_img_1_label != blank %}
+          <label class="closure-selector__option">
+            <input type="radio"
+                   name="properties[Closure Type]"
+                   value="{{ closure_img_1_label }}"
+                   form="{{ product_form_id }}"
+                   data-closure-option>
+            <span>{{ closure_img_1_label }}</span>
+          </label>
+        {% endif %}
+        {% if closure_img_2_label != blank %}
+          <label class="closure-selector__option">
+            <input type="radio"
+                   name="properties[Closure Type]"
+                   value="{{ closure_img_2_label }}"
+                   form="{{ product_form_id }}"
+                   data-closure-option>
+            <span>{{ closure_img_2_label }}</span>
+          </label>
+        {% endif %}
+      </div>
+      <p class="closure-selector__error" id="closure-error-{{ product.id }}" aria-live="polite">
+        Please select a closure type before adding to cart.
+      </p>
+    </div>
+
+    <style>
+      .closure-selector {
+        margin: 1rem 0;
+      }
+      .closure-selector__label {
+        font-size: 0.82rem;
+        margin: 0 0 0.5rem;
+        color: #1a1a1a;
+      }
+      .closure-selector__selected-value {
+        font-weight: 400;
+        color: #888;
+      }
+      .closure-selector__buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .closure-selector__option input[type="radio"] {
+        display: none;
+      }
+      .closure-selector__option span {
+        display: inline-block;
+        padding: 8px 18px;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        font-size: 0.78rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: border-color 0.2s, background 0.2s;
+        color: #1a1a1a;
+      }
+      .closure-selector__option input[type="radio"]:checked + span {
+        border-color: #1a1a1a;
+        background: #1a1a1a;
+        color: #fff;
+      }
+      .closure-selector__error {
+        display: none;
+        font-size: 0.78rem;
+        color: #c0392b;
+        margin: 0.4rem 0 0;
+      }
+      .closure-selector__error.is-visible {
+        display: block;
+      }
+    </style>
+
+    <script>
+      (function() {
+        var productId = '{{ product.id }}';
+        var formId = '{{ product_form_id }}';
+        var form = document.getElementById(formId);
+        var errorEl = document.getElementById('closure-error-' + productId);
+        var selectorEl = document.getElementById('closure-selector-' + productId);
+        var selectedValueEl = selectorEl ? selectorEl.querySelector('.closure-selector__selected-value') : null;
+        var options = selectorEl ? selectorEl.querySelectorAll('[data-closure-option]') : [];
+
+        var closureRequiredStyles = [
+          'Plain (No Satin Stitch)',
+          'Plain Two Row Satin Stitch',
+          'Oxford (No Satin Stitch)',
+          'Oxford One Row Satin Stitch',
+          'Oxford Two Row Satin Stitch'
+        ];
+
+        var productOptions = {{ product.options | json }};
+        var hasStyleOption = productOptions.findIndex(function(o){ return o.toLowerCase() === 'style'; }) > -1;
+
+        function getSelectedStyle() {
+          var styleIndex = productOptions.findIndex(function(o){ return o.toLowerCase() === 'style'; });
+          if (styleIndex < 0) return null;
+          var pos = styleIndex + 1;
+          var checked = document.querySelector('input[type=radio][data-option-position="' + pos + '"]:checked');
+          if (checked) {
+            var lbl = checked.closest('label');
+            return lbl ? (lbl.getAttribute('title') || lbl.textContent.trim()) : checked.value;
+          }
+          var variants = {{ product.variants | json }};
+          if (variants && variants[0] && variants[0].options) return variants[0].options[styleIndex];
+          return null;
+        }
+
+        function styleRequiresClosure(style) {
+          if (!style) return false;
+          return closureRequiredStyles.indexOf(style.trim()) > -1;
+        }
+
+        function updateClosureVisibility() {
+          if (!hasStyleOption) {
+            if (selectorEl) selectorEl.style.display = 'block';
+            return;
+          }
+          var style = getSelectedStyle();
+          var required = styleRequiresClosure(style);
+          if (selectorEl) selectorEl.style.display = required ? 'block' : 'none';
+          if (!required) {
+            options.forEach(function(input) { input.checked = false; });
+            if (selectedValueEl) selectedValueEl.textContent = '— Please select';
+            if (errorEl) errorEl.classList.remove('is-visible');
+          }
+        }
+
+        options.forEach(function(input) {
+          input.addEventListener('change', function() {
+            if (selectedValueEl) selectedValueEl.textContent = this.value;
+            if (errorEl) errorEl.classList.remove('is-visible');
+          });
+        });
+
+        function isClosureSelected() {
+          return selectorEl ? !!selectorEl.querySelector('[data-closure-option]:checked') : true;
+        }
+
+        function isClosureRequired() {
+          return selectorEl && selectorEl.style.display !== 'none';
+        }
+
+        function showError() {
+          if (errorEl) errorEl.classList.add('is-visible');
+          if (selectorEl) selectorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        if (form) {
+          form.addEventListener('submit', function(e) {
+            if (isClosureRequired() && !isClosureSelected()) {
+              e.preventDefault();
+              e.stopImmediatePropagation();
+              showError();
+            }
+          }, true);
+        }
+
+        document.addEventListener('click', function(e) {
+          var buyNowBtn = e.target.closest('[data-shopify="payment-button"] button, .shopify-payment-button__button');
+          if (buyNowBtn && isClosureRequired() && !isClosureSelected()) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            showError();
+          }
+        }, true);
+
+        document.addEventListener('change', function(e) {
+          if (e.target.matches('input[type=radio][data-option-position]')) {
+            setTimeout(updateClosureVisibility, 50);
+          }
+        });
+
+        window.addEventListener('popstate', function() {
+          setTimeout(updateClosureVisibility, 100);
+        });
+
+        updateClosureVisibility();
+        setTimeout(updateClosureVisibility, 300);
+
+      })();
+    </script>
+  {% endif %}
+{% endif %}
+
+
+
+

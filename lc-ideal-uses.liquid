@@ -1,0 +1,73 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-ideal-uses.liquid
+  Purpose: Combined Action Row: Renders the editorial Ideal 
+           Uses section with adaptive container column splits.
+  Requires:
+    - product {Object} Shopify product object
+    - pp      {Object} product_profile metaobject value (optional)
+  Assets:   Driven completely by assets/lc-main-product.css
+            Interactions handled by assets/lc-main-product.js
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign profile_image_2 = pp.image_2
+  assign calculated_name = pp.product_name | default: pp.name | default: product.title
+  assign ideal_uses_content = pp.ideal_uses
+-%}
+
+{%- if ideal_uses_content != blank -%}
+<section class="lc-profile-section lc-ideal-uses" id="lc-ideal-uses">
+  {%- if profile_image_2 != blank -%}
+    {%- comment -%} Split Layout: Image on Left, Text on Right {%- endcomment -%}
+    <div class="lc-profile-section__split">
+      <div class="lc-profile-section__image">
+        {%- comment -%} Serves lightweight browser-optimized sizes using srcset {%- endcomment -%}
+        <img
+          src="{{ profile_image_2 | image_url: width: 700 }}"
+          srcset="
+            {{ profile_image_2 | image_url: width: 500 }} 500w,
+            {{ profile_image_2 | image_url: width: 700 }} 700w,
+            {{ profile_image_2 | image_url: width: 1400 }} 1400w
+          "
+          sizes="(max-width: 749px) 100vw, 50vw"
+          alt="Ideal uses for {{ calculated_name | escape }}"
+          width="1600"
+          height="896"
+          loading="lazy">
+      </div>
+      
+      <div class="lc-profile-section__text">
+        <span class="lc-label">Ideal Uses</span>
+        <h2 class="lc-profile-section__heading">Perfect For</h2>
+        <div class="lc-bullets rte">
+          {{ ideal_uses_content | metafield_tag }}
+        </div>
+        <a href="/blogs/industries-we-serve" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
+          Explore Industries We Serve
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+  {%- else -%}
+    {%- comment -%} Full-Width Fallback Container Layout if Merchant Omits an Image {%- endcomment -%}
+    <div class="lc-profile-section__inner">
+      <span class="lc-label">Ideal Uses</span>
+      <h2 class="lc-profile-section__heading">Perfect For</h2>
+      <div class="lc-bullets rte">
+        {{ ideal_uses_content | metafield_tag }}
+      </div>
+      <a href="/blogs/industries-we-serve" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
+        Explore Industries We Serve
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+    {%- endif -%}
+</section>
+{%- endif -%}

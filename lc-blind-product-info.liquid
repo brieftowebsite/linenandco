@@ -1,0 +1,53 @@
+{% doc %}
+@param {product} product - Product object
+@param {string} product_form_id - Product form ID
+@param {boolean} [center_basic_info] - Center title on mobile
+@param {string} [profile_heading] - Product-profile heading override
+@param {string} [section_id] - Parent section ID for rerender hooks
+{% enddoc %}
+
+{%- assign form_id = product_form_id -%}
+{%- assign product_info_heading = profile_heading | default: product.metafields.custom.product_h1_heading.value | default: product.metafields.custom.product_h1_heading | default: product.title -%}
+{%- assign rerender_section_id = section_id | default: product.id -%}
+
+<product-rerender
+  id="lc-blind-product-info-rerender-{{ rerender_section_id }}"
+  observe-form="{{ form_id }}"
+  allow-partial-rerender
+>
+  <div class="product-info {% if center_basic_info %}product-info--center{% endif %}">
+    <div class="product-info__block-list">
+      <h1 class="product-title">{{ product_info_heading | escape }}</h1>
+
+      {%- render 'lc-subtitle', product: product -%}
+      {%- render 'lc-separator' -%}
+
+      {%- form 'product', product, id: form_id, novalidate: true -%}
+        <input
+          type="hidden"
+          name="id"
+          value="{{ product.selected_or_first_available_variant.id }}"
+        >
+
+        {%- render 'variant-picker',
+          product: product,
+          form_id: form_id,
+          context: 'main_product',
+          selector_style: 'underline',
+          swatch_selector_style: 'swatch_underline',
+          hide_sold_out_variants: false
+        -%}
+
+        {%- render 'lc-separator' -%}
+
+        {%- render 'lc-blind-calculator',
+          product: product,
+          product_form_id: form_id
+        -%}
+      {%- endform -%}
+
+      {%- render 'lc-separator' -%}
+      {%- render 'lc-blind-trust-strip', product: product -%}
+    </div>
+  </div>
+</product-rerender>

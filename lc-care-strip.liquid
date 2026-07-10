@@ -1,0 +1,59 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-care-strip.liquid
+  Purpose: Editorial care notes block with adaptive image serving.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign profile_image_3 = pp.image_3
+  assign calculated_name = pp.product_name | default: pp.name | default: product.title
+  assign profile_care_url = pp.care_guide_url
+  assign care_content = pp.care_summary | default: pp.intro_text
+  assign is_ready_made_curtain = false
+
+  if product.template_suffix == 'lc-ready-made-curtain' or product.tags contains 'Ready-Made Curtains'
+    assign is_ready_made_curtain = true
+  endif
+-%}
+
+{%- if care_content != blank -%}
+<section class="lc-profile-section lc-care-strip" id="lc-care">
+  <div class="lc-profile-section__split">
+    <div class="lc-profile-section__text">
+      <span class="lc-label">{%- if is_ready_made_curtain -%}Care Notes{%- else -%}Care Guide{%- endif -%}</span>
+      <h2 class="lc-profile-section__heading">
+        {%- if is_ready_made_curtain -%}Care Notes For Your {{ calculated_name | escape }}{%- else -%}Caring For Your {{ calculated_name | escape }}{%- endif -%}
+      </h2>
+      <div class="rte lc-body-text lc-bullets">
+        {{ care_content | metafield_tag }}
+      </div>
+      {%- if profile_care_url != blank and is_ready_made_curtain == false -%}
+        <a href="{{ profile_care_url }}" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
+          View Full Care Guide
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- if profile_image_3 != blank -%}
+    <div class="lc-profile-section__image">
+      <img
+        src="{{ profile_image_3 | image_url: width: 700 }}"
+        srcset="
+          {{ profile_image_3 | image_url: width: 500 }} 500w,
+          {{ profile_image_3 | image_url: width: 700 }} 700w,
+          {{ profile_image_3 | image_url: width: 1400 }} 1400w
+        "
+        sizes="(max-width: 749px) 100vw, 50vw"
+        alt="Care notes imagery for {{ calculated_name | escape }}"
+        width="1600"
+        height="896"
+        loading="lazy">
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+{%- endif -%}

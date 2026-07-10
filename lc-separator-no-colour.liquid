@@ -1,0 +1,18 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-separator-no-colour.liquid
+  Purpose: Combined Action Row: Renders a transparent/invisible divider 
+           or spacing gap between sections on the PDP. No visible border 
+           or background colour is applied.
+  Variables:
+    - style {String}  'line' (default) renders a colourless HR spacer
+                      'gap'            renders a blank spacer div
+  Assets:   Driven completely by assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- if style == 'gap' -%}
+  <div class="lc-separator lc-separator--gap lc-separator--no-colour" aria-hidden="true"></div>
+{%- else -%}
+  <hr class="lc-separator lc-separator--no-colour" aria-hidden="true">
+{%- endif -%}

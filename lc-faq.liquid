@@ -1,0 +1,45 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-faq.liquid
+  Purpose: Combined Action Row: Renders product FAQ accordions
+           using highly performant native semantic markup.
+  Requires:
+    - product {Object} Shopify product object
+  Assets:   Driven completely by assets/lc-main-product.css
+            Interactions handled natively by browser engines.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign faq_items = product.metafields.custom.faq.value
+-%}
+
+{%- if faq_items != blank -%}
+  <div class="lc-product-faq" id="lc-faq">
+    <p class="lc-product-faq__label">Frequently Asked Questions</p>
+
+    <div class="lc-product-faq__list">
+      {%- for item in faq_items -%}
+        {%- assign item_question = item.question | strip -%}
+        {%- assign item_answer = item.answer.html | default: item.answer -%}
+
+        {%- if item_question != blank and item_answer != blank -%}
+          <details class="lc-product-faq__item">
+            <summary class="lc-product-faq__question">
+              <span>{{ item_question | escape }}</span>
+            </summary>
+            <div class="lc-product-faq__answer rte">
+              {%- comment -%} Handles both rich text JSON blocks or multi-line plain text strings {%- endcomment -%}
+              {%- if item.answer.html != blank -%}
+                {{ item_answer }}
+              {%- else -%}
+                {{ item_answer | newline_to_br }}
+              {%- endif -%}
+            </div>
+          </details>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}
+

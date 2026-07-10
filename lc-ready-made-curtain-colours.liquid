@@ -1,0 +1,209 @@
+{%- comment -%}
+  Ready-made curtain fabric swatches. Snippet only. No theme blocks.
+  Primary source: product.metafields.shopify['color-pattern'] taxonomy metaobjects.
+  Fallback source: Colour/Color option values matched against product media.
+{%- endcomment -%}
+
+{%- liquid
+  assign colour_option = blank
+  assign colour_option_index = 0
+  assign has_colour_option = false
+
+  for option in product.options_with_values
+    assign option_name_downcase = option.name | downcase
+    if option_name_downcase == 'colour' or option_name_downcase == 'color'
+      assign colour_option = option
+      assign colour_option_index = forloop.index0
+      assign has_colour_option = true
+      break
+    endif
+  endfor
+
+  assign swatch_metaobjects = product.metafields.shopify['color-pattern'].value
+  assign has_swatch_metaobjects = false
+  if swatch_metaobjects != blank
+    assign has_swatch_metaobjects = true
+  endif
+
+  assign calculated_name = pp.product_name | default: pp.name | default: product.title
+  assign range_name = calculated_name
+  assign range_name = range_name | remove: 'Blockout Ready-Made Eyelet Curtain'
+  assign range_name = range_name | remove: 'Blockout Ready-Made Taped Curtain'
+  assign range_name = range_name | remove: 'Sheer Ready-Made Eyelet Curtain'
+  assign range_name = range_name | remove: 'Sheer Ready-Made Taped Curtain'
+  assign range_name = range_name | strip
+  if range_name == blank
+    assign range_name = product.title
+  endif
+-%}
+
+{%- if has_swatch_metaobjects or has_colour_option and colour_option.values.size > 0 -%}
+  <section class="lc-profile-section lc-curtain-colours" id="lc-curtain-colours" data-lc-curtain-colours>
+    <div class="lc-profile-section__inner">
+      <span class="lc-label">Fabric Swatches</span>
+      <h2 class="lc-profile-section__heading">{{ range_name | escape }} Fabric Swatches</h2>
+      <p class="lc-curtain-colours__intro">View the available sheer fabric swatches before choosing your ready-made curtain drop.</p>
+
+      <div class="lc-curtain-colours__grid">
+        {%- if has_swatch_metaobjects -%}
+          {%- for colour_meta in swatch_metaobjects -%}
+            {%- liquid
+              assign colour_value = colour_meta.label.value | default: colour_meta.name.value | default: colour_meta.title.value | default: 'Colour'
+              assign colour_downcase = colour_value | downcase
+              assign colour_hex = colour_meta.color.value
+              assign swatch_image = colour_meta.image.value
+              assign fallback_media = blank
+              assign variant_id = blank
+
+              if has_colour_option
+                for variant in product.variants
+                  assign variant_colour = variant.options[colour_option_index]
+                  if variant_colour == colour_value
+                    assign variant_id = variant.id
+                    break
+                  endif
+                endfor
+              endif
+
+              if swatch_image == blank
+                for media in product.media
+                  assign media_haystack = media.alt | append: ' ' | append: media.preview_image.src | downcase
+                  if media_haystack contains colour_downcase
+                    assign fallback_media = media
+                    break
+                  endif
+                endfor
+              endif
+            -%}
+
+            <article class="lc-curtain-colours__card">
+              <a class="lc-curtain-colours__image-wrap" href="{{ product.url }}{% if variant_id != blank %}?variant={{ variant_id }}{% endif %}#lc-main-product" aria-label="Select {{ colour_value | escape }}">
+                {%- if swatch_image != blank -%}
+                  <img
+                    src="{{ swatch_image | image_url: width: 520 }}"
+                    srcset="{{ swatch_image | image_url: width: 320 }} 320w, {{ swatch_image | image_url: width: 520 }} 520w, {{ swatch_image | image_url: width: 760 }} 760w"
+                    sizes="(max-width: 749px) 68vw, 240px"
+                    alt="{{ calculated_name | escape }} in {{ colour_value | escape }} fabric swatch - Linen and Co"
+                    width="760"
+                    height="760"
+                    loading="lazy">
+                {%- elsif fallback_media != blank and fallback_media.preview_image != blank -%}
+                  <img
+                    src="{{ fallback_media.preview_image | image_url: width: 520 }}"
+                    srcset="{{ fallback_media.preview_image | image_url: width: 320 }} 320w, {{ fallback_media.preview_image | image_url: width: 520 }} 520w, {{ fallback_media.preview_image | image_url: width: 760 }} 760w"
+                    sizes="(max-width: 749px) 68vw, 240px"
+                    alt="{{ calculated_name | escape }} in {{ colour_value | escape }} fabric swatch - Linen and Co"
+                    width="760"
+                    height="760"
+                    loading="lazy">
+                {%- elsif colour_hex != blank -%}
+                  <span class="lc-curtain-colours__fallback lc-curtain-colours__fallback--colour" style="background-color: {{ colour_hex }};"><span>{{ colour_value | escape }}</span></span>
+                {%- else -%}
+                  <span class="lc-curtain-colours__fallback">{{ colour_value | slice: 0, 1 | upcase }}</span>
+                {%- endif -%}
+              </a>
+
+              <div class="lc-curtain-colours__body">
+                <h3 class="lc-curtain-colours__name">{{ colour_value | escape }}</h3>
+                <a class="lc-curtain-colours__select" href="{{ product.url }}{% if variant_id != blank %}?variant={{ variant_id }}{% endif %}#lc-main-product">Select {{ colour_value | escape }}</a>
+              </div>
+            </article>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for colour_value in colour_option.values -%}
+            {%- liquid
+              assign colour_downcase = colour_value | downcase
+              assign swatch_media = blank
+              assign fallback_media = blank
+              assign variant_id = blank
+
+              for variant in product.variants
+                assign variant_colour = variant.options[colour_option_index]
+                if variant_colour == colour_value
+                  assign variant_id = variant.id
+                  break
+                endif
+              endfor
+
+              for media in product.media
+                assign media_haystack = media.alt | append: ' ' | append: media.preview_image.src | downcase
+                if media_haystack contains colour_downcase
+                  if fallback_media == blank
+                    assign fallback_media = media
+                  endif
+                  if media_haystack contains 'swatch' or media_haystack contains 'fabric'
+                    assign swatch_media = media
+                    break
+                  endif
+                endif
+              endfor
+
+              if swatch_media == blank
+                assign swatch_media = fallback_media
+              endif
+            -%}
+
+            <article class="lc-curtain-colours__card">
+              <a class="lc-curtain-colours__image-wrap" href="{{ product.url }}{% if variant_id != blank %}?variant={{ variant_id }}{% endif %}#lc-main-product" aria-label="Select {{ colour_value | escape }}">
+                {%- if swatch_media != blank and swatch_media.preview_image != blank -%}
+                  <img
+                    src="{{ swatch_media.preview_image | image_url: width: 520 }}"
+                    srcset="{{ swatch_media.preview_image | image_url: width: 320 }} 320w, {{ swatch_media.preview_image | image_url: width: 520 }} 520w, {{ swatch_media.preview_image | image_url: width: 760 }} 760w"
+                    sizes="(max-width: 749px) 68vw, 240px"
+                    alt="{{ calculated_name | escape }} in {{ colour_value | escape }} fabric swatch - Linen and Co"
+                    width="760"
+                    height="760"
+                    loading="lazy">
+                {%- else -%}
+                  <span class="lc-curtain-colours__fallback">{{ colour_value | slice: 0, 1 | upcase }}</span>
+                {%- endif -%}
+              </a>
+
+              <div class="lc-curtain-colours__body">
+                <h3 class="lc-curtain-colours__name">{{ colour_value | escape }}</h3>
+                <a class="lc-curtain-colours__select" href="{{ product.url }}{% if variant_id != blank %}?variant={{ variant_id }}{% endif %}#lc-main-product">Select {{ colour_value | escape }}</a>
+              </div>
+            </article>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .lc-curtain-colours .lc-profile-section__inner { max-width: 1200px; text-align: center; }
+    .lc-curtain-colours .lc-label { margin-left: auto; margin-right: auto; }
+    .lc-curtain-colours__intro { max-width: 720px; margin: 0 auto 20px; color: rgba(0,0,0,.66); font-size: .86rem; line-height: 1.5; }
+    .lc-curtain-colours__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 240px)); justify-content: center; gap: 18px; width: 100%; }
+    .lc-curtain-colours__card { display: grid; grid-template-rows: auto auto; min-width: 0; border: 1px solid rgba(0,0,0,.09); background: #f7f7f7; }
+    .lc-curtain-colours__image-wrap { display: block; width: 100%; aspect-ratio: 1 / 1; overflow: hidden; background: #eeeeee; text-decoration: none; }
+    .lc-curtain-colours__image-wrap img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+    .lc-curtain-colours__image-wrap:hover img { transform: scale(1.035); }
+    .lc-curtain-colours__fallback { display: grid; place-items: center; width: 100%; height: 100%; color: rgba(0,0,0,.58); font-size: 2rem; font-weight: 700; }
+    .lc-curtain-colours__fallback--colour span { padding: 6px 10px; background: rgba(255,255,255,.72); color: rgba(0,0,0,.72); font-size: .7rem; letter-spacing: .08em; text-transform: uppercase; }
+    .lc-curtain-colours__body { display: grid; gap: 8px; padding: 14px 12px 12px; background: #ffffff; }
+    .lc-curtain-colours__name { margin: 0; color: rgba(0,0,0,.88); font-size: .94rem; font-weight: 700; line-height: 1.2; }
+    .lc-curtain-colours__select { display: inline-flex; align-items: center; justify-content: center; min-height: 32px; padding: 0 10px; border: 1px solid #000; background: transparent; color: rgba(0,0,0,.82); font-size: .58rem; font-weight: 600; letter-spacing: .09em; line-height: 1; text-transform: uppercase; text-decoration: none; }
+    .lc-curtain-colours__select:hover { background: #000; color: #fff; }
+    #lc-curtain-colours { scroll-margin-top: calc(var(--sticky-area-height, 0px) + 72px); }
+    @media screen and (max-width: 749px) {
+      .lc-curtain-colours__intro { margin-bottom: 14px; font-size: .78rem; }
+      .lc-curtain-colours__grid { display: flex; justify-content: flex-start; gap: 12px; overflow-x: auto; overflow-y: hidden; padding: 0 16px 12px; margin-left: calc(var(--container-gutter, 16px) * -1); margin-right: calc(var(--container-gutter, 16px) * -1); -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+      .lc-curtain-colours__grid::-webkit-scrollbar { display: none; }
+      .lc-curtain-colours__card { flex: 0 0 178px; }
+      .lc-curtain-colours__name { font-size: .82rem; }
+      .lc-curtain-colours__select { min-height: 30px; font-size: .52rem; }
+    }
+  </style>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var colourSection = document.getElementById('lc-curtain-colours');
+      var specs = document.getElementById('lc-product-specs');
+      var whyChoose = document.getElementById('lc-why-choose');
+      if (colourSection && specs && whyChoose && colourSection.parentElement !== specs) {
+        specs.insertBefore(colourSection, whyChoose);
+      }
+    });
+  </script>
+{%- endif -%}

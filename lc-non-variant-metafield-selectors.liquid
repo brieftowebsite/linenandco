@@ -1,0 +1,210 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-non-variant-metafield-selectors.liquid
+  Purpose: Metafield-driven selectors for options listed in
+           custom.non_variant_options after they are no longer
+           real Shopify variant options.
+
+  Notes:
+    - Colour/Color is intentionally skipped here because the
+      dedicated colour snippet renders swatches and cart images.
+    - Values are submitted as line item properties.
+    - The controls do not carry data-option-position, so they do
+      not drive Shopify variant/price logic.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign non_variant_options = product.metafields.custom.non_variant_options.value
+-%}
+
+{%- if non_variant_options != blank -%}
+  {%- for non_variant_option in non_variant_options -%}
+    {%- liquid
+      assign option_label = non_variant_option | strip
+      assign option_name_lower = option_label | downcase | strip
+      assign option_key = option_label | handle
+      assign option_key_underscore = option_key | replace: '-', '_'
+      assign is_colour_option = false
+      assign has_variant_option = false
+
+      if option_name_lower == 'colour' or option_name_lower == 'color' or option_name_lower == 'colours' or option_name_lower == 'colors'
+        assign is_colour_option = true
+      endif
+
+      if option_name_lower == 'sizes' or option_name_lower == 'bedding size' or option_name_lower == 'bedding sizes'
+        assign option_label = 'Size'
+        assign option_name_lower = 'size'
+        assign option_key = 'size'
+        assign option_key_underscore = 'size'
+      endif
+
+      for product_option in product.options_with_values
+        assign product_option_name = product_option.name | downcase | strip
+
+        if product_option_name == option_name_lower
+          assign has_variant_option = true
+        endif
+
+        if option_name_lower == 'size'
+          if product_option_name == 'sizes' or product_option_name == 'bedding size' or product_option_name == 'bedding sizes'
+            assign has_variant_option = true
+          endif
+        endif
+      endfor
+
+      assign option_values = blank
+
+      if option_name_lower == 'size'
+        assign option_values = product.metafields.shopify['bedding-size'].value
+
+        if option_values == blank
+          assign option_values = product.metafields.shopify['bed-size'].value
+        endif
+
+        if option_values == blank
+          assign option_values = product.metafields.shopify['size'].value
+        endif
+
+        if option_values == blank
+          assign option_values = product.metafields.shopify['sizes'].value
+        endif
+
+        if option_values == blank
+          assign option_values = product.metafields.custom.bedding_size.value
+        endif
+
+        if option_values == blank
+          assign option_values = product.metafields.custom.bedding_sizes.value
+        endif
+
+        if option_values == blank
+          assign option_values = product.metafields.custom.bed_size.value
+        endif
+
+        if option_values == blank
+          assign option_values = product.metafields.custom.bed_sizes.value
+        endif
+
+        if option_values == blank
+          assign option_values = product.metafields.custom.size.value
+        endif
+
+        if option_values == blank
+          assign option_values = product.metafields.custom.sizes.value
+        endif
+      else
+        assign option_values = product.metafields.shopify[option_key].value
+
+        if option_values == blank
+          assign option_values = product.metafields.custom[option_key].value
+        endif
+
+        if option_values == blank
+          assign option_values = product.metafields.custom[option_key_underscore].value
+        endif
+      endif
+
+      assign selected_value_label = blank
+      assign option_values_count = 0
+
+      if option_values != blank
+        for option_entry in option_values
+          assign option_values_count = option_values_count | plus: 1
+          assign option_entry_handle = option_entry.system.handle
+          assign option_value_label = option_entry.label.value | default: option_entry['label'].value | default: option_entry.name.value | default: option_entry['name'].value | default: option_entry.title.value | default: option_entry['title'].value | default: option_entry.value
+
+          if option_value_label == blank and option_entry_handle != blank
+            assign option_value_label = option_entry_handle | replace: '-', ' ' | capitalize
+          endif
+
+          if option_value_label == blank
+            assign option_value_label = option_entry
+          endif
+
+          if selected_value_label == blank and option_value_label != blank
+            assign selected_value_label = option_value_label
+          endif
+        endfor
+      endif
+
+      assign render_single_size_inline = false
+      assign property_name = 'properties[' | append: option_label | append: ']'
+
+      if option_name_lower == 'size' and option_values_count == 1
+        assign render_single_size_inline = true
+      endif
+    -%}
+
+    {%- if option_values != blank and has_variant_option == false and is_colour_option == false -%}
+      {%- if render_single_size_inline and selected_value_label != blank -%}
+        <input type="hidden" form="{{ product_form_id }}" name="{{ property_name }}" value="{{ selected_value_label | escape }}">
+      {%- else -%}
+        <fieldset class="lc-non-variant-metafield-selector {% if render_single_size_inline %}lc-non-variant-metafield-selector--single-inline{% endif %} variant-picker__option variant-picker__option--non-variant v-stack gap-2" data-non-variant-option="{{ option_label | escape }}">
+        <div class="variant-picker__option-info h-stack justify-between gap-2">
+          <div class="h-stack gap-1">
+            <legend style="font-weight: bold; font-size: 14px;">{{ option_label }}:</legend>
+
+            {%- if render_single_size_inline -%}
+              {%- for option_entry in option_values -%}
+                {%- liquid
+                  assign option_entry_handle = option_entry.system.handle
+                  assign option_value_label = option_entry.label.value | default: option_entry['label'].value | default: option_entry.name.value | default: option_entry['name'].value | default: option_entry.title.value | default: option_entry['title'].value | default: option_entry.value
+
+                  if option_value_label == blank and option_entry_handle != blank
+                    assign option_value_label = option_entry_handle | replace: '-', ' ' | capitalize
+                  endif
+
+                  if option_value_label == blank
+                    assign option_value_label = option_entry
+                  endif
+
+                  assign input_id_prefix = 'metafield-nonvariant-' | append: option_key | append: '-single'
+                -%}
+
+                {%- if option_value_label != blank -%}
+                  {%- liquid
+                    render 'option-value', type: 'underline', form: product_form_id, param_name: property_name, label: option_value_label, selected: true, submitted_value: option_value_label, id_prefix: input_id_prefix
+                  -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        </div>
+
+        {%- unless render_single_size_inline -%}
+          <div class="lc-non-variant-metafield-selector__values variant-picker__option-values h-stack gap-4 wrap">
+            {%- for option_entry in option_values -%}
+              {%- liquid
+                assign option_entry_handle = option_entry.system.handle
+                assign option_value_label = option_entry.label.value | default: option_entry['label'].value | default: option_entry.name.value | default: option_entry['name'].value | default: option_entry.title.value | default: option_entry['title'].value | default: option_entry.value
+
+                if option_value_label == blank and option_entry_handle != blank
+                  assign option_value_label = option_entry_handle | replace: '-', ' ' | capitalize
+                endif
+
+                if option_value_label == blank
+                  assign option_value_label = option_entry
+                endif
+
+                assign input_id_prefix = 'metafield-nonvariant-' | append: option_key | append: '-' | append: forloop.index
+                assign is_selected = false
+
+                if option_value_label == selected_value_label
+                  assign is_selected = true
+                endif
+              -%}
+
+              {%- if option_value_label != blank -%}
+                {%- liquid
+                  render 'option-value', type: 'underline', form: product_form_id, param_name: property_name, label: option_value_label, selected: is_selected, submitted_value: option_value_label, id_prefix: input_id_prefix
+                -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endunless -%}
+        </fieldset>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}

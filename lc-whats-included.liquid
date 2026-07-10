@@ -1,0 +1,76 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-whats-included.liquid
+  Purpose: Displays what is included with a product.
+
+  Usage:
+    {%- render 'lc-whats-included',
+      product: product
+    -%}
+
+  Behavior:
+    - Reads the custom whats_included product metafield.
+    - Uses radio inputs to switch between included set details.
+    - Keeps heading, size choices, and selected set text inside
+      one black information strip.
+    - Uses a horizontal scroll track with fade on mobile.
+    - Does not render when no entries are assigned.
+
+  Data source:
+    - product.metafields.custom.whats_included
+
+  Metaobject fields:
+    - size
+    - set_is
+    - sort_order
+
+  Assets:
+    - Styles: assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign included_items = product.metafields.custom.whats_included.value
+-%}
+
+{%- if included_items != blank -%}
+  <section class="lc-whats-included" id="lc-whats-included">
+    <div class="lc-whats-included__strip">
+      <div class="lc-whats-included__inner">
+        <h2 class="lc-whats-included__heading">What's Included</h2>
+
+        <div class="lc-whats-included__items">
+          {%- for item in included_items -%}
+            {%- liquid
+              assign item_size = item.size.value | default: item['size'].value | default: item.size
+              assign item_set = item.set_is.value | default: item['set_is'].value | default: item.set_is
+            -%}
+
+            {%- if item_size != blank and item_set != blank -%}
+              <div class="lc-whats-included__item">
+                <input
+                  class="lc-whats-included__radio"
+                  type="radio"
+                  id="lc-whats-included-{{ product.id }}-{{ forloop.index }}"
+                  name="lc-whats-included-{{ product.id }}"
+                  {% if forloop.first %}checked{% endif %}
+                >
+
+                <label
+                  class="lc-whats-included__tab"
+                  for="lc-whats-included-{{ product.id }}-{{ forloop.index }}"
+                >
+                  {{ item_size | escape }}
+                </label>
+
+                <span class="lc-whats-included__panel">
+                  {{ item_set | escape }}
+                </span>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}

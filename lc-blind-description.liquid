@@ -1,0 +1,252 @@
+{% doc %}
+@param {product} product - Product object
+@param {metaobject} [bp] - Blinds metaobject
+@param {boolean} [show_description] - Render legacy blind description
+@param {boolean} [show_quick_specs] - Render legacy quick specs
+@param {boolean} [show_ideal_uses] - Render legacy ideal uses
+@param {boolean} [show_installation] - Render legacy installation notes
+@param {boolean} [show_measure] - Render legacy blind measuring content
+{% enddoc %}
+
+{%- liquid
+  assign render_description = true
+  assign render_quick_specs = true
+  assign render_ideal_uses = true
+  assign render_installation = true
+  assign render_measure = true
+
+  if show_description == false
+    assign render_description = false
+  endif
+
+  if show_quick_specs == false
+    assign render_quick_specs = false
+  endif
+
+  if show_ideal_uses == false
+    assign render_ideal_uses = false
+  endif
+
+  if show_installation == false
+    assign render_installation = false
+  endif
+
+  if show_measure == false
+    assign render_measure = false
+  endif
+
+  assign blind_title = bp.name | default: product.title
+  assign blind_description = bp.blind_description | default: bp.description | default: product.description
+  assign description_image = bp.description_image | default: bp.blind_description_image | default: product.featured_image
+  assign fabric_slat_type = bp.blind_fabric_slat_type | default: bp.blind_fabric_slattype | default: bp.fabric_slat_type | default: bp.slat_type
+  assign quick_specs = bp.blind_quick_specs | default: bp.quick_specs
+  assign mounting_options = bp.blind_mounting_options | default: bp.mounting_options
+  assign optional_extras = bp.blind_optional_extras | default: bp.optional_extras
+  assign ideal_uses = bp.ideal_uses | default: bp.blind_ideal_uses
+  assign ideal_uses_image = bp.ideal_uses_image | default: bp.blind_ideal_uses_image
+  assign installation = bp.installation | default: bp.blind_installation | default: bp.installation_notes
+  assign measure_heading = bp.how_to_measure_heading | default: bp.how_to_measure_title
+  assign measure_subheading = bp.how_to_measure_subheading | default: bp.how_to_measure_intro
+  assign has_quick_specs = false
+  assign has_measure = false
+
+  if quick_specs != blank or fabric_slat_type != blank or mounting_options != blank or optional_extras != blank
+    assign has_quick_specs = true
+  endif
+
+  if measure_heading != blank or measure_subheading != blank
+    assign has_measure = true
+  endif
+
+  for i in (1..4)
+    assign measure_text_key = 'how_to_measure_step_' | append: i
+    assign measure_image_key = 'how_to_measure_step_' | append: i | append: '_image_' | append: i
+    assign measure_image_fallback_key = 'how_to_measure_step_' | append: i | append: '_image'
+    assign measure_text = bp[measure_text_key]
+    assign measure_image = bp[measure_image_key] | default: bp[measure_image_fallback_key]
+
+    if measure_text != blank or measure_image != blank
+      assign has_measure = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if render_description and blind_description != blank -%}
+  <section id="blind-description" class="lc-profile-section lc-blind-content-section lc-blind-description-section">
+    {%- if description_image != blank -%}
+      <div class="lc-profile-section__split lc-profile-section__split--image-left">
+        <div class="lc-profile-section__image">
+          {{ description_image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '500,700,1000,1400', sizes: '(max-width: 999px) 100vw, 50vw', alt: blind_title }}
+        </div>
+        <div class="lc-profile-section__text">
+          <span class="lc-label">Description</span>
+          <h2 class="lc-profile-section__heading">{{ blind_title }}</h2>
+          <div class="rte lc-body-text lc-bullets">
+            {%- if bp != blank -%}
+              {{ blind_description | metafield_tag }}
+            {%- else -%}
+              {{ blind_description }}
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="lc-profile-section__inner">
+        <span class="lc-label">Description</span>
+        <h2 class="lc-profile-section__heading">{{ blind_title }}</h2>
+        <div class="rte lc-body-text lc-bullets">
+          {%- if bp != blank -%}
+            {{ blind_description | metafield_tag }}
+          {%- else -%}
+            {{ blind_description }}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{%- if render_quick_specs and has_quick_specs -%}
+  <section id="blind-quick-specs" class="lc-profile-section lc-blind-content-section">
+    <div class="lc-profile-section__inner">
+      <span class="lc-label">Quick Specs</span>
+      <h2 class="lc-profile-section__heading">{{ blind_title }}</h2>
+      <dl class="lc-blind-spec-grid">
+        {%- if fabric_slat_type != blank -%}
+          <div>
+            <dt>Fabric / slat type</dt>
+            <dd>{{ fabric_slat_type }}</dd>
+          </div>
+        {%- endif -%}
+
+        {%- if quick_specs != blank -%}
+          {%- capture quick_specs_text -%}{{ quick_specs | metafield_text }}{%- endcapture -%}
+          {%- assign quick_specs_rows = quick_specs_text | strip | newline_to_br | split: '<br />' -%}
+          {%- for row in quick_specs_rows -%}
+            {%- assign clean_row = row | strip -%}
+            {%- if clean_row != blank -%}
+              {%- assign spec_label = clean_row | split: ':' | first | strip -%}
+              {%- assign spec_value = clean_row | remove_first: spec_label | remove_first: ':' | strip -%}
+              <div>
+                <dt>{{ spec_label }}</dt>
+                <dd>
+                  {%- if spec_value != blank -%}
+                    {{ spec_value }}
+                  {%- else -%}
+                    {{ clean_row }}
+                  {%- endif -%}
+                </dd>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        {%- endif -%}
+
+        {%- if mounting_options != blank -%}
+          <div>
+            <dt>Mounting options</dt>
+            <dd>{{ mounting_options }}</dd>
+          </div>
+        {%- endif -%}
+
+        {%- if optional_extras != blank -%}
+          <div>
+            <dt>Optional extras</dt>
+            <dd>{{ optional_extras | newline_to_br }}</dd>
+          </div>
+        {%- endif -%}
+      </dl>
+    </div>
+  </section>
+{%- endif -%}
+
+{%- if render_ideal_uses and ideal_uses != blank -%}
+  <section id="blind-ideal-uses" class="lc-profile-section lc-blind-content-section">
+    {%- if ideal_uses_image != blank -%}
+      <div class="lc-profile-section__split lc-profile-section__split--image-left">
+        <div class="lc-profile-section__image">
+          {{ ideal_uses_image | image_url: width: 1400 | image_tag: loading: 'lazy', widths: '500,700,1000,1400', sizes: '(max-width: 999px) 100vw, 50vw', alt: blind_title }}
+        </div>
+        <div class="lc-profile-section__text">
+          <span class="lc-label">Ideal Uses</span>
+          <h2 class="lc-profile-section__heading">Perfect For</h2>
+          <div class="rte lc-body-text lc-bullets">
+            {{ ideal_uses | metafield_tag }}
+          </div>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="lc-profile-section__inner">
+        <span class="lc-label">Ideal Uses</span>
+        <h2 class="lc-profile-section__heading">Perfect For</h2>
+        <div class="rte lc-body-text lc-bullets">
+          {{ ideal_uses | metafield_tag }}
+        </div>
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{%- if render_installation and installation != blank -%}
+  <section id="blind-installation" class="lc-profile-section lc-blind-content-section">
+    <div class="lc-profile-section__inner">
+      <span class="lc-label">Installation</span>
+      <h2 class="lc-profile-section__heading">Fitting Your {{ blind_title }}</h2>
+      <div class="rte lc-body-text lc-bullets">
+        {{ installation | newline_to_br }}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{%- if render_measure and has_measure -%}
+  <section class="lc-profile-section lc-how-to-measure lc-blind-content-section" id="lc-how-to-measure">
+    <div class="lc-profile-section__inner lc-htm-wrap">
+      <span class="lc-label">How To Measure</span>
+      <h2 class="lc-profile-section__heading">
+        {%- if measure_heading != blank -%}
+          {{ measure_heading }}
+        {%- else -%}
+          How to Measure for Custom Blinds
+        {%- endif -%}
+      </h2>
+      {%- if measure_subheading != blank -%}
+        <div class="lc-htm-intro lc-body-text rte">{{ measure_subheading | newline_to_br }}</div>
+      {%- endif -%}
+
+      <div class="lc-htm-steps">
+        {%- for i in (1..4) -%}
+          {%- liquid
+            assign measure_text_key = 'how_to_measure_step_' | append: i
+            assign measure_image_key = 'how_to_measure_step_' | append: i | append: '_image_' | append: i
+            assign measure_image_fallback_key = 'how_to_measure_step_' | append: i | append: '_image'
+            assign measure_text = bp[measure_text_key]
+            assign measure_image_field = bp[measure_image_key] | default: bp[measure_image_fallback_key]
+            assign measure_image_value = measure_image_field.value | default: measure_image_field
+
+            if measure_image_field.type contains 'list'
+              assign measure_image_value = measure_image_field.value | first
+            endif
+          -%}
+
+          {%- if measure_text != blank or measure_image_value != blank -%}
+            <div class="lc-htm-step">
+              {%- if measure_image_value != blank -%}
+                <div class="lc-htm-step__image">
+                  {{ measure_image_value | image_url: width: 600 | image_tag: loading: 'lazy', widths: '240,360,600', sizes: '(max-width: 999px) 150px, 25vw', alt: 'Blind measuring step' }}
+                </div>
+              {%- endif -%}
+              <div class="lc-htm-step__content">
+                <span class="lc-htm-step__number">{{ i }}</span>
+                <h3 class="lc-htm-step__title">Step {{ i }}</h3>
+                {%- if measure_text != blank -%}
+                  <div class="lc-htm-step__text rte">{{ measure_text | newline_to_br }}</div>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}

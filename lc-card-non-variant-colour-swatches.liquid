@@ -1,0 +1,114 @@
+{% doc %}
+@param {product} product - Product object
+@param {string} [quick_buy_context] - Unique card context used for swatch input names
+@param {string} [section_id] - Parent section ID
+@param {string} [block_id] - Parent block ID
+{% enddoc %}
+
+{%- liquid
+  assign colour_list = product.metafields.shopify['color-pattern'].value
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.colour.value
+  endif
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.colours.value
+  endif
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.color.value
+  endif
+
+  if colour_list == blank
+    assign colour_list = product.metafields.custom.colors.value
+  endif
+
+  assign has_colour_variant = false
+
+  for option in product.options_with_values
+    assign option_name = option.name | downcase | strip
+
+    if option_name == 'colour' or option_name == 'color' or option_name == 'colours' or option_name == 'colors'
+      assign has_colour_variant = true
+    endif
+  endfor
+
+  assign colour_options_count = 0
+
+  if colour_list != blank
+    for colour_option in colour_list
+      assign colour_handle = colour_option.system.handle
+      assign colour_label = colour_option.label.value | default: colour_option['label'].value | default: colour_option.name.value | default: colour_option['name'].value | default: colour_option.title.value | default: colour_option['title'].value
+
+      if colour_label == blank and colour_handle != blank
+        assign colour_label = colour_handle | replace: '-', ' ' | capitalize
+      endif
+
+      if colour_label == blank
+        assign colour_label = colour_option
+      endif
+
+      if colour_label != blank
+        assign colour_options_count = colour_options_count | plus: 1
+      endif
+    endfor
+  endif
+-%}
+
+{%- if colour_list != blank and has_colour_variant == false and colour_options_count > 1 -%}
+  {%- case settings.product_color_display -%}
+    {%- when 'count' -%}
+      <p class="smallcaps text-subdued">{{- 'product.general.available_colors_count' | t: count: colour_options_count -}}</p>
+
+    {%- when 'swatch' -%}
+      <fieldset class="h-stack wrap justify-center gap-1">
+        <legend class="sr-only">{{ 'general.label.color' | t | split: ',' | first }}</legend>
+
+        {%- capture param_name -%}metafield-swatch-{{ quick_buy_context }}-{{ section_id }}-{{ block_id }}-{{ product.id }}{%- endcapture -%}
+
+        {%- for colour_option in colour_list -%}
+          {%- liquid
+            assign colour_handle = colour_option.system.handle
+            assign colour_label = colour_option.label.value | default: colour_option['label'].value | default: colour_option.name.value | default: colour_option['name'].value | default: colour_option.title.value | default: colour_option['title'].value
+
+            if colour_label == blank and colour_handle != blank
+              assign colour_label = colour_handle | replace: '-', ' ' | capitalize
+            endif
+
+            if colour_label == blank
+              assign colour_label = colour_option
+            endif
+
+            assign input_id_prefix = 'card-metafield-colour-' | append: forloop.index
+            assign gallery_media_id = blank
+            assign gallery_media_key = colour_label | handle
+            assign gallery_image_url = blank
+            assign gallery_image_alt = blank
+
+            if gallery_media_key != blank
+              for product_media in product.media
+                if product_media.media_type == 'image'
+                  assign media_alt_key = product_media.alt | default: product_media.preview_image.alt | handle
+                  assign media_src_key = product_media.preview_image | image_url: width: 200 | split: '?' | first | handle
+
+                  if media_alt_key contains gallery_media_key or media_src_key contains gallery_media_key
+                    assign gallery_media_id = product_media.id
+                    assign gallery_image_url = product_media.preview_image | image_url: width: 1200
+                    assign gallery_image_alt = product_media.alt | default: colour_label
+                    break
+                  endif
+                endif
+              endfor
+            endif
+          -%}
+
+          {%- if colour_label != blank -%}
+            {%- liquid
+              render 'option-value', type: 'swatch', label: colour_label, selected: forloop.first, color_metaobject: colour_option, submitted_value: colour_label, param_name: param_name, gallery_media_id: gallery_media_id, gallery_media_key: gallery_media_key, gallery_image_url: gallery_image_url, gallery_image_alt: gallery_image_alt, id_prefix: input_id_prefix, show_tooltip: true
+            -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </fieldset>
+  {%- endcase -%}
+{%- endif -%}

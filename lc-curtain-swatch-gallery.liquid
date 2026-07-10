@@ -1,0 +1,60 @@
+{% doc %}
+Renders the curtain-profile fabric swatch image grid from a curtain_profile metaobject.
+
+@param {object} profile - Curtain profile metaobject.
+@param {string} section_id - Parent section ID for stable anchors.
+{% enddoc %}
+
+{%- liquid
+  assign swatch_images = profile.swatch_images.value
+  assign swatch_names = profile.swatch_names.value
+  assign swatch_label = profile.swatch_label | default: 'Fabric swatches'
+  assign swatch_heading = profile.swatch_heading
+  assign swatch_intro = profile.swatch_intro
+-%}
+
+{%- if swatch_images != blank -%}
+  <div class="lc-curtain-section lc-curtain-swatches" id="lc-curtain-swatches-{{ section_id }}">
+    <div class="lc-curtain-section__inner">
+      <div class="lc-curtain-title-row">
+        <span class="lc-curtain-kicker">{{ swatch_label | escape }}</span>
+        {%- if swatch_heading != blank -%}
+          <h2>{{ swatch_heading | escape }}</h2>
+        {%- endif -%}
+        {%- if swatch_intro != blank -%}
+          <p>{{ swatch_intro | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <div class="lc-curtain-swatch-grid">
+        {%- for swatch_image in swatch_images limit: 12 -%}
+          {%- liquid
+            assign swatch_name = blank
+            if swatch_names != blank
+              assign swatch_name = swatch_names[forloop.index0]
+            endif
+          -%}
+          <figure class="lc-curtain-swatch">
+            <div class="lc-curtain-swatch__image">
+              <img
+                src="{{ swatch_image | image_url: width: 520 }}"
+                srcset="
+                  {{ swatch_image | image_url: width: 260 }} 260w,
+                  {{ swatch_image | image_url: width: 520 }} 520w,
+                  {{ swatch_image | image_url: width: 780 }} 780w
+                "
+                sizes="(max-width: 749px) 46vw, 180px"
+                alt="{{ swatch_name | default: swatch_heading | default: profile.product_name | escape }}"
+                width="520"
+                height="520"
+                loading="lazy">
+            </div>
+            {%- if swatch_name != blank -%}
+              <figcaption>{{ swatch_name | escape }}</figcaption>
+            {%- endif -%}
+          </figure>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}

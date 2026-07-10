@@ -1,0 +1,131 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-complementary-products.liquid
+  Purpose: Renders complementary product recommendations on PDPs.
+
+  Behavior:
+    - Uses Shopify Search & Discovery complementary products first.
+    - Falls back to custom complementary_products metafield.
+    - Keeps LC custom card layout.
+    - Directly adds simple products.
+    - Uses Prestige quick-buy-modal for products with options.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign discovery_products = product.metafields.shopify--discovery--product_recommendation.complementary_products.value
+  assign custom_products = product.metafields.custom.complementary_products.value
+  assign recommendations_list = discovery_products | default: custom_products
+  assign instance_id = instance_id | default: 'default'
+  assign show_quick_buy = show_quick_buy | default: true, allow_false: true
+-%}
+
+{%- if recommendations_list != blank -%}
+  <div class="lc-complementary-products">
+    <div class="lc-complementary-products__header">
+      <p class="lc-complementary-products__heading">
+        {%- if title != blank -%}
+          {{ title | escape }}
+        {%- else -%}
+          Complete Your Set
+        {%- endif -%}
+      </p>
+    </div>
+
+    <div class="lc-complementary-products__track">
+      {%- for item in recommendations_list limit: 5 -%}
+        {%- liquid
+          assign first_variant = item.selected_or_first_available_variant
+          assign item_image = item.featured_image
+
+          capture quick_buy_id
+            echo 'product-quick-buy-' | append: section.id | append: '-lc-complete-set-' | append: instance_id | append: '-' | append: item.id | append: '-' | append: forloop.index
+          endcapture
+        -%}
+
+        <div class="lc-complementary-products__item">
+          <a href="{{ item.url }}" class="lc-complementary-products__img-wrap" aria-label="View {{ item.title | escape }}">
+            {%- if item_image != blank -%}
+              <img
+                src="{{ item_image | image_url: width: 360 }}"
+                srcset="
+                  {{ item_image | image_url: width: 180 }} 180w,
+                  {{ item_image | image_url: width: 360 }} 360w,
+                  {{ item_image | image_url: width: 540 }} 540w
+                "
+                sizes="(max-width: 749px) 138px, 180px"
+                alt="{{ item_image.alt | default: item.title | escape }}"
+                width="360"
+                height="360"
+                loading="lazy"
+              >
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+            {%- endif -%}
+          </a>
+
+          <div class="lc-complementary-products__info-group">
+            <a href="{{ item.url }}" class="lc-complementary-products__title">
+              {{ item.title | escape }}
+            </a>
+
+            <p class="lc-complementary-products__price">
+              {%- if item.price_varies -%}
+                {{ item.price_min | money }} - {{ item.price_max | money }}
+              {%- else -%}
+                {{ item.price | money }}
+              {%- endif -%}
+            </p>
+          </div>
+
+          {%- if show_quick_buy -%}
+            {%- if item.available == false -%}
+              <button
+                type="button"
+                class="lc-complementary-products__atc"
+                disabled
+                aria-disabled="true"
+              >
+                Sold Out
+              </button>
+
+            {%- elsif item.variants.size == 1 and item.selling_plan_groups.size == 0 and first_variant != blank -%}
+              <product-form>
+                {%- form 'product', item, novalidate: true, class: 'lc-complementary-quick-form' -%}
+                  <input type="hidden" name="on_success" value="force_open_drawer">
+                  <input type="hidden" name="quantity" value="1">
+                  <input type="hidden" name="id" value="{{ first_variant.id }}">
+
+                  <button
+                    type="submit"
+                    class="lc-complementary-products__atc"
+                    aria-label="{{ 'product.general.buy_now' | t }}: {{ item.title | escape }}"
+                  >
+                    {{ 'product.general.buy_now' | t }}
+                  </button>
+                {%- endform -%}
+              </product-form>
+
+            {%- else -%}
+              <button
+                type="button"
+                aria-controls="{{ quick_buy_id }}"
+                class="lc-complementary-products__atc"
+                aria-label="{{ 'product.general.buy_now' | t }}: {{ item.title | escape }}"
+              >
+                {{ 'product.general.buy_now' | t }}
+              </button>
+
+              <quick-buy-modal
+                handle="{{ item.handle }}?variant={{ first_variant.id }}"
+                class="quick-buy-modal modal modal--lg color-scheme color-scheme--dialog"
+                id="{{ quick_buy_id }}"
+              >
+              </quick-buy-modal>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+{%- endif -%}

@@ -1,0 +1,68 @@
+{% assign fp = product.metafields.custom.fabric_profile.value %}
+{% if fp != blank %}
+  <div class="product-fabric-profile">
+    <p class="product-fabric-profile__label">Fabric Specification</p>
+    <div class="product-fabric-profile__grid">
+      {% if fp.composition != blank %}
+        <div class="fabric-spec-item">
+          <span class="fabric-spec-item__key">Composition</span>
+          <span class="fabric-spec-item__val">{{ fp.composition }}</span>
+        </div>
+      {% endif %}
+      {% if fp.weave != blank %}
+        <div class="fabric-spec-item">
+          <span class="fabric-spec-item__key">Weave</span>
+          <span class="fabric-spec-item__val">{{ fp.weave }}</span>
+        </div>
+      {% endif %}
+      {% if fp.thread_count != blank %}
+        <div class="fabric-spec-item">
+          <span class="fabric-spec-item__key">Thread Count</span>
+          <span class="fabric-spec-item__val">{{ fp.thread_count }}</span>
+        </div>
+      {% endif %}
+      {% if fp.gsm != blank %}
+        <div class="fabric-spec-item">
+          <span class="fabric-spec-item__key">GSM</span>
+          <span class="fabric-spec-item__val">{{ fp.gsm }}</span>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}
+
+<style>
+  .product-fabric-profile { margin: 16px 0; }
+  .product-fabric-profile__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 10px;
+    color: rgba(0,0,0,0.5);
+  }
+  .product-fabric-profile__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+  .fabric-spec-item {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 12px;
+    background: rgba(0,0,0,0.03);
+    border-radius: 4px;
+  }
+  .fabric-spec-item__key {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: rgba(0,0,0,0.45);
+    margin-bottom: 2px;
+  }
+  .fabric-spec-item__val {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.8);
+    font-weight: 500;
+  }
+</style>

@@ -1,0 +1,57 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-closure-selector.liquid
+  Purpose: Metafield-driven closure type picker for PDPs.
+
+  Data source:
+    product.metafields.shopify['closure-type'].value
+
+  Behavior:
+    - Renders closure options from assigned metaobjects.
+    - Selects the first closure option by default.
+    - Submits the selected option as properties[Closure Type].
+    - Includes a guide link: "Which closure is right for you?"
+  ============================================================
+{%- endcomment -%}
+
+{%- assign closure_list = product.metafields.shopify['closure-type'].value -%}
+
+{%- if closure_list != blank -%}
+  <div class="closure-selector" id="closure-selector-{{ product.id }}">
+    <p class="closure-selector__label">
+      <strong>Closure Type:</strong>
+    </p>
+
+    <div class="closure-selector__buttons">
+      {%- for closure_option in closure_list -%}
+        {%- assign closure_handle = closure_option.system.handle -%}
+        {%- assign closure_label = closure_option.label.value | default: closure_option['label'].value -%}
+
+        {%- if closure_label == blank and closure_handle != blank -%}
+          {%- assign closure_label = closure_handle | replace: '-', ' ' | capitalize -%}
+        {%- endif -%}
+
+        {%- if closure_label != blank -%}
+          <label class="closure-selector__option {% if forloop.first %}is-selected{% endif %}">
+            <input
+              type="radio"
+              name="properties[Closure Type]"
+              value="{{ closure_label | escape }}"
+              form="{{ product_form_id }}"
+              data-closure-option
+              {% if forloop.first %}checked{% endif %}
+            >
+            <span>{{ closure_label }}</span>
+          </label>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    <a
+      href="/pages/which-closure-is-right-for-you"
+      class="closure-selector__guide-link"
+    >
+      Which closure is right for you?
+    </a>
+  </div>
+{%- endif -%}

@@ -1,0 +1,86 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-trust-strip.liquid
+  Purpose: Combined Action Row: Renders trust items
+           (shipping, returns, secure payment, lead time).
+  Requires:
+    - product {Object} Shopify product object
+  Metafields:
+    - custom.lead_time (metaobject reference)
+  Assets:   Driven completely by assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign lead_time         = product.metafields.custom.lead_time.value
+  assign lead_time_title   = lead_time.title | default: lead_time.name | default: lead_time.lead_time | default: 'Made to Order'
+  assign lead_time_summary = lead_time.summary
+-%}
+
+<div class="lc-trust-strip product-trust-strip">
+
+  <div class="lc-trust-strip__items product-trust-strip__items">
+
+    <a href="/pages/shipping-policy" class="lc-trust-item trust-item" aria-label="Shipping policy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="1" y="3" width="15" height="13" rx="1"/>
+        <path d="M16 8h4l3 5v3h-7V8z"/>
+        <circle cx="5.5" cy="18.5" r="2.5"/>
+        <circle cx="18.5" cy="18.5" r="2.5"/>
+      </svg>
+      <span class="lc-trust-item__label trust-item__label">
+        Shipping
+        <span class="lc-trust-item__sub trust-item__sub">Reliable</span>
+      </span>
+    </a>
+
+    <a href="/pages/returns-and-refunds" class="lc-trust-item trust-item" aria-label="Returns and refunds policy">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <polyline points="1 4 1 10 7 10"/>
+        <path d="M3.51 15a9 9 0 1 0 .49-3.5"/>
+      </svg>
+      <span class="lc-trust-item__label trust-item__label">
+        Returns
+        <span class="lc-trust-item__sub trust-item__sub">Our Policy</span>
+      </span>
+    </a>
+
+    <a href="/pages/support-and-faq#payment-security" class="lc-trust-item trust-item" aria-label="Secure payment information">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <span class="lc-trust-item__label trust-item__label">
+        Secure Payment
+        <span class="lc-trust-item__sub trust-item__sub">Powered by Yoco</span>
+      </span>
+    </a>
+
+    {%- comment -%} FIXED local root URL paths to ensure smooth cross-environment navigation {%- endcomment -%}
+    <a href="/pages/lead-time" class="lc-trust-item trust-item" aria-label="Made to order lead time information">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="12" cy="12" r="10"/>
+        <polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span class="lc-trust-item__label trust-item__label">
+        {{ lead_time_title | escape }}
+        <span class="lc-trust-item__sub trust-item__sub">
+          {%- if lead_time_summary != blank -%}
+            {{ lead_time_summary | escape }}
+          {%- elsif lead_time.min_days != blank and lead_time.max_days != blank -%}
+            {{ lead_time.min_days }}–{{ lead_time.max_days }} days*
+          {%- else -%}
+            7–14 days*
+          {%- endif -%}
+        </span>
+      </span>
+    </a>
+
+  </div>
+
+  <p class="lc-trust-strip__note trust-strip__mto-note">
+    *Lead time depends on quantities &amp; level of customisation.
+    <a href="/pages/lead-time">Learn more →</a>
+  </p>
+
+</div>

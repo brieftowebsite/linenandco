@@ -1,0 +1,76 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-colour-strip.liquid
+  Purpose: Renders the PDP available colours section.
+
+  Usage:
+    {%- render 'lc-colour-strip',
+      ac: ac,
+      product: product
+    -%}
+
+  Behavior:
+    - Reads the assigned available colours metaobject.
+    - Renders available colour images at a consistent square size.
+    - Shows each colour collection link as a button.
+    - Uses a horizontal scroll track on smaller screens.
+    - Does not use image zoom or lightbox triggers.
+
+  Data source:
+    - product.metafields.custom.available_colours
+
+  Assets:
+    - Styles: assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- if ac != blank -%}
+  <section class="lc-profile-section lc-colour-strip" id="lc-colours">
+    <div class="lc-profile-section__inner">
+      <h2 class="lc-profile-section__heading">Shop By Colour</h2>
+
+      {%- if ac.subheading != blank -%}
+        <p class="lc-colour-strip__intro">{{ ac.subheading | escape }}</p>
+      {%- endif -%}
+
+      <div class="lc-colour-strip__track">
+        {%- for i in (1..6) -%}
+          {%- assign name_key  = 'colour_' | append: i | append: '_name' -%}
+          {%- assign image_key = 'colour_' | append: i | append: '_image' -%}
+          {%- assign col_key   = 'colour_' | append: i | append: '_collection' -%}
+
+          {%- assign colour_name  = ac[name_key] -%}
+          {%- assign colour_image = ac[image_key] -%}
+          {%- assign colour_col   = ac[col_key].value | default: ac[col_key] -%}
+
+          {%- if colour_image != blank -%}
+            <div class="lc-colour-strip__item">
+              <div class="lc-colour-strip__img-wrap">
+                <img
+                  src="{{ colour_image | image_url: width: 420 }}"
+                  srcset="
+                    {{ colour_image | image_url: width: 280 }} 280w,
+                    {{ colour_image | image_url: width: 420 }} 420w,
+                    {{ colour_image | image_url: width: 700 }} 700w
+                  "
+                  sizes="(max-width: 749px) 170px, (max-width: 1199px) 220px, 240px"
+                  alt="{{ colour_name | default: 'Colour option' | escape }} - Linen and Co"
+                  width="600"
+                  height="600"
+                  loading="lazy"
+                >
+              </div>
+
+              {%- if colour_col.url != blank and colour_name != blank -%}
+                <a href="{{ colour_col.url }}" class="lc-colour-strip__shop-btn">
+                  Shop {{ colour_name | escape }}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+

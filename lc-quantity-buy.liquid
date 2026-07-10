@@ -1,0 +1,54 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-quantity-buy.liquid
+  Purpose: Combined quantity selector and Add to Cart controls.
+
+  Requires:
+    - product {Object}
+    - form_id {String}
+
+  Notes:
+    - Render inside the main product form.
+    - The Add to Cart button submits the existing form by ID.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign button_disabled = false
+
+  if current_variant == blank
+    assign button_disabled = true
+    assign button_content = 'product.general.unavailable_button' | t
+  elsif current_variant.available == false
+    assign button_disabled = true
+    assign button_content = 'product.general.sold_out_button' | t
+  elsif product.template_suffix contains 'pre-order'
+    assign button_content = 'product.general.pre_order_button' | t
+  else
+    assign button_content = 'product.general.add_to_cart_button' | t
+  endif
+-%}
+
+<div class="lc-quantity-buy" data-lc-quantity-buy>
+  <div class="lc-quantity-buy__qty">
+    {%- render 'quantity-selector',
+      variant: current_variant,
+      form: form_id,
+      product_form_id: form_id
+    -%}
+  </div>
+
+  <div class="lc-quantity-buy__atc">
+    {%- render 'button',
+      content: button_content,
+      type: 'submit',
+      disabled: button_disabled,
+      style: 'solid',
+      stretch: true
+    -%}
+  </div>
+</div>
+
+
+

@@ -1,0 +1,87 @@
+{% assign htm = product.metafields.custom.how_to_measure_linen.value %}
+{% if htm != blank %}
+  <div class="product-how-to-measure">
+    <p class="product-how-to-measure__label">How To Measure</p>
+    {% if htm.intro != blank %}
+      <div class="product-htm-intro rte">{{ htm.intro }}</div>
+    {% endif %}
+    <div class="product-htm-steps">
+      {% assign steps = "1,2,3,4" | split: "," %}
+      {% for i in steps %}
+        {% assign title_key = "step_" | append: i | append: "_title" %}
+        {% assign text_key = "step_" | append: i | append: "_text" %}
+        {% assign step_title = htm[title_key] %}
+        {% assign step_text = htm[text_key] %}
+        {% if step_title != blank %}
+          <div class="product-htm-step">
+            <span class="product-htm-step__num">{{ i }}</span>
+            <div class="product-htm-step__content">
+              <strong>{{ step_title }}</strong>
+              {% if step_text != blank %}
+                <div class="rte">{{ step_text }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% if htm.note != blank %}
+      <div class="product-htm-note product-htm-intro rte">
+        {{ htm.note }}
+      </div>
+    {% endif %}
+  </div>
+{% endif %}
+
+<style>
+  .product-how-to-measure { margin: 16px 0; }
+  .product-how-to-measure__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 10px;
+    color: rgba(0,0,0,0.5);
+  }
+  .product-htm-intro {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.65);
+    margin-bottom: 12px;
+  }
+  .product-htm-steps { display: flex; flex-direction: column; gap: 10px; }
+  .product-htm-step {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .product-htm-step__num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.07);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    color: rgba(0,0,0,0.6);
+  }
+  .product-htm-step__content {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.75);
+    line-height: 1.5;
+  }
+  .product-htm-step__content strong {
+    display: block;
+    margin-bottom: 2px;
+  }
+  .product-htm-note {
+    margin-top: 16px;
+  }
+</style>
+
+
+
+
+

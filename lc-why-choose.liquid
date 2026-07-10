@@ -1,0 +1,51 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-why-choose.liquid
+  Purpose: Combined Action Row: Renders the editorial Why Choose 
+           section with alternating split columns.
+  Requires:
+    - product {Object} Shopify product object
+    - pp      {Object} product_profile metaobject value (optional)
+  Assets:   Driven completely by assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+{%- liquid
+  assign profile_image_1 = pp.image_1
+  assign calculated_name = pp.product_name | default: pp.name | default: product.title
+  assign why_choose_content = pp.why_choose
+-%}
+
+{%- if why_choose_content != blank -%}
+<section class="lc-profile-section lc-why-choose" id="lc-why-choose">
+  <div class="lc-profile-section__split">
+    
+    <div class="lc-profile-section__text">
+      <span class="lc-label">Why Choose</span>
+      <h2 class="lc-profile-section__heading">{{ calculated_name | escape }}</h2>
+      <div class="rte lc-body-text lc-bullets">
+        {{ why_choose_content | metafield_tag }}
+      </div>
+    </div>
+
+    {%- if profile_image_1 != blank -%}
+    <div class="lc-profile-section__image">
+      {%- comment -%} Serves lightweight browser-optimized sizes using srcset {%- endcomment -%}
+      <img
+        src="{{ profile_image_1 | image_url: width: 700 }}"
+        srcset="
+          {{ profile_image_1 | image_url: width: 500 }} 500w,
+          {{ profile_image_1 | image_url: width: 700 }} 700w,
+          {{ profile_image_1 | image_url: width: 1400 }} 1400w
+        "
+        sizes="(max-width: 749px) 100vw, 50vw"
+        alt="Why choose {{ calculated_name | escape }}"
+        width="1600"
+        height="896"
+        loading="lazy"
+        style="width: 100%; height: 100%; object-fit: cover;">
+    </div>
+    {%- endif -%}
+
+  </div>
+</section>
+{%- endif -%}

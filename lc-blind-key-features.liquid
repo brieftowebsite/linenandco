@@ -1,0 +1,165 @@
+{% doc %}
+@param {product} product - Product object
+@param {metaobject} [bp] - Blinds metaobject
+{% enddoc %}
+
+{%- liquid
+  assign key = product.handle | append: ' ' | append: product.title | append: ' ' | append: product.template_suffix | downcase
+  assign title = 'Made-to-measure blind'
+  assign feature_1 = 'Made to your exact finished measurements'
+  assign feature_2 = 'Colour selected from the product swatches'
+  assign feature_3 = 'Inside-frame or outside-frame fitting'
+  assign feature_4 = 'Left or right control side'
+  assign feature_5 = 'Final details checked before production'
+  assign feature_6 = ''
+
+  if key contains 'wooden-venetian' or key contains 'wood-blind'
+    assign title = '50mm wooden blind features'
+    assign feature_1 = 'Quality natural wooden slatting'
+    assign feature_2 = 'Premium wood valance supplied as standard'
+    assign feature_3 = 'Privacy, light, temperature and UV control'
+    assign feature_4 = 'Optional ladder tapes available'
+    assign feature_5 = 'Motorisation option available'
+    assign feature_6 = '3-year warranty'
+  elsif key contains 'eco-wood' or key contains 'ecowood'
+    assign title = '50mm eco-wood blind features'
+    assign feature_1 = 'Durable polymer slatting'
+    assign feature_2 = 'Suited to high-moisture areas'
+    assign feature_3 = 'Matching moulded valance and bottom rail'
+    assign feature_4 = 'Privacy, light, temperature and UV control'
+    assign feature_5 = 'Optional ladder tapes and motorisation'
+    assign feature_6 = '3-year warranty'
+  elsif key contains 'aluwood'
+    assign title = '50mm aluwood blind features'
+    assign feature_1 = 'Aluminium slats with a wood-grain look'
+    assign feature_2 = 'Lightweight and easy to maintain'
+    assign feature_3 = 'Matching valance for the aluwood range'
+    assign feature_4 = 'Privacy, light, temperature and UV control'
+    assign feature_5 = 'Guide-wire option available'
+    assign feature_6 = '3-year warranty'
+  elsif key contains 'aluminium'
+    assign title = '50mm aluminium blind features'
+    assign feature_1 = 'Clean, crisp aluminium slatting'
+    assign feature_2 = 'Good for high-moisture environments'
+    assign feature_3 = 'Easy to clean and maintain'
+    assign feature_4 = 'Privacy, light, temperature and UV control'
+    assign feature_5 = 'Matching headrail and bottom rail'
+    assign feature_6 = '3-year warranty'
+  elsif key contains 'roller'
+    assign title = 'Blockout roller blind features'
+    assign feature_1 = 'Blockout fabric for privacy and room darkening'
+    assign feature_2 = '100% polyester fabric'
+    assign feature_3 = 'Waterproof and wipe-clean'
+    assign feature_4 = '38mm tube with cassette and fabric insert'
+    assign feature_5 = 'Steel chain, spring assist and motorisation options'
+    assign feature_6 = 'Fabric can railroad for wider applications'
+  elsif key contains 'triple' or key contains 'tripple'
+    assign title = 'Triple sheer zebra blind features'
+    assign feature_1 = 'Two sheer layers with solid fabric slats'
+    assign feature_2 = 'Soft Venetian-style light control'
+    assign feature_3 = 'Privacy, light, temperature and UV control'
+    assign feature_4 = 'Cassette with fabric insert as standard'
+    assign feature_5 = 'Plastic chain with steel chain and motorisation options'
+    assign feature_6 = '3-year warranty'
+  elsif key contains 'metallic-zebra'
+    assign title = 'Metallic zebra blind features'
+    assign feature_1 = 'Soft metallic-look fabric'
+    assign feature_2 = 'Semi-blockout and blockout shading effect'
+    assign feature_3 = '75mm/50mm solid-sheer repeat'
+    assign feature_4 = 'Cassette with fabric insert as standard'
+    assign feature_5 = 'Steel chain and motorisation options'
+    assign feature_6 = '3-year warranty'
+  elsif key contains 'zebra'
+    assign title = 'Zebra blind features'
+    assign feature_1 = 'Alternating sheer and solid fabric bands'
+    assign feature_2 = 'Privacy and light control in one blind'
+    assign feature_3 = 'Soft fabric finish for modern interiors'
+    assign feature_4 = 'Cassette with fabric insert as standard'
+    assign feature_5 = 'Plastic chain with steel chain and motorisation options'
+    assign feature_6 = '3-year warranty'
+  endif
+
+  assign metafield_title = product.metafields.custom.blind_key_features_title.value | default: product.metafields.custom.blind_key_features_title
+  assign metafield_features = product.metafields.custom.blind_key_features.value
+  assign metaobject_features = bp.blind_key_features | default: bp.key_features
+  assign has_metaobject_features = false
+
+  if metafield_title != blank
+    assign title = metafield_title
+  endif
+
+  if metaobject_features != blank
+    assign has_metaobject_features = true
+  endif
+-%}
+
+{%- unless bp != blank and has_metaobject_features == false -%}
+  <div class="lc-key-features lc-blind-key-features" id="blind-features">
+    <p class="lc-key-features__title">Key Features</p>
+    <ul class="lc-key-features__grid" role="list">
+    {%- if has_metaobject_features -%}
+      {%- capture feature_html -%}{{ metaobject_features | metafield_tag }}{%- endcapture -%}
+      {%- assign feature_rows = feature_html | split: '</li>' -%}
+      {%- for feature in feature_rows limit: 6 -%}
+        {%- assign feature_clean = feature | strip_html | strip | remove_first: '- ' | strip -%}
+        {%- if feature_clean != blank -%}
+          <li class="lc-key-features__item">
+            <span class="lc-key-features__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </span>
+            <span class="lc-key-features__text">{{ feature_clean }}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- elsif metafield_features != blank -%}
+      {%- for feature in metafield_features limit: 6 -%}
+        <li class="lc-key-features__item">
+          <span class="lc-key-features__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="lc-key-features__text">{{ feature }}</span>
+        </li>
+      {%- endfor -%}
+    {%- else -%}
+      <li class="lc-key-features__item">
+        <span class="lc-key-features__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="lc-key-features__text">{{ feature_1 }}</span>
+      </li>
+      <li class="lc-key-features__item">
+        <span class="lc-key-features__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="lc-key-features__text">{{ feature_2 }}</span>
+      </li>
+      <li class="lc-key-features__item">
+        <span class="lc-key-features__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="lc-key-features__text">{{ feature_3 }}</span>
+      </li>
+      <li class="lc-key-features__item">
+        <span class="lc-key-features__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="lc-key-features__text">{{ feature_4 }}</span>
+      </li>
+      <li class="lc-key-features__item">
+        <span class="lc-key-features__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+        <span class="lc-key-features__text">{{ feature_5 }}</span>
+      </li>
+      {%- if feature_6 != blank -%}
+        <li class="lc-key-features__item">
+          <span class="lc-key-features__icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M20 6 9 17l-5-5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </span>
+          <span class="lc-key-features__text">{{ feature_6 }}</span>
+        </li>
+      {%- endif -%}
+    {%- endif -%}
+    </ul>
+  </div>
+{%- endunless -%}

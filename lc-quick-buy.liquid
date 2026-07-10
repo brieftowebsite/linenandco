@@ -1,0 +1,177 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-quick-buy.liquid
+  Purpose: LC quick-buy template loaded by Prestige quick-buy-modal.
+
+  Supported variables:
+    product - Product object used to render quick-buy content.
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  capture product_form_id
+    echo 'product-form-lc-quick-buy-' | append: product.id | append: '-' | append: section.id
+  endcapture
+
+  assign current_variant = product.selected_or_first_available_variant
+  assign pack_configuration = current_variant.metafields.custom.pack_configuration.value
+  assign legacy_pack_size = current_variant.metafields.custom.pack_size.value | default: product.metafields.custom.pack_size.value
+  assign pack_size = pack_configuration | default: legacy_pack_size
+  assign button_disabled = false
+
+  if current_variant == blank
+    assign button_disabled = true
+    assign button_content = 'product.general.unavailable_button' | t
+  elsif current_variant.available == false
+    assign button_disabled = true
+    assign button_content = 'product.general.sold_out_button' | t
+  elsif product.template_suffix contains 'pre-order'
+    assign button_content = 'product.general.pre_order_button' | t
+  else
+    assign button_content = 'product.general.buy_now' | t
+  endif
+-%}
+
+<template id="quick-buy-content">
+  <p class="h5" slot="header">{{ 'product.general.choose_options' | t }}</p>
+
+  <div class="quick-buy-modal__content">
+    <product-rerender id="quick-buy-modal-content" observe-form="{{ product_form_id }}">
+      <dialog-close-button class="contents">
+        <button type="button" class="quick-buy-modal__close-button sm-max:hidden">
+          <span class="sr-only">{{ 'general.accessibility.close' | t }}</span>
+          {%- render 'icon' with 'close' -%}
+        </button>
+      </dialog-close-button>
+
+      <div class="quick-buy-modal__gallery-wrapper">
+        {%- if product.media.size > 0 -%}
+          {%- render 'product-gallery',
+            product: product,
+            product_form_id: product_form_id,
+            desktop_layout: 'carousel_dots',
+            mobile_controls: 'arrows',
+            enable_media_autoplay: section.settings.enable_media_autoplay,
+            enable_video_looping: section.settings.enable_video_looping,
+            enable_image_zoom: false
+          -%}
+        {%- endif -%}
+
+        <div class="quick-buy-modal__mobile-info v-stack gap-1 justify-center text-center sm:hidden">
+          <a href="{{ product.url }}" class="product-title h6">{{ product.title }}</a>
+
+          {%- if current_variant != blank -%}
+            {%- render 'price-list', product: product, variant: current_variant, hide_unit_price: true, context: 'card' -%}
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="quick-buy-modal__info-wrapper">
+        <div class="product-info">
+          <div class="product-info__block-list">
+            <div class="product-info__block-item" data-block-id="lc-quick-buy-title" data-block-type="title">
+              <h2 class="product-title h4">
+                <a href="{{ product.url }}">{{ product.title }}</a>
+              </h2>
+            </div>
+
+            {%- capture subtitle -%}{%- render 'lc-subtitle', product: product -%}{%- endcapture -%}
+            {%- if subtitle != blank -%}
+              <div class="product-info__block-item" data-block-id="lc-quick-buy-subtitle" data-block-type="subtitle">
+                {{- subtitle -}}
+              </div>
+            {%- endif -%}
+
+            {%- if current_variant != blank -%}
+              <div class="product-info__block-item" data-block-id="lc-quick-buy-price" data-block-type="price">
+                <div class="v-stack gap-1">
+                  {%- render 'price-list', product: product, variant: current_variant, context: 'product' -%}
+                  {%- if pack_size != blank -%}
+                    <p class="text-sm text-subdued">{{ pack_size | escape }}</p>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+
+            <product-form>
+              {%- form 'product', product, id: product_form_id, novalidate: true -%}
+                <input type="hidden" name="on_success" value="force_open_drawer">
+                <input type="hidden" name="id" value="{{ current_variant.id }}">
+
+                {%- if pack_size != blank -%}
+                  <input type="hidden" name="properties[Pack size]" value="{{ pack_size | escape }}">
+                {%- endif -%}
+
+                <div class="product-info__block-item" data-block-id="lc-quick-buy-variant-picker" data-block-type="variant-picker">
+                  {%- render 'variant-picker',
+                    product: product,
+                    form_id: product_form_id,
+                    context: 'quick_buy',
+                    selector_style: 'underline',
+                    swatch_selector_style: 'swatch_underline',
+                    hide_sold_out_variants: false
+                  -%}
+                </div>
+
+                {%- capture satin_stitch_picker -%}
+                  {%- render 'lc-satin-stitch-picker',
+                    product: product,
+                    form_id: product_form_id,
+                    picker_id: product_form_id,
+                    picker_context: 'quick-buy'
+                  -%}
+                {%- endcapture -%}
+
+                {%- if satin_stitch_picker contains 'lc-satin-stitch-picker' -%}
+                  <div class="product-info__block-item" data-block-id="lc-quick-buy-satin-stitch-picker" data-block-type="satin-stitch-picker">
+                    {{- satin_stitch_picker -}}
+                  </div>
+                {%- endif -%}
+
+                {%- capture fitted_length_selector -%}
+                  {%- render 'lc-fitted-length-selector',
+                    product: product,
+                    product_form_id: product_form_id
+                  -%}
+                {%- endcapture -%}
+
+                {%- if fitted_length_selector contains 'lc-fitted-length-selector' -%}
+                  <div class="product-info__block-item" data-block-id="lc-quick-buy-fitted-length-selector" data-block-type="fitted-length-selector">
+                    {{- fitted_length_selector -}}
+                  </div>
+                {%- endif -%}
+
+                <div class="product-info__block-item lc-quick-buy__purchase-row" data-block-id="lc-quick-buy-purchase-row" data-block-type="quick-buy-purchase-row">
+                  {%- if current_variant != blank -%}
+                    <div class="lc-quick-buy__qty" data-block-id="lc-quick-buy-quantity-selector" data-block-type="quantity-selector">
+                      {%- render 'quantity-selector',
+                        variant: current_variant,
+                        form: product_form_id
+                      -%}
+                    </div>
+                  {%- endif -%}
+
+                  <div class="lc-quick-buy__buy-now" data-block-id="lc-quick-buy-buy-buttons" data-block-type="buy-buttons">
+                    <buy-buttons class="buy-buttons" form="{{ product_form_id }}">
+                      {%- render 'button',
+                        content: button_content,
+                        type: 'submit',
+                        disabled: button_disabled,
+                        style: 'solid',
+                        stretch: true
+                      -%}
+                    </buy-buttons>
+                  </div>
+                </div>
+              {%- endform -%}
+            </product-form>
+
+            <div class="product-info__block-item" data-block-id="lc-quick-buy-view-details" data-block-type="more-information">
+              <a href="{{ product.url }}" class="quick-buy-modal__view-more link sm-max:hidden">{{ 'product.general.view_details' | t }}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </product-rerender>
+  </div>
+</template>

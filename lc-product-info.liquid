@@ -1,0 +1,136 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-product-info.liquid
+  Styles:  assets/lc-product-info.css
+  Purpose: Hardcoded right column product info panel for the
+           Linen and Co PDP. Called from lc-main-product.liquid.
+
+  Variables passed in:
+    product           — the product object
+    product_form_id   — form ID passed in from lc-main-product.liquid
+    has_profile       — true if product_profile is present
+    pp                — product_profile metafield value
+    center_basic_info — boolean, centers info on mobile
+    profile_heading  — PDP H1 text, usually product.metafields.custom.product_h1_heading
+  ============================================================
+{%- endcomment -%}
+
+{%- assign form_id = product_form_id -%}
+{%- assign product_info_heading = profile_heading | default: product.metafields.custom.product_h1_heading.value | default: product.metafields.custom.product_h1_heading | default: product.title -%}
+{%- assign badges = product.metafields.custom.badges.value -%}
+
+<product-rerender
+  id="lc-product-info-rerender-{{ section.id }}"
+  observe-form="{{ form_id }}"
+  allow-partial-rerender
+>
+  <div class="product-info {% if center_basic_info %}product-info--center{% endif %}">
+    <div class="product-info__block-list">
+
+      {%- if badges != blank -%}
+        <div class="lc-product-info__badges lc-trust-strip__badges product-trust-strip__badges" aria-label="Product badges">
+          {%- for badge in badges -%}
+            {%- assign normalized_badge = badge | strip | downcase -%}
+            {%- unless normalized_badge contains 'off' or normalized_badge contains 'sale' or normalized_badge contains 'save' -%}
+              <span class="lc-badge product-badge">{{ badge | escape }}</span>
+            {%- endunless -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <h1 class="product-title">{{ product_info_heading | escape }}</h1>
+
+      {%- render 'lc-subtitle', product: product -%}
+      {%- render 'lc-separator' -%}
+
+      {%- if has_profile -%}
+        <div class="sr-only" aria-hidden="true">
+          {%- render 'lc-product-description', product: product, pp: pp, hide_id: true -%}
+        </div>
+      {%- endif -%}
+
+      <div
+        class="product-info__block-item"
+        data-block-id="lc-price-row"
+        data-block-type="price"
+      >
+        {%- render 'lc-price-row', product: product -%}
+      </div>
+
+      {%- render 'lc-separator' -%}
+
+      {%- liquid
+        assign current_variant = product.selected_or_first_available_variant
+        assign pack_configuration = current_variant.metafields.custom.pack_configuration.value
+        assign pack_quantity = current_variant.metafields.custom.pack_quantity.value | plus: 0
+        assign legacy_pack_size = current_variant.metafields.custom.pack_size.value | default: product.metafields.custom.pack_size.value
+        assign normalized_pack_configuration = pack_configuration | strip | downcase
+        assign normalized_legacy_pack_size = legacy_pack_size | strip | downcase
+        assign pack_label = ''
+
+        if pack_configuration != blank
+          if normalized_pack_configuration contains 'set'
+            assign pack_label = 'Set'
+          elsif normalized_pack_configuration == 'pack' and pack_quantity > 1
+            assign pack_label = 'Pack of ' | append: pack_quantity
+          else
+            assign pack_label = pack_configuration
+          endif
+        endif
+
+        if pack_label == blank and legacy_pack_size != blank
+          if normalized_legacy_pack_size contains 'set'
+            assign pack_label = 'Set'
+          else
+            assign pack_label = legacy_pack_size
+          endif
+        endif
+      -%}
+
+      {%- form 'product', product, id: form_id, novalidate: true -%}
+        <input
+          type="hidden"
+          name="id"
+          value="{{ current_variant.id }}"
+        >
+        <input
+          type="hidden"
+          name="properties[Pack size]"
+          value="{{ pack_label | escape }}"
+          data-variant-pack-property
+          {% if pack_label == blank %}disabled{% endif %}
+        >
+        {%- render 'lc-fixed-product-facts', product: product, pp: pp -%}
+
+        {%- render 'variant-picker',
+          product: product,
+          form_id: form_id,
+          context: 'main_product',
+          selector_style: 'underline',
+          swatch_selector_style: 'swatch_underline',
+          hide_sold_out_variants: false
+        -%}
+
+        {%- render 'lc-non-variant-metafield-selectors', product: product, product_form_id: form_id -%}
+        {%- render 'lc-non-variant-colour-selector', product: product, product_form_id: form_id -%}
+
+        {%- render 'lc-satin-stitch-picker', product: product, form_id: form_id -%}
+        {%- render 'lc-closure-selector', product: product, product_form_id: form_id -%}
+        {%- render 'lc-fitted-length-selector', product: product, product_form_id: form_id -%}
+        {%- render 'lc-separator' -%}
+        {%- render 'lc-quantity-buy', product: product, form_id: form_id -%}
+      {%- endform -%}
+
+      {%- render 'lc-buy-now-wishlist-share', product: product, product_form_id: form_id -%}
+      {%- render 'lc-separator' -%}
+      {%- render 'lc-trust-strip', product: product -%}
+
+    </div>
+  </div>
+</product-rerender>
+
+
+ 
+ 
+
+      

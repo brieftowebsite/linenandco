@@ -1,0 +1,42 @@
+{% assign cg = product.metafields.custom.care_guide.value %}
+{% if cg != blank %}
+  <div class="product-care-strip">
+    <p class="product-care-strip__label">Care Instructions</p>
+    {% if cg.intro_text != blank %}
+      <div class="product-care-strip__text">{{ cg.intro_text | newline_to_br }}</div>
+    {% endif %}
+    {% if cg.fabric_profile_page_url != blank %}
+      <a href="{{ cg.fabric_profile_page_url }}" class="product-care-strip__link">
+        View Full Care Guide →
+      </a>
+    {% endif %}
+  </div>
+{% endif %}
+
+<style>
+  .product-care-strip { margin: 16px 0; }
+  .product-care-strip__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 0 0 8px;
+    color: rgba(0,0,0,0.5);
+  }
+  .product-care-strip__text {
+    font-size: 0.85rem;
+    color: rgba(0,0,0,0.7);
+    line-height: 1.6;
+    margin-bottom: 10px;
+  }
+  .product-care-strip__link {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+</style>
+

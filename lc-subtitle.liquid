@@ -1,0 +1,18 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-subtitle.liquid
+  Purpose: Combined Action Row: Renders the product subtitle 
+           metafield directly below the product title.
+  Requires:
+    - product {Object} Shopify product object
+  Assets:   Driven completely by assets/lc-main-product.css
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign subtitle = product.metafields.custom.subtitle.value | default: product.metafields.custom.subtitle
+-%}
+
+{%- if subtitle != blank -%}
+  <p class="product-subtitle lc-subtitle">{{ subtitle | escape }}</p>
+{%- endif -%}

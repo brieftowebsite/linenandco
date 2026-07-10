@@ -1,0 +1,97 @@
+{%- comment -%}
+  ============================================================
+  SNIPPET: lc-fitted-length-selector.liquid
+  Purpose: Metafield-driven mattress length picker for fitted sheets.
+
+  Data source, in priority order:
+    product.metafields.custom.mattress_length.value
+    product.metafields.custom.mattress_lengths.value
+    product.metafields.custom.fitted_sheet_length.value
+    product.metafields.custom.fitted_sheet_lengths.value
+    product.metafields.shopify['mattress-length'].value
+    product.metafields.shopify['fitted-sheet-length'].value
+
+  Behavior:
+    - Renders only when a fitted length metafield is assigned.
+    - Does not render while Mattress Length is still a real variant option.
+    - Submits the selected option as properties[Mattress Length].
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign fitted_length_list = product.metafields.custom.mattress_length.value
+
+  if fitted_length_list == blank
+    assign fitted_length_list = product.metafields.custom.mattress_lengths.value
+  endif
+
+  if fitted_length_list == blank
+    assign fitted_length_list = product.metafields.custom.fitted_sheet_length.value
+  endif
+
+  if fitted_length_list == blank
+    assign fitted_length_list = product.metafields.custom.fitted_sheet_lengths.value
+  endif
+
+  if fitted_length_list == blank
+    assign fitted_length_list = product.metafields.shopify['mattress-length'].value
+  endif
+
+  if fitted_length_list == blank
+    assign fitted_length_list = product.metafields.shopify['fitted-sheet-length'].value
+  endif
+
+  assign has_mattress_length_variant = false
+
+  for option in product.options_with_values
+    assign option_name = option.name | downcase | strip
+
+    if option_name == 'mattress length'
+      assign has_mattress_length_variant = true
+    endif
+  endfor
+-%}
+
+{%- if fitted_length_list != blank and has_mattress_length_variant == false -%}
+  <fieldset class="lc-fitted-length-selector variant-picker__option v-stack gap-2">
+    <div class="variant-picker__option-info h-stack justify-between gap-2">
+      <div class="h-stack gap-1">
+        <legend style="font-weight: bold; font-size: 14px;">Mattress Length:</legend>
+      </div>
+    </div>
+
+    <div class="lc-fitted-length-selector__values variant-picker__option-values h-stack gap-4 wrap">
+      {%- for length_option in fitted_length_list -%}
+        {%- liquid
+          assign length_handle = length_option.system.handle
+          assign length_label = length_option.label.value | default: length_option['label'].value | default: length_option.name.value | default: length_option['name'].value | default: length_option.title.value | default: length_option['title'].value
+
+          if length_label == blank and length_handle != blank
+            assign length_label = length_handle | replace: '-', ' ' | capitalize
+          endif
+
+          if length_label == blank
+            assign length_label = length_option
+          endif
+
+          assign input_id = 'lc-fitted-length-' | append: product.id | append: '-' | append: forloop.index
+        -%}
+
+        {%- if length_label != blank -%}
+          <input
+            class="sr-only"
+            type="radio"
+            id="{{ input_id | escape }}"
+            name="properties[Mattress Length]"
+            value="{{ length_label | escape }}"
+            form="{{ product_form_id }}"
+            {% if forloop.first %}checked{% endif %}
+          >
+          <label class="lc-fitted-length-selector__option block-underline" for="{{ input_id | escape }}">
+            <span>{{ length_label }}</span>
+          </label>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </fieldset>
+{%- endif -%}

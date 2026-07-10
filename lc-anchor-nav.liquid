@@ -1,0 +1,65 @@
+{%- comment -%}
+  ======================================================================================================================
+  SNIPPET: lc-anchor-nav.liquid
+  Store: Linen and Co
+  Purpose: Sticky anchor navigation bar for PDP profile sections.
+  ======================================================================================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign description_content = pp.what_is_it
+  assign why_choose_content = pp.why_choose
+  assign ideal_uses_content = pp.ideal_uses
+  assign care_content = pp.care_summary | default: pp.intro_text
+  assign is_ready_made_curtain = false
+
+  if product.template_suffix == 'lc-ready-made-curtain' or product.tags contains 'Ready-Made Curtains'
+    assign is_ready_made_curtain = true
+  endif
+-%}
+
+<nav class="lc-anchor-nav" aria-label="Product sections" data-lc-anchor-nav>
+  <div class="lc-anchor-nav__inner">
+    <div class="lc-anchor-nav__links">
+      <a href="#lc-main-product" class="lc-anchor-nav__link lc-anchor-nav__link--shop">← Shop Now</a>
+
+      {%- if description_content != blank -%}
+        <a href="#lc-what-is-it" class="lc-anchor-nav__link">Description</a>
+      {%- endif -%}
+
+      {%- if has_included != blank -%}
+        <a href="#lc-whats-included" class="lc-anchor-nav__link">What's Included</a>
+      {%- endif -%}
+
+      {%- if why_choose_content != blank -%}
+        <a href="#lc-why-choose" class="lc-anchor-nav__link">Why Choose</a>
+      {%- endif -%}
+
+      {%- if ideal_uses_content != blank -%}
+        <a href="#lc-ideal-uses" class="lc-anchor-nav__link">Ideal Uses</a>
+      {%- endif -%}
+
+      {%- if st != blank -%}
+        <a href="#lc-compare-styles" class="lc-anchor-nav__link">
+          {%- if is_ready_made_curtain -%}Colours{%- else -%}Compare Styles{%- endif -%}
+        </a>
+      {%- endif -%}
+
+      {%- if care_content != blank -%}
+        <a href="#lc-care" class="lc-anchor-nav__link">
+          {%- if is_ready_made_curtain -%}Care Notes{%- else -%}Care Guide{%- endif -%}
+        </a>
+      {%- endif -%}
+
+      {%- if ac != blank -%}
+        <a href="#lc-colours" class="lc-anchor-nav__link">Available Colours</a>
+      {%- endif -%}
+
+      {%- if htm != blank -%}
+        <a href="#lc-how-to-measure" class="lc-anchor-nav__link">How To Measure</a>
+      {%- endif -%}
+
+      <a href="#lc-contact-cta" class="lc-anchor-nav__link">Support</a>
+    </div>
+  </div>
+</nav>
