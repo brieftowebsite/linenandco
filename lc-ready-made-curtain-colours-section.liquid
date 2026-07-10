@@ -1,0 +1,24 @@
+{%- comment -%}
+  Wrapper section for the ready-made curtain colour snippet.
+  No blocks. Logic lives in snippets/lc-ready-made-curtain-colours.liquid.
+{%- endcomment -%}
+
+{%- liquid
+  assign pp = product.metafields.custom.product_profile.value
+  assign is_ready_made_curtain = false
+
+  if product.template_suffix == 'lc-ready-made-curtain' or product.tags contains 'Ready-Made Curtains'
+    assign is_ready_made_curtain = true
+  endif
+-%}
+
+{%- if is_ready_made_curtain -%}
+  {%- render 'lc-ready-made-curtain-colours', product: product, pp: pp -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LC Curtain Colours",
+  "settings": []
+}
+{% endschema %}

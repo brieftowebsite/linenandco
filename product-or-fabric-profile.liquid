@@ -1,0 +1,1028 @@
+{%- liquid
+  assign fp = product.metafields.custom.fabric_profile.value
+  assign pp = product.metafields.custom.product_profile.value
+  assign st = product.metafields.custom.styles.value
+  assign ac = product.metafields.custom.available_colours.value
+  assign htm = product.metafields.custom.how_to_measure.value 
+-%}
+
+{%- if fp != blank or pp != blank or st != blank or ac != blank or htm != blank -%}
+
+{%- if fp != blank or pp != blank -%}
+  {%- assign profile_name = fp.fabric_name | default: pp.product_name -%}
+  {%- assign profile_subtitle = fp.subtitle | default: pp.subtitle -%}
+  {%- assign profile_care_url = fp.care_guide_url | default: pp.care_guide_url -%}
+  {%- if fp.hero_image != blank -%}
+    {%- assign profile_hero = fp.hero_image -%}
+  {%- elsif pp.hero_image != blank -%}
+    {%- assign profile_hero = pp.hero_image -%}
+  {%- endif -%}
+  {%- if fp.plain_image_1 != blank -%}
+    {%- assign profile_image_1 = fp.plain_image_1 -%}
+  {%- elsif pp.image_1 != blank -%}
+    {%- assign profile_image_1 = pp.image_1 -%}
+  {%- endif -%}
+  {%- if fp.plain_image_2 != blank -%}
+    {%- assign profile_image_2 = fp.plain_image_2 -%}
+  {%- elsif pp.image_2 != blank -%}
+    {%- assign profile_image_2 = pp.image_2 -%}
+  {%- endif -%}
+  {%- if fp.plain_image_3 != blank -%}
+    {%- assign profile_image_3 = fp.plain_image_3 -%}
+  {%- elsif pp.image_3 != blank -%}
+    {%- assign profile_image_3 = pp.image_3 -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%} NAV {%- endcomment -%}
+<nav class="lc-anchor-nav" id="lc-anchor-nav" aria-label="Product sections">
+  <div class="lc-anchor-nav__inner">
+    <a href="#main" class="lc-anchor-nav__link lc-anchor-nav__link--shop">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+      Shop Now
+    </a>
+    {%- if st != blank -%}
+    <a href="#lc-compare-styles" class="lc-anchor-nav__link">Compare Styles</a>
+    {%- endif -%}
+    {%- if fp != blank or pp != blank -%}
+    <a href="#lc-what-is-it" class="lc-anchor-nav__link">What Is It</a>
+    {%- endif -%}
+    {%- if ac != blank -%}
+    <a href="#lc-colours" class="lc-anchor-nav__link">Available Colours</a>
+    {%- endif -%}
+    {%- if fp != blank or pp != blank -%}
+    <a href="#lc-why-choose" class="lc-anchor-nav__link">Why Choose</a>
+    <a href="#lc-ideal-uses" class="lc-anchor-nav__link">Ideal Uses</a>
+    <a href="#lc-care" class="lc-anchor-nav__link">Care Guide</a>
+    {%- endif -%}
+    {%- if htm != blank -%}
+    <a href="#lc-how-to-measure" class="lc-anchor-nav__link">How To Measure</a>
+    {%- endif -%}
+    <a href="#lc-contact-cta" class="lc-anchor-nav__link">Support</a>
+  </div>
+  <div class="lc-anchor-nav__fade" aria-hidden="true">
+   
+  </div>
+</nav>
+
+{%- comment -%} 1. COMPARE STYLES {%- endcomment -%}
+{%- if st != blank -%}
+<section class="lc-compare-styles" id="lc-compare-styles">
+  <div class="lc-compare-styles__inner">
+    {%- if st.title != blank -%}
+    <p class="lc-compare-styles__heading">{{ st.title }}</p>
+    {%- endif -%}
+    {%- if st.intro != blank -%}
+    <p class="lc-compare-styles__intro">{{ st.intro }}</p>
+    {%- endif -%}
+    <div class="lc-compare-styles__track">
+      {%- for i in (1..5) -%}
+        {%- assign label_key = 'label_' | append: i -%}
+        {%- assign image_key = 'image_' | append: i -%}
+        {%- assign style_label = st[label_key] -%}
+        {%- assign style_image = st[image_key] -%}
+        {%- if style_image != blank -%}
+        <div class="lc-compare-styles__item">
+          <div class="lc-compare-styles__img-wrap"
+               data-zoom="{{ style_image | image_url: width: 1200 }}"
+               data-label="{{ style_label }}">
+            <img
+              src="{{ style_image | image_url: width: 600 }}"
+              alt="{{ style_label | default: 'Style option' }} – {{ product.title }} – Linen and Co"
+              width="600"
+              height="600"
+              loading="lazy">
+            <div class="lc-compare-styles__zoom-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+                <line x1="11" y1="8" x2="11" y2="14"/>
+                <line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </div>
+          </div>
+          {%- if style_label != blank -%}
+          <p class="lc-compare-styles__label">{{ style_label }}</p>
+          {%- endif -%}
+        </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{%- comment -%} LIGHTBOX {%- endcomment -%}
+  <div class="lc-lightbox" id="lc-lightbox" role="dialog" aria-modal="true">
+    <button class="lc-lightbox__close" id="lc-lightbox-close" aria-label="Close">&times;</button>
+  <img class="lc-lightbox__img" id="lc-lightbox-img" srcset="" alt="" width="1200" height="1200">
+    <p class="lc-lightbox__label" id="lc-lightbox-label"></p>
+  </div>
+
+{%- comment -%} 2. WHAT IS IT {%- endcomment -%}
+{% if fp.what_is_it != blank or pp.what_is_it != blank %}
+<section class="lc-profile-section lc-what-is-it" id="lc-what-is-it">
+  <div class="lc-profile-section__split">
+    {% if profile_hero != blank %}
+    <div class="lc-profile-section__image">
+      <img src="{{ profile_hero | image_url: width: 1400 }}" alt="{{ profile_name }}" width="1600" height="896" loading="lazy">
+    </div>
+    {% endif %}
+    <div class="lc-profile-section__text">
+      <span class="lc-label">What Is It</span>
+      <h2 class="lc-profile-section__heading">{{ profile_name }}</h2>
+      {% if profile_subtitle != blank %}
+        <p class="lc-profile-section__subtitle">{{ profile_subtitle }}</p>
+      {% endif %}
+      <div class="rte lc-body-text lc-bullets">
+        {% if fp.what_is_it != blank %}
+          {{ fp.what_is_it | metafield_tag }}
+        {% else %}
+          {{ pp.what_is_it | metafield_tag }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{%- comment -%} 3. AVAILABLE COLOURS {%- endcomment -%}
+{%- if ac != blank -%}
+<section class="lc-profile-section lc-colour-strip" id="lc-colours">
+  <div class="lc-profile-section__inner">
+    <span class="lc-label">Available Colours</span>
+    <h2 class="lc-profile-section__heading">Shop By Colour</h2>
+    {%- if ac.subheading != blank -%}
+    <p class="lc-colour-strip__subheading">{{ ac.subheading }}</p>
+    {%- endif -%}
+    <div class="lc-colour-strip__track">
+      {%- for i in (1..6) -%}
+        {%- assign name_key = 'colour_' | append: i | append: '_name' -%}
+        {%- assign image_key = 'colour_' | append: i | append: '_image' -%}
+        {%- assign col_key = 'colour_' | append: i | append: '_collection' -%}
+        {%- assign colour_name = ac[name_key] -%}
+        {%- assign colour_image = ac[image_key] -%}
+        {%- assign colour_col = ac[col_key].value -%}
+        {%- if colour_image != blank -%}
+        <div class="lc-colour-strip__item">
+          <div class="lc-colour-strip__img-wrap">
+            <img
+              src="{{ colour_image | image_url: width: 600 }}"
+              alt="{{ colour_name | default: 'Colour option' }} – Linen and Co"
+              width="600"
+              height="600"
+              loading="lazy">
+          </div>
+          {%- if colour_name != blank -%}
+          <p class="lc-colour-strip__label">{{ colour_name }}</p>
+          {%- endif -%}
+          {%- if colour_col != blank -%}
+          <a href="{{ colour_col.url }}" class="lc-colour-strip__shop-btn">
+            Shop {{ colour_name }}
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+          {%- endif -%}
+        </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{%- endif -%}
+
+{%- comment -%} 4. WHY CHOOSE {%- endcomment -%}
+{% if fp.why_choose != blank or pp.why_choose != blank %}
+<section class="lc-profile-section lc-why-choose" id="lc-why-choose">
+  <div class="lc-profile-section__split">
+    <div class="lc-profile-section__text">
+      <span class="lc-label">Why Choose</span>
+      <h2 class="lc-profile-section__heading">{{ profile_name }}</h2>
+      <div class="rte lc-body-text lc-bullets">
+        {% if fp.why_choose != blank %}
+          {{ fp.why_choose | metafield_tag }}
+        {% else %}
+          {{ pp.why_choose | metafield_tag }}
+        {% endif %}
+      </div>
+    </div>
+    {% if profile_image_1 != blank %}
+    <div class="lc-profile-section__image">
+      <img src="{{ profile_image_1 | image_url: width: 1600 }}" alt="Why choose {{ profile_name }}" width="1600" height="896" loading="lazy">
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{%- comment -%} 5. IDEAL USES {%- endcomment -%}
+{% if fp.ideal_uses_hospitality != blank or pp.ideal_uses != blank %}
+<section class="lc-profile-section lc-ideal-uses" id="lc-ideal-uses">
+  {% if profile_image_2 != blank %}
+  <div class="lc-profile-section__split">
+    <div class="lc-profile-section__image">
+      <img src="{{ profile_image_2 | image_url: width: 1400 }}" alt="Perfect for {{ profile_name }}" width="1600" height="896" loading="lazy">
+    </div>
+    <div class="lc-profile-section__text">
+      <span class="lc-label">Ideal Uses</span>
+      <h2 class="lc-profile-section__heading">Perfect For</h2>
+      <div class="lc-bullets rte">
+        {% if fp.ideal_uses_hospitality != blank %}
+          {{ fp.ideal_uses_hospitality | metafield_tag }}
+        {% else %}
+          {{ pp.ideal_uses | metafield_tag }}
+        {% endif %}
+      </div>
+      <a href="https://www.linenco.co.za/blogs/industries-we-serve" class="lc-profile-btn" target="_blank">
+        Explore Industries We Serve
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+  {% else %}
+  <div class="lc-profile-section__inner">
+    <span class="lc-label">Ideal Uses</span>
+    <h2 class="lc-profile-section__heading">Perfect For</h2>
+    <div class="lc-bullets rte">
+      {% if fp.ideal_uses_hospitality != blank %}
+        {{ fp.ideal_uses_hospitality | metafield_tag }}
+      {% else %}
+        {{ pp.ideal_uses | metafield_tag }}
+      {% endif %}
+    </div>
+    <a href="https://www.linenco.co.za/blogs/industries-we-serve" class="lc-profile-btn" target="_blank">
+      Explore Industries We Serve
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+      </svg>
+    </a>
+  </div>
+  {% endif %}
+</section>
+{% endif %}
+
+{%- comment -%} 6. CARE GUIDE {%- endcomment -%}
+{% if fp.care_summary != blank or pp.care_summary != blank %}
+<section class="lc-profile-section lc-care" id="lc-care">
+  <div class="lc-profile-section__split">
+    <div class="lc-profile-section__text">
+      <span class="lc-label">Care Guide</span>
+      <h2 class="lc-profile-section__heading">Caring For Your {{ profile_name }}</h2>
+      <div class="lc-bullets rte">
+        {% if fp.care_summary != blank %}
+          {{ fp.care_summary | metafield_tag }}
+        {% else %}
+          {{ pp.care_summary | metafield_tag }}
+        {% endif %}
+      </div>
+      {% if profile_care_url != blank %}
+        <a href="{{ profile_care_url }}" class="lc-profile-btn" target="_blank">
+          View Full Care Guide
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+    {% if profile_image_3 != blank %}
+    <div class="lc-profile-section__image">
+      <img src="{{ profile_image_3 | image_url: width: 1400 }}" alt="Care guide for {{ profile_name }}" width="1600" height="896" loading="lazy">
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{%- comment -%} 7. HOW TO MEASURE {%- endcomment -%}
+{% if htm != blank %}
+<section class="lc-profile-section lc-how-to-measure" id="lc-how-to-measure">
+  <div class="lc-profile-section__inner lc-htm-wrap">
+    <span class="lc-label">How To Measure</span>
+    {% if htm.title != blank %}
+      <h2 class="lc-profile-section__heading">{{ htm.title }}</h2>
+    {% endif %}
+    {% if htm.intro != blank %}
+      <div class="lc-htm-intro lc-body-text rte">{{ htm.intro | metafield_tag }}</div>
+    {% endif %}
+    {% assign has_steps = false %}
+    {% for i in (1..4) %}
+      {% assign step_title_key = 'step_' | append: i | append: '_title' %}
+      {% assign step_text_key = 'step_' | append: i | append: '_text' %}
+      {% if htm[step_title_key] != blank or htm[step_text_key] != blank %}
+        {% assign has_steps = true %}
+      {% endif %}
+    {% endfor %}
+    {% if has_steps %}
+    <div class="lc-htm-steps">
+      {% for i in (1..4) %}
+        {% assign step_title_key = 'step_' | append: i | append: '_title' %}
+        {% assign step_text_key = 'step_' | append: i | append: '_text' %}
+        {% assign step_image_key = 'step_' | append: i | append: '_image' %}
+        {% assign step_title = htm[step_title_key] %}
+        {% assign step_text = htm[step_text_key] %}
+        {% assign step_image = htm[step_image_key] %}
+        {% if step_title != blank or step_text != blank %}
+        <div class="lc-htm-step">
+          {% if step_image != blank %}
+          <div class="lc-htm-step__image">
+            <img src="{{ step_image | image_url: width: 800 }}" alt="{{ step_title }}" width="800" height="800" loading="lazy">
+          </div>
+          {% endif %}
+          <div class="lc-htm-step__content">
+            <span class="lc-htm-step__number">{{ i }}</span>
+            {% if step_title != blank %}
+              <h3 class="lc-htm-step__title">{{ step_title }}</h3>
+            {% endif %}
+            {% if step_text != blank %}
+              <div class="lc-htm-step__text rte">{{ step_text | metafield_tag }}</div>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% if htm.note != blank %}
+      <div class="lc-htm-note rte">{{ htm.note | metafield_tag }}</div>
+    {% endif %}
+    {% if htm.size_guide_url != blank %}
+      <div class="lc-htm-buttons">
+        {% for url in htm.size_guide_url.value %}
+          <a href="{{ url }}" class="lc-profile-btn" target="_blank">
+            {% if htm.size_guide_url.value.size > 1 %}View Size Guide {{ forloop.index }}{% else %}View Size Guide{% endif %}
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endif %}
+
+{%- comment -%} 8. CONTACT CTA {%- endcomment -%}
+<section class="lc-profile-section lc-contact-cta" id="lc-contact-cta">
+  <div class="lc-contact-cta__inner">
+    <p class="lc-contact-cta__label">We're Here To Help</p>
+    <h2 class="lc-contact-cta__heading">Need Advice?</h2>
+    <p class="lc-contact-cta__text">Our team is on hand to help you find the right linen for your property, project, or home.</p>
+    <div class="lc-contact-cta__buttons">
+      <a href="/pages/contact" class="lc-contact-cta__btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        Contact Us
+      </a>
+      <a href="/pages/trade-registration-form" class="lc-contact-cta__btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        Register for Trade
+      </a>
+      <a href="https://wa.me/+27662918292" class="lc-contact-cta__btn lc-contact-cta__btn--whatsapp" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+  {% endif %}
+
+<style>
+  /* ── ANCHOR NAV ── */
+  .lc-anchor-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #000;
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+  }
+  .lc-anchor-nav__inner {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .lc-anchor-nav__inner::-webkit-scrollbar { display: none; }
+  .lc-anchor-nav__link {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 14px 20px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.89);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+  .lc-anchor-nav__link:hover,
+  .lc-anchor-nav__link.is-active {
+    color: #fff;
+    border-bottom-color: #fff;
+  }
+  .lc-anchor-nav__link--shop {
+    color: rgba(255,255,255,0.95);
+    margin-right: 4px;
+  }
+  .lc-anchor-nav__link--shop:hover { border-bottom-color: transparent; }
+  .lc-anchor-nav__fade {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 52px;
+    background: linear-gradient(to right, transparent, #000 75%);
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 12px;
+    color: #fff;
+    pointer-events: none;
+  }
+
+  /* ── COMPARE STYLES ── */
+  .lc-compare-styles {
+    background: #efefef;
+    border-top: 1px solid rgba(0,0,0,0.35);
+    padding: 36px 0 24px;
+  }
+  .lc-compare-styles__inner {
+    max-width: var(--page-width, 1400px);
+    margin: 0 auto;
+    padding: 0 48px;
+  }
+  .lc-compare-styles__heading {
+    font-size: 1.2rem;
+    font-weight: 550;
+    color: rgba(0,0,0,0.85);
+    margin: 0 0 6px;
+    text-align: center;
+  }
+  .lc-compare-styles__intro {
+    font-size: 0.8rem;
+    color: rgba(0,0,0,0.65);
+    text-align: center;
+    margin: 0 auto 24px;
+    line-height: 1.5;
+    max-width: 660px;
+  }
+  .lc-compare-styles__track {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+  }
+  .lc-compare-styles__track::-webkit-scrollbar { display: none; }
+  .lc-compare-styles__item {
+    flex-shrink: 0;
+    width: 240px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scroll-snap-align: start;
+  }
+  .lc-compare-styles__img-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 2px;
+    cursor: zoom-in;
+    background: rgba(0,0,0,0.04);
+  }
+  .lc-compare-styles__img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+  }
+  .lc-compare-styles__img-wrap:hover img { transform: scale(1.05); }
+  .lc-compare-styles__zoom-icon {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .lc-compare-styles__img-wrap:hover .lc-compare-styles__zoom-icon { opacity: 1; }
+  .lc-compare-styles__label {
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: rgba(0,0,0,0.80);
+    text-align: center;
+    margin: 0;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── LIGHTBOX ── */
+  .lc-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.94);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .lc-lightbox.is-open { display: flex; }
+  .lc-lightbox__img {
+    max-width: 90vw;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 2px;
+  }
+  .lc-lightbox__label {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .lc-lightbox__close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    line-height: 1;
+  }
+  .lc-lightbox__close:hover { opacity: 1; }
+
+  /* ── COLOUR STRIP ── */
+  .lc-colour-strip .lc-profile-section__inner { text-align: center; }
+  .lc-colour-strip__track {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 12px;
+    margin-top: 20px;
+  }
+  .lc-colour-strip__track::-webkit-scrollbar { display: none; }
+  .lc-colour-strip__item {
+    flex-shrink: 0;
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scroll-snap-align: start;
+  }
+  .lc-colour-strip__img-wrap {
+    width: 100%;
+    aspect-ratio: 1:1;
+    overflow: none;
+    border-radius: 2px;
+  }
+  .lc-colour-strip__img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .lc-colour-strip__label {
+    font-size: 0.85rem;
+    font-weight: 550;
+    letter-spacing: 0.07em;
+    color: rgba(0,0,0,0.8);
+    text-align: center;
+    margin: 0;
+  }
+  .lc-colour-strip__shop-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.81);
+    text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.61);
+    padding-bottom: 2px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+    margin: 0 auto;
+  }
+  .lc-colour-strip__shop-btn:hover { color: #000; border-color: #000; }
+
+  /* ── LABEL ── */
+  .lc-label {
+    display: inline-block;
+    background: #000;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 550;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+
+  /* ── PROFILE SECTIONS ── */
+  .lc-profile-section {
+    width: 100%;
+    padding: 12px 0 16px;
+    border-top: 1px solid rgba(0,0,0,0.35);
+  }
+  .lc-profile-section__inner {
+    max-width: var(--page-width, 1400px);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .lc-profile-section__heading {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0 0 16px;
+    color: rgba(0, 0, 0, 0.89);
+    line-height: 1.3;
+  }
+  .lc-profile-section__subtitle {
+    font-size: 0.82rem;
+    color: rgba(0, 0, 0, 0.89);
+    font-style: italic;
+    margin: -8px 0 16px;
+    line-height: 1.4;
+  }
+  .lc-profile-section__split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: stretch;
+    max-width: var(--page-width, 1400px);
+    margin: 0 auto;
+  }
+  .lc-profile-section__image {
+    width: 100%;
+    overflow: hidden;
+    min-height: 320px;
+  }
+  .lc-profile-section__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+  .lc-profile-section__text { padding: 36px 40px 24px; }
+
+  /* ── BODY TEXT + BULLETS ── */
+  .lc-body-text p,
+  .lc-body-text li {
+    font-size: 0.82rem !important;
+    color: rgba(0,0,0,0.68) !important;
+    line-height: 1.6 !important;
+    margin-bottom: 6px !important;
+  }
+  .lc-bullets ul,
+  .lc-bullets ol {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 0 10px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+  }
+  .lc-bullets li {
+    display: block !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    font-size: 0.82rem !important;
+    color: rgba(0,0,0,0.68) !important;
+    line-height: 1.5 !important;
+    white-space: normal !important;
+    flex-wrap: nowrap !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    position: relative !important;
+  }
+  .lc-bullets li p {
+    display: inline !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .lc-bullets li::before {
+    content: '' !important;
+    width: 4px !important;
+    height: 4px !important;
+    min-width: 4px !important;
+    background: rgba(0,0,0,0.5) !important;
+    border-radius: 50% !important;
+    margin-top: 6px !important;
+    flex-shrink: 0 !important;
+  }
+  .lc-bullets li strong {
+    font-weight: 600 !important;
+    color: rgba(0,0,0,0.8) !important;
+    white-space: normal !important;
+  }
+
+  /* ── HOW TO MEASURE ── */
+  .lc-htm-wrap { text-align: center; }
+  .lc-htm-intro { max-width: 720px; margin: 0 auto 32px; text-align: left; }
+  .lc-htm-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+    border-top: 1px solid rgba(0,0,0,0.06);
+    padding-top: 24px;
+  }
+  .lc-htm-step { display: flex; flex-direction: column; gap: 12px; }
+  .lc-htm-step__image {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 2px;
+    background: rgba(0,0,0,0.04);
+  }
+  .lc-htm-step__image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .lc-htm-step__content { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 4px; }
+  .lc-htm-step__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: #000;
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 50%;
+    margin-bottom: 4px;
+  }
+  .lc-htm-step__title { font-size: 0.85rem; font-weight: 600; color: rgba(0,0,0,0.82); margin: 0 0 6px; }
+  .lc-htm-step__text ul,
+  .lc-htm-step__text ol {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: inline-block !important;
+    text-align: left !important;
+  }
+  .lc-htm-step__text li {
+    display: flex !important;
+    align-items: baseline !important;
+    gap: 6px !important;
+    font-size: 0.78rem !important;
+    color: rgba(0,0,0,0.65) !important;
+    line-height: 1.4 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    min-height: 0 !important;
+  }
+  .lc-htm-step__text li::before {
+    content: '' !important;
+    width: 3px !important;
+    height: 3px !important;
+    min-width: 3px !important;
+    background: rgba(0,0,0,0.45) !important;
+    border-radius: 50% !important;
+    margin-top: 6px !important;
+    flex-shrink: 0 !important;
+  }
+  .lc-htm-step__text li:not(:has(*)):not(:has(br)):empty { display: none !important; }
+  .lc-htm-step__text p {
+    font-size: 0.78rem !important;
+    color: rgba(0,0,0,0.65) !important;
+    line-height: 1.4 !important;
+    margin: 0 0 4px !important;
+    text-align: center !important;
+  }
+  .lc-htm-note {
+    margin: 16px auto;
+    max-width: 1400px;
+    padding: 12px 16px;
+    background: rgba(0,0,0,0.03);
+    font-size: 0.8rem;
+    font-weight: 560;
+    font-style: italic;
+    color: rgba(0,0,0,0.80);
+    line-height: 1.5;
+    text-align: left;
+  }
+  .lc-htm-note p {
+    margin-bottom: 12px;
+  }
+  
+  .lc-htm-buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 24px; }
+
+  /* ── PROFILE BUTTON ── */
+  .lc-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 550;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #000;
+    padding: 10px 20px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    margin-top: 8px;
+  }
+  .lc-profile-btn:hover { background: rgba(0,0,0,0.8); }
+
+  /* ── CONTACT CTA ── */
+  .lc-contact-cta {
+    background: #000 !important;
+    border-top: none !important;
+    padding: 56px 0 48px !important;
+  }
+  .lc-contact-cta__inner {
+    max-width: var(--page-width, 1400px);
+    margin: 0 auto;
+    padding: 0 48px;
+    text-align: center;
+  }
+  .lc-contact-cta__label {
+    font-size: 0.65rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.75);
+    margin: 0 0 10px;
+  }
+  .lc-contact-cta__heading {
+    font-size: clamp(1.3rem, 3vw, 2rem);
+    font-weight: 550;
+    color: #fff;
+    margin: 0 0 12px;
+  }
+  .lc-contact-cta__text {
+    font-size: 0.90rem;
+    color: rgba(255, 255, 255, 0.89);
+    max-width: 600px;
+    margin: 0 auto 28px;
+    line-height: 1.6;
+  }
+  .lc-contact-cta__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .lc-contact-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    font-weight: 550;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ffffffff;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.45);
+    padding: 12px 24px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+  .lc-contact-cta__btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
+  .lc-contact-cta__btn--whatsapp { background: #25D366; color: #fff; border: none;}
+  .lc-contact-cta__btn--whatsapp:hover { background: #1ebe5d; }
+
+  /* ── MOBILE ── */
+  @media (max-width: 749px) {
+    .lc-anchor-nav { position: sticky; top: 0; }
+    .lc-anchor-nav__inner {
+      justify-content: flex-start;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(255,255,255,0.4) transparent;
+    }
+    .lc-anchor-nav__inner::-webkit-scrollbar { display: block; height: 2px; }
+    .lc-anchor-nav__inner::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); border-radius: 2px; }
+    .lc-anchor-nav__inner::-webkit-scrollbar-track { background: transparent; }
+    .lc-anchor-nav__fade { display: none; }
+    .lc-anchor-nav__link { padding: 12px 14px; font-size: 0.62rem; }
+    .lc-compare-styles { padding: 24px 0; }
+    .lc-compare-styles__inner { padding: 0 10px; }
+    .lc-compare-styles__track { justify-content: center; }
+    .lc-compare-styles__item { width: 160px; }
+    .lc-colour-strip__track { justify-content: center; }
+    .lc-colour-strip__item { width: 150px; }
+    .lc-profile-section { padding: 0 0 16px; }
+    .lc-profile-section__inner { padding: 0 16px; }
+    .lc-profile-section__split { grid-template-columns: 1fr; }
+    .lc-profile-section__image { min-height: 240px; max-height: 320px; order: -1; }
+    .lc-profile-section__text { padding: 20px 16px 16px; }
+    .lc-profile-section__heading { font-size: 1rem; margin-bottom: 12px; }
+    .lc-htm-steps { grid-template-columns: 1fr 1fr; gap: 16px; }
+    .lc-contact-cta { padding: 40px 0 32px !important; }
+    .lc-contact-cta__inner { padding: 0 16px; }
+    .lc-contact-cta__buttons { flex-direction: row; justify-content: center; flex-wrap: wrap; }
+    .lc-bullets li { font-size: 0.8rem !important; }
+    .lc-body-text p,
+    .lc-body-text li { font-size: 0.8rem !important; }
+  }
+</style>
+
+<script>
+(function() {
+  var nav = document.getElementById('lc-anchor-nav');
+  var shopNow = nav ? nav.querySelector('.lc-anchor-nav__link--shop') : null;
+  if (shopNow) {
+    shopNow.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+  var links = document.querySelectorAll('.lc-anchor-nav__link:not(.lc-anchor-nav__link--shop)');
+  var sections = [];
+  links.forEach(function(link) {
+    var href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      var el = document.getElementById(href.replace('#', ''));
+      if (el) sections.push({ el: el, link: link });
+    }
+  });
+  if (!sections.length) return;
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s) {
+      if (s.el.offsetTop <= scrollY) current = s;
+    });
+    links.forEach(function(l) { l.classList.remove('is-active'); });
+    if (current) current.link.classList.add('is-active');
+  }, { passive: true });
+
+  var lightbox = document.getElementById('lc-lightbox');
+  var lbImg = document.getElementById('lc-lightbox-img');
+  var lbLabel = document.getElementById('lc-lightbox-label');
+  var lbClose = document.getElementById('lc-lightbox-close');
+  function openLightbox(src, label) {
+    lbImg.src = src;
+    lbImg.alt = label || '';
+    lbLabel.textContent = label || '';
+    lightbox.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+  document.querySelectorAll('.lc-compare-styles__img-wrap').forEach(function(el) {
+    el.addEventListener('click', function() {
+      openLightbox(el.dataset.zoom, el.dataset.label);
+    });
+  });
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lightbox) lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Fabric Or Product Profile",
+  "settings": []
+}
+{% endschema %}

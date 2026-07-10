@@ -1,0 +1,159 @@
+{% assign location = page.metafields.custom.hotel_linen_location.value %}
+
+{% if location %}
+
+<div class="hosp-hero">
+  {% if location.hero_image %}
+    <div class="hosp-hero__bg" style="background-image: url('{{ location.hero_image | image_url: width: 1600 }}');"></div>
+  {% else %}
+    <div class="hosp-hero__bg hosp-hero__bg--default"></div>
+  {% endif %}
+
+  <div class="hosp-hero__overlay">
+    <div class="hosp-hero__content page-width">
+
+      {% if location.hotel_region %}
+        <p class="hosp-hero__region">{{ location.hotel_region }}, South Africa</p>
+      {% endif %}
+
+      {% if location.location_name %}
+        <h1 class="hosp-hero__title">Hotel Linen {{ location.location_name }}</h1>
+      {% endif %}
+
+      {% if location.intro_text %}
+        <div class="hosp-hero__intro">
+          {{ location.intro_text | metafield_tag }}
+        </div>
+      {% endif %}
+
+      <a href="/pages/trade-registration-form" class="hosp-hero__cta">
+        Apply for Trade Pricing
+      </a>
+
+    </div>
+  </div>
+</div>
+
+{% if location.seo_blub %}
+  <span class="hosp-hero__seo" aria-hidden="true">{{ location.seo_blub }}</span>
+{% endif %}
+
+{% endif %}
+
+{% stylesheet %}
+.hosp-hero {
+  position: relative;
+  width: 100%;
+  min-height: 65vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hosp-hero__bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 0;
+}
+
+.hosp-hero__bg--default {
+  background-color: #1a1a1a;
+}
+
+.hosp-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.08) 0%,
+    rgba(0,0,0,0.30) 100%
+  );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.hosp-hero__content {
+  color: #fff;
+  padding: 4rem 2rem;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.hosp-hero__region {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  margin-bottom: 0.5rem;
+  opacity: 0.85;
+}
+
+.hosp-hero__title {
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  font-weight: 500;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.hosp-hero__intro p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  opacity: 0.95;
+  margin-bottom: 1.5rem;
+  color: #fff;
+}
+
+.hosp-hero__cta {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border: 1px solid #fff;
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  background: transparent;
+  transition: background 0.25s, color 0.25s;
+}
+
+.hosp-hero__cta:hover {
+  background: #fff;
+  color: #1a1a1a;
+}
+
+.hosp-hero__seo {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Hospitality Location Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "fallback_image",
+      "label": "Default background image",
+      "info": "Used when no hero image is set on the metaobject entry"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hospitality Location Hero"
+    }
+  ]
+}
+{% endschema %}

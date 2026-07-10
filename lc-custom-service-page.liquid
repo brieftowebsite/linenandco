@@ -1,0 +1,647 @@
+{%- liquid
+  assign service = section.settings.service
+
+  case service
+    when 'custom_embroidery'
+      assign hero_image_name = 'linen-and-co-custom-embroidery-hero-5.webp'
+      assign eyebrow = 'Custom finishing'
+      assign heading = 'Custom embroidery'
+      assign intro = 'Durable, professional embroidery for hospitality, medical and luxury linen programmes. Add logos, monograms, room names, numbers or operational markings to towels, robes, bedding and table linen.'
+      assign cta_heading = 'Ready to embroider your linens?'
+      assign cta_text = 'Send us your artwork, product list and quantities. We will guide placement, sizing, thread colours and quote the best route for your project.'
+      assign primary_link = '/pages/quotation-request'
+      assign primary_label = 'Request a quote'
+      assign secondary_link = '/pages/contact'
+      assign secondary_label = 'Contact us'
+      assign meta_data = 'Best for||Hotels, lodges, spas, medical linen and private hospitality projects.^^What to send||Artwork, product list, quantities and preferred placement.^^Finish||Machine embroidery made for repeated commercial laundering.'
+    when 'custom_branding'
+      assign hero_image_name = 'white-linen-with-custom-lable_and_braning-hero-landscape.webp'
+      assign eyebrow = 'Hospitality and medical linen'
+      assign heading = 'Custom labels and branding'
+      assign intro = 'Practical branding that helps linen look professional, stay organised and move smoothly through housekeeping, laundry and guest-facing operations.'
+      assign cta_heading = 'Ready to brand your linens?'
+      assign cta_text = 'Tell us what you need labelled, marked or branded and we will recommend the best finish for your quantity, fabric and laundering routine.'
+      assign primary_link = '/pages/quotation-request'
+      assign primary_label = 'Request a quote'
+      assign secondary_link = '/pages/contact'
+      assign secondary_label = 'Contact us'
+      assign meta_data = 'Best for||Operational linen, guest-facing ranges and medical or hospitality sorting.^^Options||Labels, size markers, colour coding, screen printing and heat transfer.^^What to send||Product list, quantities, use case and any branding files.'
+    when 'custom_sizing'
+      assign hero_image_name = 'custom-sizing-banner-linen-and-co.webp'
+      assign eyebrow = 'Made to your measurements'
+      assign heading = 'Custom sizing'
+      assign intro = 'Made-to-measure bedding, towels, table linen, curtains and blinds for spaces that need a proper fit. Send measurements and product requirements, and we will help confirm the best size before production.'
+      assign cta_heading = 'Ready to order custom sizes?'
+      assign cta_text = 'Send your measurements, product list and preferred fabric. We will confirm details and pricing before anything goes into production.'
+      assign primary_link = '/pages/quotation-request'
+      assign primary_label = 'Request a quote'
+      assign secondary_link = '/pages/size-guides'
+      assign secondary_label = 'View size guides'
+      assign meta_data = 'Best for||Non-standard beds, tables, windows, hospitality rooms and project specifications.^^What to send||Measurements, quantity, product type and preferred fabric.^^Confirmed before making||Sizing, pricing, fabric and production details.'
+    when 'satin_stitch'
+      assign hero_image_name = 'white-oxford-satin-stitch-stacked-pillow_cases-hero-landscape-linen-and-co.webp'
+      assign eyebrow = 'Decorative linen finish'
+      assign heading = 'Satin stitch'
+      assign intro = 'A clean, refined stitch detail for hospitality bedding and luxury interiors. Choose the pillowcase style, fabric colour and satin-stitch colour for a polished made-to-order finish.'
+      assign cta_heading = 'Ready to satin stitch your linens?'
+      assign cta_text = 'Tell us the style, fabric, stitch colour and quantities you need. We can help align the finish with your room scheme or brand.'
+      assign primary_link = '/pages/quotation-request'
+      assign primary_label = 'Request a quote'
+      assign secondary_link = '/pages/contact'
+      assign secondary_label = 'Contact us'
+      assign meta_data = 'Best for||Polished bed linen ranges, boutique rooms and hospitality schemes.^^Choose||Pillowcase style, fabric colour and stitch colour.^^Finish||A tailored stitched border produced as a made-to-order detail.'
+    else
+      assign hero_image_name = 'white--luxury-percale-satin-stitch-and-emabroidery-linen-and-co.webp'
+      assign eyebrow = 'Hospitality branding'
+      assign heading = 'Hotel branding'
+      assign intro = 'Satin stitch, embroidery, labels and branding options for hospitality and medical linen programmes that need a professional, consistent finish.'
+      assign cta_heading = 'Need help choosing a finish?'
+      assign cta_text = 'Share your requirements and we will recommend the best finish for your linen, quantity, budget and laundering routine.'
+      assign primary_link = '/pages/quotation-request'
+      assign primary_label = 'Request a quote'
+      assign secondary_link = '/pages/contact'
+      assign secondary_label = 'Contact us'
+      assign meta_data = 'Includes||Satin stitch, embroidery, labels and operational branding.^^Best for||Hospitality, medical, lodge and corporate linen programmes.^^Start with||Your product list, quantities and the finish you are considering.'
+  endcase
+
+  assign hero_image = images[hero_image_name]
+-%}
+
+<section class="lc-service-page lc-service-page--{{ service | handleize }} color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="lc-service-page__hero">
+    {%- if hero_image != blank -%}
+      {{ hero_image | image_url: width: 2200 | image_tag: loading: 'eager', sizes: '100vw', widths: '800,1200,1600,2000,2200', class: 'lc-service-page__hero-image' }}
+    {%- endif -%}
+    <div class="lc-service-page__hero-copy">
+      <p>{{ eyebrow }}</p>
+      <h1>{{ heading }}</h1>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="lc-service-page__intro">
+      <div class="lc-service-page__lead">
+        <p class="lc-service-page__eyebrow">Overview</p>
+        <p>{{ intro }}</p>
+      </div>
+      <dl class="lc-service-page__facts">
+        {%- assign meta_items = meta_data | strip | split: '^^' -%}
+        {%- for item in meta_items -%}
+          {%- if item contains '||' -%}
+            {%- assign parts = item | strip | split: '||' -%}
+            <div>
+              <dt>{{ parts[0] | strip }}</dt>
+              <dd>{{ parts[1] | strip }}</dd>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </dl>
+    </div>
+
+    {%- case service -%}
+      {%- when 'custom_embroidery' -%}
+        {%- capture gallery_data -%}
+thaba-entle-blakc-logo-on-white-towelling-gown.webp||Logo embroidered on a white towelling gown^^
+ama-casa-cottages-white-logo-on-grey-waffle-weave.webp||Logo embroidered on grey waffle weave^^
+when-away-logo-on-white-towelling.webp||Logo embroidered on white towelling^^
+ringer-game-lodge-logo-on-stone-towelling.webp||Logo embroidered on stone towelling^^
+Ilanga-lodge-logo-on-white-waffle-weave-bathrobe.webp||Logo embroidered on a white waffle bathrobe^^
+s-logo-on-white-towelling.webp||Custom logo embroidery on white towelling
+        {%- endcapture -%}
+        {%- capture card_data -%}
+logo-embroidery-linen-and-co.webp||Logo embroidery||Embroider a brand mark, crest or custom design directly onto linen for a premium finish that withstands commercial laundering.^^
+monogram-and-initial-embroidery-linen-and-co.webp||Monograms and initials||Add a personal or corporate detail for boutique hotels, private homes, spas and bespoke hospitality settings.^^
+room-names-and-numbers-embroidery-linen-and-co.webp||Room names and numbers||Use embroidered room names, numbers or department codes to simplify identification for housekeeping and laundry teams.^^
+placement-and-size-embroidery-linen-and-co.webp||Placement and sizing||We guide corner placements, robe chest placement, towel positioning and stitch sizing so the detail looks balanced and lasts.
+        {%- endcapture -%}
+      {%- when 'custom_branding' -%}
+        {%- capture gallery_data -%}{%- endcapture -%}
+        {%- capture card_data -%}
+white-bed-linen-with-black-lable-with-white-linen-and-co-logo.webp||Labels||Custom woven, printed or embroidered labels sewn into linen for a professional brand finish.^^
+white-bed-linen-with-size-lables-linen-and-co.webp||Size labels||Practical size labels help housekeeping and laundry teams identify linen quickly and accurately.^^
+white-bed-linen-with-plain-colour-lables-linen-and-co-landscape.webp||Colour coding||Colour-coded labels and markings make room, department and size sorting simpler for busy operations.^^
+white-medical-fitted-sheet-with-screen-printing-linen-and-co-landscape.webp||Screen printing||A durable option for bulk medical, utility and high-turnover linen that needs clear branding or identification.^^
+white-bed-sheet-with-heat-transfer-linen-and-co-landscape.webp||Heat transfer||A flexible option for smaller runs, simple branding, dates, names or utility marking.
+        {%- endcapture -%}
+      {%- when 'custom_sizing' -%}
+        {%- capture gallery_data -%}{%- endcapture -%}
+        {%- capture card_data -%}
+white-bed-linen-custom-sizing-linen-and-co.webp||Bedding||Duvet covers, fitted sheets, flat sheets and pillowcases made to suit non-standard sizing.^^
+towels-custom-sizing-linen-and-co.webp||Towels||Bath towels, hand towels and bath mats made to your preferred dimensions.^^
+grey-curtains-custom-sizing-linen-and-co.webp||Curtains||Custom curtains tailored to your window measurements, fullness and finish.^^
+roller-blind-custom-sizing-linen-and-co.webp||Blinds||Made-to-measure blinds for a cleaner fit and better light control.^^
+white-table-linen-custom-sizing-linen-and-co.webp||Table linen||Tablecloths, runners and napkins sized for your table, venue or service setup.
+        {%- endcapture -%}
+        {%- capture process_data -%}
+Measure||Send mattress, window, table or product dimensions with any required drop length or finish notes.^^
+Confirm||We check sizing, fabric, quantities, pricing and production details before manufacture.^^
+Receive||Your made-to-measure linen is produced to specification and delivered once complete.
+        {%- endcapture -%}
+      {%- when 'satin_stitch' -%}
+        {%- capture gallery_data -%}{%- endcapture -%}
+        {%- capture card_data -%}
+pillow-case-white-oxford-linen-and-co.webp||Oxford plain||Classic oxford pillowcase styling with clean edges and hotel-ready presentation.^^
+pillow-case-white-oxford-grey-one-row-satin-stitch-linen-and-co.webp||Oxford one row||A single satin stitch row for subtle, refined detail.^^
+pillow-case-white-oxford-grey-two-row-satin-stitch-linen-and-co.webp||Oxford two row||Two rows of satin stitch for a stronger decorative border.^^
+pillow-case-white-plain-linen-and-co.webp||Plain pillowcase||A simple plain pillowcase base for a clean linen scheme.^^
+pillow-case-white-plain-with-grey-two-row-satin-stitch-linen-and-co.webp||Plain with stitch||Plain pillowcase styling with a more defined satin stitch detail.^^
+white-fabric-for-choose-your-colour-linen-and-co-1.webp||White fabric||Crisp, classic and fresh for hospitality rooms.^^
+cream-fabric-for-choose-your-colour-linen-and-co-1.webp||Cream fabric||Warm, soft and inviting for neutral interiors.^^
+stone-fabric-for-choose-your-colour-linen-and-co.webp||Stone fabric||Grounded, modern and practical.^^
+grey-fabric-for-choose-your-colour-linen-and-co.webp||Grey fabric||Cool, contemporary and versatile.^^
+duck-egg-fabric-for-choose-your-colour-linen-and-co-1.webp||Duck egg fabric||Calm, fresh and subtle for softer room schemes.^^
+close-up-white-satin-stitch-on-white-fabric-linen-and-co-1.webp||White satin stitch||A tonal finish for discreet luxury.^^
+close-up-cream-satin-stitch-on-white-fabric-linen-and-co-1.webp||Cream satin stitch||A warm stitch detail for soft contrast.^^
+close-up-stone-satin-stitch-on-white-fabric-linen-and-co-1.webp||Stone satin stitch||A neutral stitch detail with practical elegance.^^
+close-up-grey-satin-stitch-on-white-fabric-linen-and-co-1.webp||Grey satin stitch||A clean, modern contrast.^^
+close-up-duck-egg-satin-stitch-on-white-fabric-linen-and-co-1.webp||Duck egg satin stitch||A gentle accent colour for softer schemes.
+        {%- endcapture -%}
+      {%- else -%}
+        {%- capture gallery_data -%}{%- endcapture -%}
+        {%- capture card_data -%}
+white-oxford-satin-stitch-pillow-case-linen-and-co.webp||Satin stitch||A refined stitch detail for bed linen in hospitality and luxury interiors.||/pages/satin-stitch||View satin stitch options^^
+white-embroided-bathrobe-and-towel-linen-and-co.webp||Embroidery||Logos, monograms, room numbers and text embroidered onto bed linen, towels, robes and table linen.||/pages/custom-embroidery||View embroidery^^
+linen-and-co-labels-and-branding-cream-linen.webp||Labels and branding||Labels, screen printing and heat transfer options for operational and branded linen.||/pages/custom-labels-branding||View branding options
+        {%- endcapture -%}
+    {%- endcase -%}
+
+    {%- assign gallery_items = gallery_data | strip | split: '^^' -%}
+    {%- if gallery_data != blank -%}
+      <div class="lc-service-page__gallery" aria-label="Examples of completed work">
+        {%- for item in gallery_items -%}
+          {%- if item contains '||' -%}
+            {%- assign parts = item | strip | split: '||' -%}
+            {%- assign image_name = parts[0] | strip -%}
+            {%- assign alt_text = parts[1] | strip -%}
+            {%- assign gallery_image = images[image_name] -%}
+            {%- if gallery_image != blank -%}
+              <figure>
+                {{ gallery_image | image_url: width: 760 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 16vw, (min-width: 700px) 32vw, 50vw', widths: '300,480,640,760', alt: alt_text }}
+              </figure>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="lc-service-page__section-heading">
+      <p class="lc-service-page__eyebrow">
+        {%- if service == 'satin_stitch' -%}
+          Choose your finish
+        {%- elsif service == 'custom_sizing' -%}
+          What we customise
+        {%- else -%}
+          Options
+        {%- endif -%}
+      </p>
+      <h2>
+        {%- if service == 'satin_stitch' -%}
+          Choose the satin stitch detail.
+        {%- elsif service == 'custom_sizing' -%}
+          What we can make to size.
+        {%- elsif service == 'custom_embroidery' -%}
+          Embroidery options.
+        {%- elsif service == 'custom_branding' -%}
+          Branding and label options.
+        {%- else -%}
+          Ways to finish your linen.
+        {%- endif -%}
+      </h2>
+    </div>
+
+    <div class="lc-service-page__cards{% if service == 'satin_stitch' or service == 'custom_sizing' %} lc-service-page__cards--compact{% endif %}" role="list">
+      {%- assign card_items = card_data | strip | split: '^^' -%}
+      {%- for item in card_items -%}
+        {%- if item contains '||' -%}
+          {%- assign parts = item | strip | split: '||' -%}
+          {%- assign image_name = parts[0] | strip -%}
+          {%- assign card_title = parts[1] | strip -%}
+          {%- assign card_text = parts[2] | strip -%}
+          {%- assign card_link = parts[3] | strip -%}
+          {%- assign card_link_text = parts[4] | strip -%}
+          {%- assign card_image = images[image_name] -%}
+          <article class="lc-service-page__card" role="listitem">
+            {%- if card_image != blank -%}
+              <div class="lc-service-page__card-media">
+                {{ card_image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 31vw, (min-width: 700px) 48vw, 100vw', widths: '360,540,720,900' }}
+              </div>
+            {%- endif -%}
+            <div class="lc-service-page__card-copy">
+              <h3>{{ card_title }}</h3>
+              <p>{{ card_text }}</p>
+              {%- if card_link != blank and card_link_text != blank -%}
+                <a href="{{ card_link }}">{{ card_link_text }}</a>
+              {%- endif -%}
+            </div>
+          </article>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- if process_data != blank -%}
+      <div class="lc-service-page__process" role="list">
+        {%- assign process_items = process_data | strip | split: '^^' -%}
+        {%- for item in process_items -%}
+          {%- assign parts = item | strip | split: '||' -%}
+          <article role="listitem">
+            <span>{{ forloop.index | prepend: '0' }}</span>
+            <h3>{{ parts[0] | strip }}</h3>
+            <p>{{ parts[1] | strip }}</p>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="lc-service-page__cta">
+      <div>
+        <p class="lc-service-page__eyebrow">Project support</p>
+        <h2>{{ cta_heading }}</h2>
+        <p>{{ cta_text }}</p>
+      </div>
+      <div class="lc-service-page__actions">
+        <a href="{{ primary_link }}">{{ primary_label }}</a>
+        <a href="{{ secondary_link }}">{{ secondary_label }}</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .lc-service-page {
+    padding-block-end: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__hero {
+    position: relative;
+    height: clamp(18rem, 30vw, 30rem);
+    overflow: hidden;
+    background: rgb(var(--text-color) / 0.08);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgb(0 0 0 / 0.42), rgb(0 0 0 / 0.08));
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__hero-copy {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: grid;
+    align-content: end;
+    gap: 0.65rem;
+    width: min(100%, 96rem);
+    margin-inline: auto;
+    padding: clamp(1.4rem, 4vw, 3.5rem);
+    color: #fff;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__hero-copy p,
+  #shopify-section-{{ section.id }} .lc-service-page__eyebrow {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__hero-copy h1 {
+    max-width: 12ch;
+    margin: 0;
+    font-size: clamp(2.35rem, 4.7vw, 5rem);
+    line-height: 0.96;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__intro {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(18rem, 1.1fr);
+    gap: clamp(1.4rem, 4vw, 4rem);
+    align-items: start;
+    padding-block: clamp(1.75rem, 4vw, 3rem);
+    border-bottom: 1px solid rgb(var(--text-color) / 0.12);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__lead {
+    display: grid;
+    gap: 0.8rem;
+    max-width: 54rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__section-heading {
+    display: grid;
+    gap: 0.7rem;
+    max-width: 54rem;
+    padding-block: clamp(2rem, 4vw, 3rem) clamp(1rem, 2vw, 1.4rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__section-heading h2,
+  #shopify-section-{{ section.id }} .lc-service-page__cta h2 {
+    margin: 0;
+    font-size: clamp(1.55rem, 2.8vw, 2.65rem);
+    line-height: 1.04;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__lead p:not(.lc-service-page__eyebrow),
+  #shopify-section-{{ section.id }} .lc-service-page__section-heading p:not(.lc-service-page__eyebrow),
+  #shopify-section-{{ section.id }} .lc-service-page__cta p:not(.lc-service-page__eyebrow) {
+    max-width: 50rem;
+    margin: 0;
+    color: rgb(var(--text-color) / 0.72);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__eyebrow {
+    color: rgb(var(--text-color) / 0.56);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__facts {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin: 0;
+    border: 1px solid rgb(var(--text-color) / 0.12);
+    background: rgb(var(--text-color) / 0.12);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__facts div {
+    display: grid;
+    gap: 0.45rem;
+    min-width: 0;
+    padding: 1rem;
+    background: rgb(var(--background));
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__facts dt {
+    color: rgb(var(--text-color) / 0.58);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__facts dd {
+    margin: 0;
+    color: rgb(var(--text-color) / 0.78);
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__gallery {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin-block-start: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__gallery figure {
+    margin: 0;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: rgb(var(--text-color) / 0.06);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__gallery img,
+  #shopify-section-{{ section.id }} .lc-service-page__card-media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(0.85rem, 1.5vw, 1.1rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__cards--compact {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__card {
+    display: grid;
+    border: 1px solid rgb(var(--text-color) / 0.12);
+    background: rgb(var(--background));
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__card-media {
+    aspect-ratio: 16 / 11;
+    overflow: hidden;
+    background: rgb(var(--text-color) / 0.06);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__cards--compact .lc-service-page__card-media {
+    aspect-ratio: 4 / 3;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__card-copy {
+    display: grid;
+    gap: 0.55rem;
+    align-content: start;
+    padding: 1rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__card-copy h3,
+  #shopify-section-{{ section.id }} .lc-service-page__process h3 {
+    margin: 0;
+    font-size: clamp(1rem, 1.15vw, 1.18rem);
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__card-copy p,
+  #shopify-section-{{ section.id }} .lc-service-page__process p {
+    margin: 0;
+    color: rgb(var(--text-color) / 0.7);
+    font-size: 0.92rem;
+    line-height: 1.52;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__card-copy a {
+    width: fit-content;
+    color: inherit;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__process {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin-block-start: clamp(1.25rem, 3vw, 2.5rem);
+    border: 1px solid rgb(var(--text-color) / 0.12);
+    background: rgb(var(--text-color) / 0.12);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__process article {
+    display: grid;
+    gap: 0.65rem;
+    padding: 1.35rem;
+    background: rgb(var(--background));
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__process span {
+    color: rgb(var(--text-color) / 0.5);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__cta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: clamp(1.25rem, 4vw, 3rem);
+    align-items: center;
+    margin-block-start: clamp(2rem, 4vw, 3rem);
+    border-block: 1px solid rgb(var(--text-color) / 0.14);
+    padding-block: clamp(1.25rem, 3vw, 2rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__cta > div:first-child {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__actions {
+    display: grid;
+    gap: 0.65rem;
+    min-width: min(26rem, 34vw);
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__actions a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.8rem;
+    border: 1px solid rgb(var(--text-color));
+    padding: 0.75rem 1rem;
+    background: rgb(var(--text-color));
+    color: rgb(var(--background));
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-service-page__actions a:nth-child(2) {
+    background: transparent;
+    color: rgb(var(--text-color));
+  }
+
+  @media screen and (max-width: 1099px) {
+    #shopify-section-{{ section.id }} .lc-service-page__gallery {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .lc-service-page__cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .lc-service-page__cards--compact {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .lc-service-page__intro,
+    #shopify-section-{{ section.id }} .lc-service-page__cta {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .lc-service-page__actions {
+      min-width: 0;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .lc-service-page__hero {
+      height: 22rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-service-page__hero::after {
+      background: linear-gradient(0deg, rgb(0 0 0 / 0.54), rgb(0 0 0 / 0.12));
+    }
+
+    #shopify-section-{{ section.id }} .lc-service-page__gallery {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    #shopify-section-{{ section.id }} .lc-service-page__cards,
+    #shopify-section-{{ section.id }} .lc-service-page__process,
+    #shopify-section-{{ section.id }} .lc-service-page__facts,
+    #shopify-section-{{ section.id }} .lc-service-page__cta {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .lc-service-page__cards--compact {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "LC custom service page",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "service",
+      "label": "Service",
+      "options": [
+        {
+          "value": "branding_overview",
+          "label": "Branding overview"
+        },
+        {
+          "value": "custom_embroidery",
+          "label": "Custom embroidery"
+        },
+        {
+          "value": "custom_branding",
+          "label": "Custom labels and branding"
+        },
+        {
+          "value": "custom_sizing",
+          "label": "Custom sizing"
+        },
+        {
+          "value": "satin_stitch",
+          "label": "Satin stitch"
+        }
+      ],
+      "default": "custom_embroidery"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC custom service page"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,295 @@
+{%- liquid
+  assign heading = section.settings.heading | default: 'Best Sellers'
+  assign intro = section.settings.intro
+  assign tabs_count = 0
+
+  for block in section.blocks
+    if block.settings.collection != blank and block.settings.collection.products_count > 0
+      assign tabs_count = tabs_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if tabs_count > 0 -%}
+  <section id="lc-home-bestsellers-{{ section.id }}" class="lc-home-bestsellers lc-home-bestsellers--desktop-{{ section.settings.products_per_row_desktop }} lc-home-bestsellers--mobile-{{ section.settings.products_per_row_mobile }} color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container">
+      <div class="lc-home-bestsellers__header">
+        <div class="lc-home-bestsellers__copy">
+          <h2>{{ heading }}</h2>
+
+          {%- if intro != blank -%}
+            <p>{{ intro }}</p>
+          {%- endif -%}
+        </div>
+
+        <div class="lc-home-bestsellers__tabs-wrap">
+          <div class="lc-home-bestsellers__tabs" role="tablist" aria-label="{{ section.settings.tabs_label | escape }}">
+            {%- assign tab_index = 0 -%}
+
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign tab_collection = block.settings.collection
+                assign tab_label = block.settings.label | default: tab_collection.title
+                assign tab_id = 'lc-home-bestsellers-tab-' | append: section.id | append: '-' | append: block.id
+                assign panel_id = 'lc-home-bestsellers-panel-' | append: section.id | append: '-' | append: block.id
+              -%}
+
+              {%- if tab_collection != blank and tab_collection.products_count > 0 -%}
+                <button
+                  type="button"
+                  id="{{ tab_id }}"
+                  class="lc-home-bestsellers__tab{% if tab_index == 0 %} is-active{% endif %}"
+                  role="tab"
+                  aria-controls="{{ panel_id }}"
+                  aria-selected="{% if tab_index == 0 %}true{% else %}false{% endif %}"
+                  data-lc-bestsellers-tab
+                  {{ block.shopify_attributes }}
+                >
+                  {{- tab_label -}}
+                </button>
+
+                {%- assign tab_index = tab_index | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+
+      <div class="lc-home-bestsellers__panels">
+        {%- assign panel_index = 0 -%}
+
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign panel_collection = block.settings.collection
+            assign panel_label = block.settings.label | default: panel_collection.title
+            assign tab_id = 'lc-home-bestsellers-tab-' | append: section.id | append: '-' | append: block.id
+            assign panel_id = 'lc-home-bestsellers-panel-' | append: section.id | append: '-' | append: block.id
+          -%}
+
+          {%- if panel_collection != blank and panel_collection.products_count > 0 -%}
+            <div
+              id="{{ panel_id }}"
+              class="lc-home-bestsellers__panel{% if panel_index == 0 %} is-active{% endif %}"
+              role="tabpanel"
+              aria-labelledby="{{ tab_id }}"
+              {% if panel_index != 0 %}hidden{% endif %}
+              data-lc-bestsellers-panel
+            >
+              <div class="lc-home-bestsellers__rail" data-lc-bestsellers-rail>
+                <div class="lc-home-bestsellers__track" role="list" tabindex="0" data-lc-bestsellers-track>
+                  {%- for product in panel_collection.products limit: section.settings.products_to_show -%}
+                    <div class="lc-home-bestsellers__product" role="listitem">
+                      {%- render 'product-card',
+                        product: product,
+                        stacked: false,
+                        position: forloop.index,
+                        show_quick_buy: section.settings.show_quick_buy,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        quick_buy_context: block.id
+                      -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+
+                <div class="lc-home-bestsellers__actions{% if section.settings.button_text == blank %} lc-home-bestsellers__actions--controls-only{% endif %}">
+                  {%- if section.settings.button_text != blank -%}
+                    <div class="lc-home-bestsellers__cta">
+                      {%- render 'button',
+                        content: section.settings.button_text,
+                        href: section.settings.button_link,
+                        style: section.settings.button_style
+                      -%}
+                    </div>
+                  {%- endif -%}
+
+                  <div class="lc-home-bestsellers__controls" data-lc-bestsellers-controls aria-label="{{ panel_label | escape }} products">
+                    <button class="lc-home-bestsellers__arrow" type="button" data-lc-bestsellers-prev aria-label="Previous products">
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M15 18 9 12l6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.65" />
+                      </svg>
+                    </button>
+
+                    <button class="lc-home-bestsellers__arrow" type="button" data-lc-bestsellers-next aria-label="Next products">
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.65" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {%- assign panel_index = panel_index | plus: 1 -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </section>
+{%- elsif request.design_mode -%}
+  <section class="lc-home-bestsellers color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container">
+      <div class="lc-home-bestsellers__empty">
+        <p>Choose collections to build the best sellers tabs.</p>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+
+
+{% schema %}
+{
+  "name": "LC bestsellers tabs",
+  "class": "shopify-section--lc-home-bestsellers-tabs",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Popular Linen and Co favourites for home bedrooms, guest suites and hospitality spaces."
+    },
+    {
+      "type": "text",
+      "id": "tabs_label",
+      "label": "Tabs accessibility label",
+      "default": "Best seller categories"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_buy",
+      "label": "Show quick buy",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show second image on hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show per tab",
+      "min": 4,
+      "max": 16,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "label": "Visible products on desktop",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "products_per_row_mobile",
+      "label": "Products per row on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "Shop All Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        {
+          "value": "outline",
+          "label": "Outline"
+        },
+        {
+          "value": "solid",
+          "label": "Solid"
+        }
+      ],
+      "default": "outline"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC bestsellers tabs",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "label": "All"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Bedding"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Bath"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "label": "Decor"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

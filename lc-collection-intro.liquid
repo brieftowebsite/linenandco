@@ -1,0 +1,226 @@
+{%- liquid
+  assign intro_metafield = collection.metafields.custom.collection_intro
+  assign intro_content = ''
+
+  if section.settings.intro_content != blank
+    capture intro_content
+      echo section.settings.intro_content
+    endcapture
+  elsif intro_metafield != blank
+    capture intro_content
+      echo intro_metafield | metafield_tag
+    endcapture
+  elsif collection.description != blank
+    assign intro_content = collection.description
+  endif
+-%}
+
+{%- capture collection_desc_mobile_style -%}
+<style>
+@media (max-width: 749px) {
+  .collection-desc-mobile { font-size: 10px !important; line-height: 1.4 !important; }
+}
+</style>
+{%- endcapture -%}
+
+{%- liquid
+  assign collection_desc_mobile_style_compact = '<style>@media (max-width: 749px) { .collection-desc-mobile { font-size: 10px !important; line-height: 1.4 !important; } }</style>'
+
+  assign intro_content = intro_content | replace: collection_desc_mobile_style, ''
+  assign intro_content = intro_content | replace: collection_desc_mobile_style_compact, ''
+  assign intro_content = intro_content | replace: '<div class="collection-desc-mobile" style="font-size: 12px; line-height: 1.5;">', '<div class="collection-desc-mobile">'
+  assign intro_content = intro_content | replace: ' style="font-size: 12px; line-height: 1.5;"', ''
+-%}
+
+{%- if intro_content != blank -%}
+  <lc-collection-intro class="lc-collection-intro color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container container--lg">
+      <div class="lc-collection-intro__inner">
+        <div class="lc-collection-intro__layout">
+          <div class="lc-collection-intro__body">
+            <div
+              id="lc-collection-intro-{{ section.id }}"
+              class="lc-collection-intro__content rte{% if section.settings.show_read_more %} is-collapsed{% endif %}"
+              data-lc-collection-intro-content
+            >
+              {{- intro_content -}}
+            </div>
+
+            {%- if section.settings.show_read_more -%}
+              <button
+                type="button"
+                class="lc-collection-intro__toggle"
+                aria-expanded="false"
+                aria-controls="lc-collection-intro-{{ section.id }}"
+                data-lc-collection-intro-toggle
+                hidden
+              >
+                <span data-lc-read-more>{{ 'blog.general.read_more' | t }}</span>
+                <span data-lc-read-less hidden>{{ 'collection.general.read_less' | t }}</span>
+              </button>
+            {%- endif -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </lc-collection-intro>
+{%- endif -%}
+
+{% stylesheet %}
+  .lc-collection-intro {
+    display: block;
+    padding-block: clamp(0.85rem, 1.6vw, 1.35rem);
+  }
+
+  .lc-collection-intro__inner {
+    border-block: 1px solid rgb(var(--text-color) / 0.1);
+    padding-block: clamp(0.85rem, 1.8vw, 1.3rem);
+  }
+
+  .lc-collection-intro__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1rem;
+  }
+
+  .lc-collection-intro__body {
+    max-width: 980px;
+  }
+
+  .lc-collection-intro__content {
+    font-size: clamp(0.86rem, 0.92vw, 0.94rem);
+    line-height: 1.62;
+    color: rgb(var(--text-color) / 0.78);
+  }
+
+  .lc-collection-intro__content > :first-child {
+    margin-block-start: 0;
+  }
+
+  .lc-collection-intro__content > :last-child {
+    margin-block-end: 0;
+  }
+
+  .lc-collection-intro__content.is-collapsed {
+    display: -webkit-box;
+    overflow: hidden;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .lc-collection-intro__content a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .lc-collection-intro__toggle {
+    margin-block-start: 0.55rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: currentColor;
+    cursor: pointer;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 650;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media screen and (max-width: 699px) {
+    .lc-collection-intro {
+      padding-block: 0.9rem 1rem;
+    }
+
+    .lc-collection-intro__inner {
+      padding-block: 0.9rem;
+    }
+
+    .lc-collection-intro__content {
+      font-size: 0.78rem;
+      line-height: 1.55;
+    }
+
+    .lc-collection-intro__content.is-collapsed {
+      -webkit-line-clamp: 2;
+    }
+
+    .lc-collection-intro__toggle {
+      margin-block-start: 0.45rem;
+      font-size: 0.72rem;
+      line-height: 1.2;
+      text-underline-offset: 2px;
+    }
+  }
+{% endstylesheet %}
+
+{% javascript %}
+  class LcCollectionIntro extends HTMLElement {
+    connectedCallback() {
+      const content = this.querySelector('[data-lc-collection-intro-content]');
+      const toggle = this.querySelector('[data-lc-collection-intro-toggle]');
+
+      if (!content || !toggle) {
+        return;
+      }
+
+      requestAnimationFrame(() => {
+        if (content.scrollHeight <= content.clientHeight + 2) {
+          content.classList.remove('is-collapsed');
+          return;
+        }
+
+        toggle.hidden = false;
+      });
+
+      toggle.addEventListener('click', () => {
+        const expanded = toggle.getAttribute('aria-expanded') === 'true';
+        const readMore = toggle.querySelector('[data-lc-read-more]');
+        const readLess = toggle.querySelector('[data-lc-read-less]');
+
+        content.classList.toggle('is-collapsed', expanded);
+        toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+
+        if (readMore && readLess) {
+          readMore.hidden = !expanded;
+          readLess.hidden = expanded;
+        }
+      });
+    }
+  }
+
+  if (!customElements.get('lc-collection-intro')) {
+    customElements.define('lc-collection-intro', LcCollectionIntro);
+  }
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "LC Collection intro",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_more",
+      "label": "Collapse long descriptions",
+      "default": true
+    },
+    {
+      "type": "liquid",
+      "id": "intro_content",
+      "label": "Intro content override",
+      "info": "Use this to keep page-specific collection information inside the read more area."
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC Collection intro"
+    }
+  ]
+}
+{% endschema %}

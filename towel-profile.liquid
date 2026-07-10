@@ -1,0 +1,421 @@
+{% comment %}
+  ============================================================
+  SECTION: towel-profile.liquid
+  Store:   Linen and Co (linenco.co.za)
+  Purpose: Renders the full towel product profile below the
+           fold on the PDP. Metafield-driven via towel_profile
+           metaobject (custom.towel_profile).
+  Sections: What Is It · Why Choose · Ideal Uses · Care Guide · Support
+  ============================================================
+{% endcomment %}
+
+{%- liquid
+  assign tp = product.metafields.custom.towel_profile.value
+-%}
+
+{%- if tp != blank -%}
+
+{%- assign profile_name = tp.product_name -%}
+{%- assign profile_subtitle = tp.subtitle -%}
+{%- assign profile_care_url = tp.care_guide -%}
+{%- assign profile_hero = tp.hero_image -%}
+{%- assign profile_image_1 = tp.image_1 -%}
+{%- assign profile_image_2 = tp.image_2 -%}
+{%- assign profile_image_3 = tp.image_3 -%}
+
+{%- comment -%} NAV {%- endcomment -%}
+<nav class="lc-anchor-nav" id="lc-anchor-nav" aria-label="Product sections">
+  <div class="lc-anchor-nav__inner">
+    <a href="#main" class="lc-anchor-nav__link lc-anchor-nav__link--shop">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:4px;">
+        <path d="M19 12H5M12 5l-7 7 7 7"/>
+      </svg>
+      Shop Now
+    </a>
+    <a href="#lc-what-is-it" class="lc-anchor-nav__link">What Is It</a>
+    <a href="#lc-why-choose" class="lc-anchor-nav__link">Why Choose</a>
+    <a href="#lc-ideal-uses" class="lc-anchor-nav__link">Ideal Uses</a>
+    <a href="#lc-care" class="lc-anchor-nav__link">Care Guide</a>
+    <a href="#lc-contact-cta" class="lc-anchor-nav__link">Support</a>
+  </div>
+  <div class="lc-anchor-nav__fade" aria-hidden="true"></div>
+</nav>
+
+{%- comment -%} LIGHTBOX {%- endcomment -%}
+<div class="lc-lightbox" id="lc-lightbox" role="dialog" aria-modal="true">
+  <button class="lc-lightbox__close" id="lc-lightbox-close" aria-label="Close">&times;</button>
+  <img class="lc-lightbox__img" id="lc-lightbox-img" srcset="" alt="" width="1200" height="1200">
+  <p class="lc-lightbox__label" id="lc-lightbox-label"></p>
+</div>
+
+{%- comment -%} 1. WHAT IS IT {%- endcomment -%}
+<section class="lc-profile-section lc-what-is-it" id="lc-what-is-it">
+  <div class="lc-profile-section__split">
+    {% if profile_hero != blank %}
+    <div class="lc-profile-section__image">
+      <img src="{{ profile_hero | image_url: width: 1400 }}" alt="{{ profile_name }}" width="1600" height="896" loading="lazy">
+    </div>
+    {% endif %}
+    <div class="lc-profile-section__text">
+      <span class="lc-label">What Is It</span>
+      <h2 class="lc-profile-section__heading">{{ profile_name }}</h2>
+      {% if profile_subtitle != blank %}
+        <p class="lc-profile-section__subtitle">{{ profile_subtitle }}</p>
+      {% endif %}
+      <div class="rte lc-body-text lc-bullets">
+        {{ tp.what_it_is | metafield_tag }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 2. WHY CHOOSE {%- endcomment -%}
+<section class="lc-profile-section lc-why-choose" id="lc-why-choose">
+  <div class="lc-profile-section__split">
+    <div class="lc-profile-section__text">
+      <span class="lc-label">Why Choose</span>
+      <h2 class="lc-profile-section__heading">{{ profile_name }}</h2>
+      <div class="rte lc-body-text lc-bullets">
+        {{ tp.why_choose | metafield_tag }}
+      </div>
+    </div>
+    {% if profile_image_1 != blank %}
+    <div class="lc-profile-section__image">
+      <img src="{{ profile_image_1 | image_url: width: 1600 }}" alt="Why choose {{ profile_name }}" width="1600" height="896" loading="lazy">
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{%- comment -%} 3. IDEAL USES {%- endcomment -%}
+<section class="lc-profile-section lc-ideal-uses" id="lc-ideal-uses">
+  <div class="lc-profile-section__split">
+    {% if profile_image_2 != blank %}
+    <div class="lc-profile-section__image">
+      <img src="{{ profile_image_2 | image_url: width: 1400 }}" alt="Ideal uses for {{ profile_name }}" width="1600" height="896" loading="lazy">
+    </div>
+    {% endif %}
+    <div class="lc-profile-section__text">
+      <span class="lc-label">Ideal Uses</span>
+      <h2 class="lc-profile-section__heading">Perfect For</h2>
+      <div class="rte lc-body-text lc-bullets">
+        {{ tp.ideal_uses | metafield_tag }}
+      </div>
+      <a href="https://www.linenco.co.za/blogs/industries-we-serve" class="lc-profile-btn" target="_blank">
+        Explore Industries We Serve
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 4. CARE GUIDE {%- endcomment -%}
+<section class="lc-profile-section lc-care" id="lc-care">
+  <div class="lc-profile-section__split">
+    <div class="lc-profile-section__text">
+      <span class="lc-label">Care Guide</span>
+      <h2 class="lc-profile-section__heading">Caring For Your {{ profile_name }}</h2>
+      <div class="rte lc-body-text lc-bullets">
+        {{ tp.care_summery | metafield_tag }}
+      </div>
+      {% if profile_care_url != blank %}
+        <a href="{{ profile_care_url }}" class="lc-profile-btn" target="_blank">
+          View Full Care Guide
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      {% endif %}
+    </div>
+    {% if profile_image_3 != blank %}
+    <div class="lc-profile-section__image">
+      <img src="{{ profile_image_3 | image_url: width: 1400 }}" alt="Care guide for {{ profile_name }}" width="1600" height="896" loading="lazy">
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{%- comment -%} 5. CONTACT CTA {%- endcomment -%}
+<section class="lc-profile-section lc-contact-cta" id="lc-contact-cta">
+  <div class="lc-contact-cta__inner">
+    <p class="lc-contact-cta__label">We're Here To Help</p>
+    <h2 class="lc-contact-cta__heading">Need Advice?</h2>
+    <p class="lc-contact-cta__text">Our team is on hand to help you find the right towels for your property, project, or home.</p>
+    <div class="lc-contact-cta__buttons">
+      <a href="/pages/contact" class="lc-contact-cta__btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        </svg>
+        Contact Us
+      </a>
+      <a href="/pages/trade-registration-form" class="lc-contact-cta__btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+        Register for Trade
+      </a>
+      <a href="https://wa.me/+27662918292" class="lc-contact-cta__btn lc-contact-cta__btn--whatsapp" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+        </svg>
+        Chat on WhatsApp
+      </a>
+    </div>
+  </div>
+</section>
+
+{%- endif -%}
+
+<style>
+  .lc-anchor-nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #000;
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+  }
+  .lc-anchor-nav__inner {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .lc-anchor-nav__inner::-webkit-scrollbar { display: none; }
+  .lc-anchor-nav__link {
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 14px 20px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.89);
+    text-decoration: none;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+  }
+  .lc-anchor-nav__link:hover,
+  .lc-anchor-nav__link.is-active { color: #fff; border-bottom-color: #fff; }
+  .lc-anchor-nav__link--shop { color: rgba(255,255,255,0.95); margin-right: 4px; }
+  .lc-anchor-nav__link--shop:hover { border-bottom-color: transparent; }
+  .lc-anchor-nav__fade {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 52px;
+    background: linear-gradient(to right, transparent, #000 75%);
+    pointer-events: none;
+  }
+  .lc-lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: rgba(0,0,0,0.94);
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .lc-lightbox.is-open { display: flex; }
+  .lc-lightbox__img { max-width: 90vw; max-height: 80vh; object-fit: contain; border-radius: 2px; }
+  .lc-lightbox__label { font-size: 0.75rem; color: rgba(255,255,255,0.65); letter-spacing: 0.08em; text-transform: uppercase; }
+  .lc-lightbox__close {
+    position: absolute;
+    top: 20px;
+    right: 24px;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.8rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+    line-height: 1;
+  }
+  .lc-lightbox__close:hover { opacity: 1; }
+  .lc-label {
+    display: inline-block;
+    background: #000;
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 550;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    margin-bottom: 10px;
+  }
+  .lc-profile-section {
+    width: 100%;
+    padding: 12px 0 16px;
+    border-top: 1px solid rgba(0,0,0,0.35);
+  }
+  .lc-profile-section__inner {
+    max-width: var(--page-width, 1400px);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  .lc-profile-section__heading {
+    font-size: 1.2rem;
+    font-weight: 500;
+    margin: 0 0 16px;
+    color: rgba(0,0,0,0.89);
+    line-height: 1.3;
+  }
+  .lc-profile-section__subtitle {
+    font-size: 0.82rem;
+    color: rgba(0,0,0,0.89);
+    font-style: italic;
+    margin: -8px 0 16px;
+    line-height: 1.4;
+  }
+  .lc-profile-section__split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: stretch;
+    max-width: var(--page-width, 1400px);
+    margin: 0 auto;
+  }
+  .lc-profile-section__image { width: 100%; overflow: hidden; min-height: 320px; }
+  .lc-profile-section__image img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+  .lc-profile-section__text { padding: 36px 40px 24px; }
+  .lc-body-text p,
+  .lc-body-text li { font-size: 0.82rem !important; color: rgba(0,0,0,0.68) !important; line-height: 1.6 !important; margin-bottom: 6px !important; }
+  .lc-bullets ul,
+  .lc-bullets ol { list-style: none !important; padding: 0 !important; margin: 0 0 10px !important; display: flex !important; flex-direction: column !important; gap: 5px !important; }
+  .lc-bullets li { display: block !important; font-size: 0.82rem !important; color: rgba(0,0,0,0.68) !important; line-height: 1.5 !important; margin: 0 !important; padding: 0 !important; position: relative !important; }
+  .lc-bullets li p { display: inline !important; margin: 0 !important; padding: 0 !important; }
+  .lc-bullets li::before { content: '' !important; width: 4px !important; height: 4px !important; min-width: 4px !important; background: rgba(0,0,0,0.5) !important; border-radius: 50% !important; margin-top: 6px !important; flex-shrink: 0 !important; }
+  .lc-bullets li strong { font-weight: 600 !important; color: rgba(0,0,0,0.8) !important; }
+  .lc-profile-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.72rem;
+    font-weight: 550;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #fff;
+    background: #000;
+    padding: 10px 20px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s ease;
+    margin-top: 8px;
+  }
+  .lc-profile-btn:hover { background: rgba(0,0,0,0.8); }
+  .lc-contact-cta { background: #000 !important; border-top: none !important; padding: 56px 0 48px !important; }
+  .lc-contact-cta__inner { max-width: var(--page-width, 1400px); margin: 0 auto; padding: 0 48px; text-align: center; }
+  .lc-contact-cta__label { font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.75); margin: 0 0 10px; }
+  .lc-contact-cta__heading { font-size: clamp(1.3rem, 3vw, 2rem); font-weight: 550; color: #fff; margin: 0 0 12px; }
+  .lc-contact-cta__text { font-size: 0.90rem; color: rgba(255,255,255,0.89); max-width: 600px; margin: 0 auto 28px; line-height: 1.6; }
+  .lc-contact-cta__buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; }
+  .lc-contact-cta__btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    font-weight: 550;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #fff;
+    background: transparent;
+    border: 2px solid rgba(255,255,255,0.45);
+    padding: 12px 24px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: background 0.2s ease, color 0.2s ease;
+    white-space: nowrap;
+  }
+  .lc-contact-cta__btn:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.7); }
+  .lc-contact-cta__btn--whatsapp { background: #25D366; color: #fff; border: none; }
+  .lc-contact-cta__btn--whatsapp:hover { background: #1ebe5d; }
+  @media (max-width: 749px) {
+    .lc-anchor-nav { position: sticky; top: 0; }
+    .lc-anchor-nav__inner { justify-content: flex-start; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.4) transparent; }
+    .lc-anchor-nav__inner::-webkit-scrollbar { display: block; height: 2px; }
+    .lc-anchor-nav__inner::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.4); border-radius: 2px; }
+    .lc-anchor-nav__link { padding: 12px 14px; font-size: 0.62rem; }
+    .lc-profile-section { padding: 0 0 16px; }
+    .lc-profile-section__inner { padding: 0 16px; }
+    .lc-profile-section__split { grid-template-columns: 1fr; }
+    .lc-profile-section__image { min-height: 240px; max-height: 320px; order: -1; }
+    .lc-profile-section__text { padding: 20px 16px 16px; }
+    .lc-profile-section__heading { font-size: 1rem; margin-bottom: 12px; }
+    .lc-contact-cta { padding: 40px 0 32px !important; }
+    .lc-contact-cta__inner { padding: 0 16px; }
+    .lc-contact-cta__buttons { flex-direction: row; justify-content: center; flex-wrap: wrap; }
+    .lc-bullets li { font-size: 0.8rem !important; }
+    .lc-body-text p,
+    .lc-body-text li { font-size: 0.8rem !important; }
+  }
+</style>
+
+<script>
+(function() {
+  var nav = document.getElementById('lc-anchor-nav');
+  var shopNow = nav ? nav.querySelector('.lc-anchor-nav__link--shop') : null;
+  if (shopNow) {
+    shopNow.addEventListener('click', function(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
+  var links = document.querySelectorAll('.lc-anchor-nav__link:not(.lc-anchor-nav__link--shop)');
+  var sections = [];
+  links.forEach(function(link) {
+    var href = link.getAttribute('href');
+    if (href && href.startsWith('#')) {
+      var el = document.getElementById(href.replace('#', ''));
+      if (el) sections.push({ el: el, link: link });
+    }
+  });
+  if (!sections.length) return;
+  window.addEventListener('scroll', function() {
+    var scrollY = window.scrollY + 120;
+    var current = sections[0];
+    sections.forEach(function(s) {
+      if (s.el.offsetTop <= scrollY) current = s;
+    });
+    links.forEach(function(l) { l.classList.remove('is-active'); });
+    if (current) current.link.classList.add('is-active');
+  }, { passive: true });
+  var lightbox = document.getElementById('lc-lightbox');
+  var lbImg = document.getElementById('lc-lightbox-img');
+  var lbLabel = document.getElementById('lc-lightbox-label');
+  var lbClose = document.getElementById('lc-lightbox-close');
+  function closeLightbox() {
+    lightbox.classList.remove('is-open');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+  if (lbClose) lbClose.addEventListener('click', closeLightbox);
+  if (lightbox) lightbox.addEventListener('click', function(e) {
+    if (e.target === lightbox) closeLightbox();
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeLightbox();
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Towel Profile",
+  "settings": []
+}
+{% endschema %}

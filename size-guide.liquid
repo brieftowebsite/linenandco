@@ -1,0 +1,288 @@
+{% comment %}
+  Size Guide Section
+  Renders a size guide metaobject connected via page metafield: page.metafields.custom.size_guide
+  Template: page.size-guide.json
+{% endcomment %}
+
+{%- liquid
+  assign guide = page.metafields.custom.size_guide.value
+-%}
+
+{% if guide == blank %}
+  {% if request.design_mode %}
+    <div class="container" style="padding: 40px; text-align: center; color: #999;">
+      No size guide connected. Add a <strong>size_guide</strong> metafield to this page.
+    </div>
+  {% endif %}
+{% else %}
+
+<style>
+  .sg-wrap {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+    font-family: inherit;
+    color: inherit;
+  }
+
+  /* Hero */
+  .sg-hero {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 4px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 749px) { .sg-hero { height: 200px; } }
+
+  /* Header */
+  h1.sg-h1 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    line-height: 1.2;
+  }
+  @media (max-width: 749px) { h1.sg-h1 { font-size: 1.1rem; } }
+  .sg-subtitle { font-size: 15px; opacity: 0.65; margin: 0 0 2rem; }
+
+  /* Tags */
+  .sg-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 0.75rem 0 1.25rem; }
+  .sg-tag {
+    display: inline-block;
+    background: #333;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.75rem;
+  }
+
+  /* Intro */
+  .sg-intro { font-size: 12px; line-height: 1.6; margin-bottom: 2rem; }
+
+  /* Page content tables */
+  .sg-content { margin-bottom: 2rem; }
+  .sg-content .sg-section { background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+  .sg-content h2 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #555;
+    margin: 0 0 0.75rem;
+  }
+  .sg-content table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    line-height: 1.6;
+    margin-bottom: 0;
+  }
+  .sg-content th {
+    text-align: left;
+    padding: 8px 12px;
+    background: #f9f9f9;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #555;
+    border: 1px solid rgba(0,0,0,0.08);
+  }
+  .sg-content td {
+    padding: 8px 12px;
+    border: 1px solid rgba(0,0,0,0.08);
+    vertical-align: top;
+  }
+  .sg-content tr:nth-child(even) td { background: #f9f9f9; }
+  .sg-content p { font-size: 12px; line-height: 1.6; margin: 0 0 0.5rem; }
+
+  @media (max-width: 749px) {
+    .sg-content .sg-section {
+      padding: 1rem;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .sg-content table {
+      font-size: 11px;
+      min-width: 480px;
+    }
+    .sg-content th,
+    .sg-content td {
+      padding: 6px 8px;
+      white-space: nowrap;
+    }
+  }
+
+  /* Section boxes (A, B, C from metaobject) */
+  .sg-section { background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+  .sg-h2 {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #555;
+    margin-bottom: 0.75rem;
+  }
+  .sg-text { font-size: 12px; line-height: 1.6; }
+  .sg-text p { margin: 0 0 0.5rem; }
+  .sg-text ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+  .sg-text li { margin-bottom: 0.35rem; }
+
+  /* Images */
+  .sg-images {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 2rem;
+  }
+  .sg-images img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+  @media (max-width: 749px) { .sg-images { grid-template-columns: 1fr 1fr; } }
+
+  /* Footer buttons */
+  .sg-button-wrap {
+    text-align: center;
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .sg-button {
+    display: inline-block;
+    background: #333;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 1rem 3rem;
+    text-decoration: none;
+  }
+  .sg-button:hover { background: #555; }
+  @media (max-width: 749px) {
+    .sg-button { font-size: 11px; padding: 0.75rem 1.5rem; letter-spacing: 0.05em; }
+  }
+</style>
+
+<div class="sg-wrap">
+
+  {%- comment -%} Hero Image {%- endcomment -%}
+  {% if guide.hero_image != blank %}
+    <img
+      class="sg-hero"
+      src="{{ guide.hero_image | image_url: width: 1200 }}"
+      alt="{{ guide.size_guide_title | escape }}"
+      loading="lazy"
+      width="1200"
+      height="800"
+    >
+  {% endif %}
+
+  {%- comment -%} H1 Title {%- endcomment -%}
+  {% if guide.size_guide_title != blank %}
+    <h1 class="sg-h1">{{ guide.size_guide_title }}</h1>
+  {% endif %}
+
+  {%- comment -%} Tags below title {%- endcomment -%}
+  {% if guide.range != blank %}
+    <div class="sg-tags">
+      {%- assign range_tags = guide.range | split: ',' -%}
+      {% for tag in range_tags %}
+        <span class="sg-tag">{{ tag | strip }}</span>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {%- comment -%} Subtitle {%- endcomment -%}
+  {% if guide.subtitle != blank %}
+    <p class="sg-subtitle">{{ guide.subtitle }}</p>
+  {% endif %}
+
+  {%- comment -%} Intro {%- endcomment -%}
+  {% if guide.intro_text != blank %}
+    <div class="sg-intro">{{ guide.intro_text | newline_to_br }}</div>
+  {% endif %}
+
+  {%- comment -%} Size table from page body {%- endcomment -%}
+  {% if page.content != blank %}
+    <div class="sg-content">
+      {{ page.content }}
+    </div>
+  {% endif %}
+
+  {%- comment -%} Sections A, B, C from metaobject {%- endcomment -%}
+  {% assign section_keys = 'a,b,c' | split: ',' %}
+  {% for key in section_keys %}
+    {%- assign h_key = 'section_' | append: key | append: '_heading' -%}
+    {%- assign c_key = 'section_' | append: key | append: '_content' -%}
+    {%- assign s_heading = guide[h_key] -%}
+    {%- assign s_content = guide[c_key] -%}
+    {% if s_content != blank %}
+      <div class="sg-section">
+        {% if s_heading != blank %}
+          <div class="sg-h2">{{ s_heading }}</div>
+        {% endif %}
+        <div class="sg-text">{{ s_content | metafield_tag }}</div>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  {%- comment -%} Supporting Images {%- endcomment -%}
+  {% if guide.image_1 != blank or guide.image_2 != blank or guide.image_3 != blank %}
+    <div class="sg-images">
+      {% for i in (1..3) %}
+        {%- assign img_key = 'image_' | append: i -%}
+        {%- assign img = guide[img_key] -%}
+        {% if img != blank %}
+          <img
+            src="{{ img | image_url: width: 600 }}"
+            alt="{{ guide.size_guide_title | escape }}"
+            loading="lazy"
+            width="600"
+            height="450"
+          >
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {%- comment -%} Footer Buttons {%- endcomment -%}
+  {% if guide.shop_collection != blank or guide.care_guide != blank or guide.product_profile != blank %}
+    <div class="sg-button-wrap">
+      {% if guide.shop_collection != blank %}
+        <a href="{{ guide.shop_collection }}" class="sg-button">Shop Collection</a>
+      {% endif %}
+      {% if guide.care_guide != blank %}
+        <a href="{{ guide.care_guide }}" class="sg-button">Care Guide</a>
+      {% endif %}
+      {% if guide.product_profile != blank %}
+        <a href="{{ guide.product_profile }}" class="sg-button">Product Profile</a>
+      {% endif %}
+    </div>
+  {% endif %}
+
+</div>
+
+{% endif %}
+
+{% schema %}
+{
+  "name": "Size Guide",
+  "tag": "section",
+  "class": "section-size-guide",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Size Guide"
+    }
+  ]
+}
+{% endschema %}
+

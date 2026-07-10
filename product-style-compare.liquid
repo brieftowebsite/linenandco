@@ -1,0 +1,164 @@
+{% if request.page_type == 'product' %}
+  {% assign styles = product.metafields.custom.styles.value %}
+  {% if styles != blank %}
+
+    <div class="lc-style-compare-section">
+
+      <div class="lc-style-compare__header-stripe">
+        {% if styles.title != blank %}
+          <h2 class="lc-style-compare__title">{{ styles.title }}</h2>
+        {% endif %}
+      </div>
+
+      <div class="lc-style-compare__header">
+        {% if styles.intro != blank %}
+          <p class="lc-style-compare__intro">{{ styles.intro }}</p>
+        {% endif %}
+      </div>
+
+      <div class="lc-style-compare-section__inner page-width">
+        <div class="lc-style-compare__grid">
+          {% for i in (1..5) %}
+            {% assign label_key = 'label_' | append: i %}
+            {% assign image_key = 'image_' | append: i %}
+            {% assign label = styles[label_key] %}
+            {% assign image = styles[image_key] %}
+            {% if label != blank or image != blank %}
+              <div class="lc-style-compare__item">
+                {% if image != blank %}
+                  <div class="lc-style-compare__img-wrap">
+                    <img
+                      src="{{ image | image_url: width: 600 }}"
+                      alt="{{ label | default: 'Style option' }}"
+                      width="600"
+                      height="600"
+                      loading="lazy"
+                    >
+                  </div>
+                {% endif %}
+                {% if label != blank %}
+                  <p class="lc-style-compare__label">{{ label }}</p>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+    </div>
+
+    <style>
+      .lc-style-compare-section {
+        width: 100%;
+        padding: 0 0 20px;
+        border-top: 1px solid rgba(0,0,0,0.08);
+      }
+      .lc-style-compare__header-stripe {
+        width: 100%;
+        background-color: #000;
+        text-align: center;
+        padding: 10px 10px;
+      }
+      .lc-style-compare__title {
+        font-size: clamp(0.85rem, 1.3vw, 1.2rem);
+        font-weight: 500;
+        margin: 0;
+        color: #f2f2f2ff;
+      }
+      .lc-style-compare__header {
+        text-align: center;
+        padding: 16px 16px;
+        margin-bottom: 16px;
+      }
+      .lc-style-compare__intro {
+        font-size: 0.80rem;
+        font-style: italic;
+        color: rgba(0,0,0,0.55);
+        margin: 0 auto;
+        line-height: 1.6;
+        max-width: 800px;
+      }
+      .lc-style-compare-section__inner {
+        max-width: var(--page-width, 1400px);
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      .lc-style-compare__grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
+      }
+      .lc-style-compare__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+      }
+      .lc-style-compare__img-wrap {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        overflow: hidden;
+        border-radius: 4px;
+        background: rgba(0,0,0,0.04);
+      }
+      .lc-style-compare__img-wrap img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        transition: transform 0.3s ease;
+      }
+      .lc-style-compare__img-wrap img:hover {
+        transform: scale(1.03);
+      }
+      .lc-style-compare__label {
+        font-size: 0.75rem;
+        text-align: center;
+        color: rgba(0,0,0,0.7);
+        margin: 0;
+        line-height: 1.4;
+      }
+      @media (max-width: 749px) {
+        .lc-style-compare-section {
+          padding: 0 0 32px;
+        }
+        .lc-style-compare__header-stripe {
+          padding: 20px 24px;
+        }
+        .lc-style-compare__header {
+          padding: 16px 24px;
+          margin-bottom: 8px;
+        }
+        .lc-style-compare-section__inner {
+          padding: 0;
+        }
+        .lc-style-compare__grid {
+          display: flex;
+          flex-wrap: nowrap;
+          overflow-x: auto;
+          gap: 12px;
+          padding: 0 24px 16px;
+          -webkit-overflow-scrolling: touch;
+          scrollbar-width: none;
+        }
+        .lc-style-compare__grid::-webkit-scrollbar {
+          display: none;
+        }
+        .lc-style-compare__item {
+          flex: 0 0 140px;
+          min-width: 140px;
+        }
+      }
+    </style>
+
+  {% endif %}
+{% endif %}
+
+{% schema %}
+{
+  "name": "Style Compare",
+  "settings": []
+}
+{% endschema %}
+
+

@@ -1,0 +1,545 @@
+{%- if section.blocks.size > 0 -%}
+  {%- liquid
+    assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5
+    assign reviewed_product_setting = section.settings.reviewed_product
+    assign reviewed_product = reviewed_product_setting
+    assign review_image = section.settings.image
+    assign external_image_url = section.settings.external_image_url
+    assign display_product_title = section.settings.product_title
+    assign review_image_link = blank
+    assign fallback_product_url = section.settings.product_url
+    assign reviewed_product_handle = blank
+    assign use_external_image = false
+
+    if reviewed_product_setting != blank
+      assign reviewed_product_handle = reviewed_product_setting.handle | default: reviewed_product_setting | split: '/' | last
+      assign product_from_handle = all_products[reviewed_product_handle]
+
+      if product_from_handle != blank
+        assign reviewed_product = product_from_handle
+      endif
+    endif
+
+    if reviewed_product.featured_image != blank
+      assign review_image = reviewed_product.featured_image | default: section.settings.image
+      assign review_image_link = reviewed_product.url
+    elsif external_image_url != blank
+      assign use_external_image = true
+    endif
+
+    if review_image_link == blank
+      if reviewed_product_handle != blank
+        assign review_image_link = routes.root_url | append: 'products/' | append: reviewed_product_handle
+      endif
+    endif
+
+    if review_image_link == blank
+      assign review_image_link = fallback_product_url
+    endif
+
+    if reviewed_product.title != blank
+      assign display_product_title = reviewed_product.title
+    endif
+
+    assign image_alt = section.settings.image_alt | default: review_image.alt | default: display_product_title | default: 'Linen and Co product image'
+    assign image_sizes = '(max-width: 699px) 100vw, 42vw'
+  -%}
+
+  <div class="lc-reviews-with-image color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% unless section.settings.remove_vertical_spacing %}section-spacing{% endunless %} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+    <div
+      {% unless section.settings.remove_horizontal_spacing %}
+        class="container"
+      {% endunless %}
+    >
+      <div class="lc-reviews-with-image__layout {% if review_image == blank and external_image_url == blank %}lc-reviews-with-image__layout--no-image{% endif %} {% if section.settings.image_position == 'end' %}lc-reviews-with-image__layout--reverse{% endif %}">
+        {%- if review_image != blank or external_image_url != blank -%}
+          <div class="lc-reviews-with-image__media">
+            {%- if review_image_link != blank -%}
+              <a class="lc-reviews-with-image__media-link" href="{{ review_image_link }}" aria-label="{{ display_product_title | default: image_alt | escape }}">
+            {%- endif -%}
+
+            {%- if use_external_image -%}
+              <img
+                src="{{ external_image_url | escape }}"
+                alt="{{ image_alt | escape }}"
+                class="lc-reviews-with-image__image"
+                width="1600"
+                height="1600"
+                loading="lazy"
+              >
+            {%- elsif review_image != blank -%}
+              {{-
+                review_image
+                | image_url: width: review_image.width
+                | image_tag:
+                  sizes: image_sizes,
+                  widths: '400,600,800,1000,1200,1400,1600,1800,2000',
+                  loading: 'lazy',
+                  class: 'lc-reviews-with-image__image',
+                  alt: image_alt
+              -}}
+            {%- endif -%}
+
+            {%- if display_product_title != blank -%}
+              <span class="lc-reviews-with-image__product">
+                {%- if section.settings.product_label != blank -%}
+                  <span>{{ section.settings.product_label }}</span>
+                {%- endif -%}
+
+                <strong>{{ display_product_title }}</strong>
+              </span>
+            {%- endif -%}
+
+            {%- if review_image_link != blank -%}
+              </a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        <div class="lc-reviews-with-image__reviews">
+          {%- for block in section.blocks -%}
+            <div class="lc-reviews-with-image__app-block" {{ block.shopify_attributes }}>
+              {%- render block -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} .lc-reviews-with-image {
+    overflow: hidden;
+    background: #f4f4f4;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    align-items: stretch;
+    min-height: clamp(340px, 34vw, 500px);
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__layout--reverse .lc-reviews-with-image__media {
+    order: 2;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__layout--no-image {
+    display: block;
+    min-height: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__media {
+    position: relative;
+    min-width: 0;
+    background: rgb(var(--text-color) / 0.04);
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__media-link {
+    position: relative;
+    display: block;
+    height: 100%;
+    color: inherit;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: clamp(340px, 34vw, 500px);
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__product {
+    position: absolute;
+    inset-inline: clamp(16px, 2.4vw, 28px);
+    inset-block-end: clamp(16px, 2.4vw, 28px);
+    display: grid;
+    gap: 2px;
+    width: min(100% - 32px, 420px);
+    padding: 13px 16px 14px;
+    background: rgb(255 255 255 / 0.92);
+    color: #1c1c1c;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__product span {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    line-height: 1.25;
+    text-transform: uppercase;
+    opacity: 0.68;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__product strong {
+    font-size: clamp(0.92rem, 0.82rem + 0.32vw, 1.06rem);
+    line-height: 1.25;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__reviews {
+    display: grid;
+    align-items: center;
+    min-width: 0;
+    padding: clamp(30px, 4.2vw, 58px);
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__layout--no-image .lc-reviews-with-image__reviews {
+    max-width: 760px;
+    margin-inline: auto;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__app-block,
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__app-block > * {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-widget {
+    display: grid !important;
+    gap: 1.15rem;
+    max-width: min(100%, 680px) !important;
+    margin-inline: auto !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-header {
+    display: grid !important;
+    justify-items: center;
+    gap: 0.55rem;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-title {
+    margin: 0 !important;
+    color: rgb(var(--text-color)) !important;
+    font-family: var(--heading-font-family) !important;
+    font-size: var(--text-h2) !important;
+    font-weight: var(--heading-font-weight) !important;
+    letter-spacing: 0 !important;
+    line-height: 1.2 !important;
+    white-space: normal !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-header-info {
+    display: inline-flex !important;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem 0.7rem;
+    color: rgb(var(--text-color) / 0.68) !important;
+    font-size: 0.86rem !important;
+    line-height: 1.3 !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-stars,
+  #shopify-section-{{ section.id }} .jdgm-star,
+  #shopify-section-{{ section.id }} .jdgm-rating-star {
+    color: #d4af37 !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-stars {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.12rem !important;
+    max-width: 8rem !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-star,
+  #shopify-section-{{ section.id }} .jdgm-rating-star {
+    display: inline-block !important;
+    flex: 0 0 auto !important;
+    width: 1em !important;
+    height: 1em !important;
+    max-width: 1em !important;
+    max-height: 1em !important;
+    font-size: 1rem !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-widget svg,
+  #shopify-section-{{ section.id }} .jdgm-widget img {
+    width: auto !important;
+    max-width: 7rem !important;
+    height: auto !important;
+    max-height: 1.15rem !important;
+    object-fit: contain !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-stars svg,
+  #shopify-section-{{ section.id }} .jdgm-star svg,
+  #shopify-section-{{ section.id }} .jdgm-rating-star svg,
+  #shopify-section-{{ section.id }} .jdgm-stars img,
+  #shopify-section-{{ section.id }} .jdgm-star img,
+  #shopify-section-{{ section.id }} .jdgm-rating-star img {
+    width: 1em !important;
+    max-width: 1em !important;
+    height: 1em !important;
+    max-height: 1em !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-content,
+  #shopify-section-{{ section.id }} .jdgm-testimonials-container {
+    width: 100% !important;
+    max-width: none !important;
+    height: auto !important;
+    min-height: 0 !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-card {
+    width: 100% !important;
+    max-width: 44rem !important;
+    height: auto !important;
+    min-height: 0 !important;
+    margin-inline: auto !important;
+    border: 1px solid rgb(var(--text-color) / 0.1) !important;
+    border-radius: 8px !important;
+    background: #fff !important;
+    color: rgb(var(--text-color)) !important;
+    box-shadow: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-card-content {
+    display: grid !important;
+    align-content: center;
+    justify-items: center;
+    gap: 0.8rem;
+    width: 100% !important;
+    height: auto !important;
+    min-height: clamp(13rem, 18vw, 17rem) !important;
+    padding: clamp(18px, 2.8vw, 28px) !important;
+    text-align: center !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-quote-marks {
+    display: none !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-text,
+  #shopify-section-{{ section.id }} .jdgm-text p {
+    margin: 0 !important;
+    color: rgb(var(--text-color) / 0.82) !important;
+    font-size: var(--text-base) !important;
+    line-height: 1.5 !important;
+    text-align: center !important;
+    white-space: normal !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-rating-section {
+    display: grid !important;
+    justify-items: center;
+    gap: 0.4rem;
+    margin: 0 !important;
+    text-align: center !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-reviewer-info,
+  #shopify-section-{{ section.id }} .jdgm-product-name {
+    width: 100% !important;
+    color: rgb(var(--text-color) / 0.68) !important;
+    font-size: 0.84rem !important;
+    line-height: 1.35 !important;
+    text-align: center !important;
+  }
+
+  #shopify-section-{{ section.id }} .jdgm-reviewer-name {
+    color: rgb(var(--text-color)) !important;
+    font-weight: 700 !important;
+  }
+
+  #shopify-section-{{ section.id }} .lc-reviews-with-image__empty-review {
+    display: none !important;
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .lc-reviews-with-image__layout {
+      grid-template-columns: 1fr;
+      min-height: 0;
+    }
+
+    #shopify-section-{{ section.id }} .lc-reviews-with-image__media {
+      order: 2;
+    }
+
+    #shopify-section-{{ section.id }} .lc-reviews-with-image__layout--reverse .lc-reviews-with-image__media {
+      order: 2;
+    }
+
+    #shopify-section-{{ section.id }} .lc-reviews-with-image__reviews {
+      order: 1;
+      padding: 28px 18px 34px;
+    }
+
+    #shopify-section-{{ section.id }} .lc-reviews-with-image__image {
+      aspect-ratio: 4 / 3;
+      min-height: 0;
+    }
+
+    #shopify-section-{{ section.id }} .lc-reviews-with-image__product {
+      inset-inline: 14px;
+      inset-block-end: 14px;
+      width: calc(100% - 28px);
+      padding: 11px 13px 12px;
+    }
+
+    #shopify-section-{{ section.id }} .jdgm-title {
+      font-size: 1.55rem !important;
+    }
+
+    #shopify-section-{{ section.id }} .jdgm-header-info {
+      gap: 0.45rem;
+      font-size: 0.76rem !important;
+    }
+  }
+</style>
+
+<script>
+  (() => {
+    const section = document.getElementById('shopify-section-{{ section.id }}');
+
+    if (!section) {
+      return;
+    }
+
+    const hasReviewCopy = (card) => {
+      const text = card.querySelector('.jdgm-text')?.textContent || '';
+      const copy = text.replace(/[★☆⭐✩✭✮✯✰….\s]/g, '').trim();
+      return copy.length > 8;
+    };
+
+    const cleanReviews = () => {
+      const cards = [...section.querySelectorAll('.jdgm-card')];
+      const filledCards = [];
+
+      cards.forEach((card) => {
+        const filled = hasReviewCopy(card);
+        card.classList.toggle('lc-reviews-with-image__empty-review', !filled);
+
+        if (filled) {
+          filledCards.push(card);
+        }
+      });
+
+      const activeCard = section.querySelector('.jdgm-card.active');
+
+      if (activeCard && activeCard.classList.contains('lc-reviews-with-image__empty-review') && filledCards.length > 0) {
+        activeCard.classList.remove('active');
+        filledCards[0].classList.add('active');
+      }
+    };
+
+    document.addEventListener('DOMContentLoaded', cleanReviews, { once: true });
+    window.addEventListener('load', cleanReviews, { once: true });
+    setTimeout(cleanReviews, 900);
+    setTimeout(cleanReviews, 2200);
+
+    new MutationObserver(cleanReviews).observe(section, {
+      childList: true,
+      subtree: true
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "LC reviews with image",
+  "class": "shopify-section--lc-reviews-with-image",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "Separate section with border",
+      "default": true
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Fallback image"
+    },
+    {
+      "type": "product",
+      "id": "reviewed_product",
+      "label": "Reviewed or fallback product",
+      "info": "Used for the image and link. The fallback image is only used when no product is selected or the product has no image."
+    },
+    {
+      "type": "text",
+      "id": "external_image_url",
+      "label": "Fallback product image URL"
+    },
+    {
+      "type": "text",
+      "id": "product_title",
+      "label": "Fallback product title"
+    },
+    {
+      "type": "url",
+      "id": "product_url",
+      "label": "Fallback product link"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "White bed linen by Linen and Co"
+    },
+    {
+      "type": "text",
+      "id": "product_label",
+      "label": "Product label",
+      "default": "Reviewed product"
+    },
+    {
+      "type": "select",
+      "id": "image_position",
+      "label": "Image position",
+      "options": [
+        {
+          "value": "start",
+          "label": "Left"
+        },
+        {
+          "value": "end",
+          "label": "Right"
+        }
+      ],
+      "default": "start"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_vertical_spacing",
+      "label": "Remove vertical spacing",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_horizontal_spacing",
+      "label": "Remove horizontal spacing",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC reviews with image"
+    }
+  ]
+}
+{% endschema %}

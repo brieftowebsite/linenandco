@@ -1,0 +1,384 @@
+{%- liquid
+  assign allow_transparent_header = section.settings.allow_transparent_header
+  assign desktop_media_layout = section.settings.desktop_media_layout
+  assign product_info_size = section.settings.product_info_size
+  assign pp = product.metafields.custom.product_profile.value
+  assign st = product.metafields.custom.styles.value
+  assign ac = product.metafields.custom.available_colours.value
+  assign htm = product.metafields.custom.how_to_measure.value
+  assign bp = product.metafields.custom.blinds.value | default: product.metafields.custom.blind_profile.value | default: product.metafields.custom.blinds_profile.value | default: product.metafields.custom.blind_product_profile.value
+  assign has_profile = false
+
+  if pp != blank
+    assign has_profile = true
+  endif
+
+  assign profile_heading = product.metafields.custom.product_h1_heading.value | default: product.metafields.custom.product_h1_heading | default: pp.product_name | default: pp.name | default: product.title
+  assign description_content = pp.what_is_it
+  assign why_choose_content = pp.why_choose
+  assign ideal_uses_content = pp.ideal_uses
+  assign care_content = pp.care_summary | default: pp.intro_text
+
+  assign blind_measure_heading = bp.how_to_measure_heading | default: bp.how_to_measure_title
+  assign blind_measure_subheading = bp.how_to_measure_subheading | default: bp.how_to_measure_intro
+  assign has_blind_measure = false
+
+  if htm != blank or blind_measure_heading != blank or blind_measure_subheading != blank
+    assign has_blind_measure = true
+  endif
+
+  for i in (1..4)
+    assign measure_text_key = 'how_to_measure_step_' | append: i
+    assign measure_image_key = 'how_to_measure_step_' | append: i | append: '_image_' | append: i
+    assign measure_image_fallback_key = 'how_to_measure_step_' | append: i | append: '_image'
+    assign measure_text = bp[measure_text_key]
+    assign measure_image = bp[measure_image_key] | default: bp[measure_image_fallback_key]
+
+    if measure_text != blank or measure_image != blank
+      assign has_blind_measure = true
+      break
+    endif
+  endfor
+
+  capture product_form_id
+    echo 'product-form-blind-' | append: product.id | append: '-' | append: section.id
+  endcapture
+
+  if allow_transparent_header
+    assign desktop_media_layout = 'grid_2x_highlighted'
+    assign product_info_size = 50
+  endif
+-%}
+
+<style>
+  {%- if section.settings.allow_transparent_header and section.settings.transparent_header_use_primary_colors -%}
+    .header {
+      --header-show-transparent-logo: 0 !important;
+      --header-transparent-header-text-color: initial;
+    }
+  {%- endif -%}
+
+  #shopify-section-{{ section.id }} {
+    --product-grid: "product-gallery" "product-info" / minmax(0, 1fr);
+  }
+
+  #lc-blind-product-{{ section.id }}.section-spacing,
+  #lc-blind-product-{{ section.id }}.section-spacing--tight {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  {%- if allow_transparent_header -%}
+    #shopify-section-{{ section.id }} {
+      --product-gallery-zoom-button-inset-block-start: calc(var(--sticky-area-height, 0px) + 1.25rem);
+    }
+  {%- endif -%}
+
+  @media screen and (min-width: 1000px) {
+    #shopify-section-{{ section.id }} {
+      --product-grid: "product-gallery product-info" / minmax(0, {{ 100.0 | minus: product_info_size | divided_by: 100.0 }}fr) minmax(0, {{ product_info_size | divided_by: 100.0 }}fr);
+    }
+  }
+</style>
+
+{%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+
+{{ 'lc-main-product.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'lc-main-product.js' | asset_url }}" defer></script>
+<script src="{{ 'lc-blind-calculator.js' | asset_url }}" defer></script>
+
+<div class="lc-anchor-nav-breakout-row-wrapper" id="lc-js-sticky-nav-anchor">
+  <nav class="lc-anchor-nav lc-blind-anchor-nav" aria-label="Blind product sections" data-lc-anchor-nav>
+    <div class="lc-anchor-nav__inner">
+      <div class="lc-anchor-nav__links">
+        <a href="#lc-blind-product-{{ section.id }}" class="lc-anchor-nav__link lc-anchor-nav__link--shop">← Shop Now</a>
+        {%- if description_content != blank -%}
+          <a href="#lc-what-is-it" class="lc-anchor-nav__link">Description</a>
+        {%- endif -%}
+        {%- if has_profile -%}
+          <a href="#lc-key-features-product" class="lc-anchor-nav__link">Key Features</a>
+        {%- endif -%}
+        {%- if why_choose_content != blank -%}
+          <a href="#lc-why-choose" class="lc-anchor-nav__link">Why Choose</a>
+        {%- endif -%}
+        {%- if ideal_uses_content != blank -%}
+          <a href="#lc-ideal-uses" class="lc-anchor-nav__link">Ideal Uses</a>
+        {%- endif -%}
+        {%- if care_content != blank -%}
+          <a href="#lc-care" class="lc-anchor-nav__link">Care Guide</a>
+        {%- endif -%}
+        {%- if st != blank -%}
+          <a href="#lc-compare-styles" class="lc-anchor-nav__link">Compare Styles</a>
+        {%- endif -%}
+        {%- if ac != blank -%}
+          <a href="#lc-colours" class="lc-anchor-nav__link">Available Colours</a>
+        {%- endif -%}
+        {%- if has_blind_measure -%}
+          <a href="#lc-how-to-measure" class="lc-anchor-nav__link">How To Measure</a>
+        {%- endif -%}
+        <a href="#lc-contact-cta" class="lc-anchor-nav__link">Support</a>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div
+  id="lc-blind-product-{{ section.id }}"
+  class="lc-blind-product-shell section-spacing section-spacing--tight color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }}"
+  data-section-id="{{ section.id }}"
+  {% if allow_transparent_header %}allow-transparent-header{% endif %}
+>
+  <div class="container {% unless section.settings.container_size == 'full' %}container--{{ section.settings.container_size }}{% endunless %}">
+    <product-rerender id="product-info-{{ product.id }}-{{ section.id }}" observe-form="{{ product_form_id }}" allow-partial-rerender>
+      <div class="lc-breadcrumbs-row">
+        {%- render 'lc-breadcrumbs', product: product -%}
+      </div>
+
+      <div class="product">
+        <div class="lc-product-gallery-wrap">
+          {%- if product.media.size > 0 -%}
+            {%- render 'product-gallery',
+              product: product,
+              product_form_id: product_form_id,
+              desktop_layout: desktop_media_layout,
+              mobile_controls: section.settings.mobile_controls,
+              enable_media_autoplay: section.settings.enable_media_autoplay,
+              enable_video_looping: section.settings.enable_video_looping,
+              enable_image_zoom: section.settings.enable_image_zoom,
+              max_image_zoom_level: section.settings.max_image_zoom_level,
+              enable_thumbnail_rail_controls: true
+            -%}
+          {%- endif -%}
+
+          <div class="lc-key-features-slot lc-key-features-slot--desktop">
+            {%- render 'lc-key-features', product: product, pp: pp -%}
+
+            {%- render 'lc-complementary-products',
+              product: product,
+              show_quick_buy: true,
+              instance_id: 'desktop'
+            -%}
+          </div>
+        </div>
+
+        <div class="product-info">
+          {%- render 'lc-blind-product-info',
+            product: product,
+            product_form_id: product_form_id,
+            center_basic_info: section.settings.center_basic_info,
+            profile_heading: profile_heading,
+            section_id: section.id
+          -%}
+
+          <div class="lc-key-features-slot lc-key-features-slot--mobile">
+            {%- render 'lc-key-features', product: product, pp: pp -%}
+            {%- render 'lc-separator-no-colour', style: 'gap' -%}
+
+            {%- render 'lc-complementary-products',
+              product: product,
+              show_quick_buy: true,
+              instance_id: 'mobile'
+            -%}
+          </div>
+        </div>
+      </div>
+    </product-rerender>
+  </div>
+</div>
+
+<div id="lc-blind-product-specs" class="lc-blind-product-details container container--xl">
+  {%- if has_profile -%}
+    {%- render 'lc-product-description', pp: pp, product: product -%}
+    {%- render 'lc-why-choose', pp: pp, product: product -%}
+    {%- render 'lc-ideal-uses', pp: pp, product: product -%}
+    {%- render 'lc-care-strip', pp: pp, product: product -%}
+  {%- endif -%}
+
+  {%- if st != blank -%}
+    {%- render 'lc-style-compare', st: st, product: product -%}
+  {%- endif -%}
+
+  {%- if ac != blank -%}
+    {%- render 'lc-colour-strip', ac: ac, product: product -%}
+  {%- endif -%}
+
+  {%- if htm != blank -%}
+    {%- render 'lc-how-to-measure', htm: htm, product: product -%}
+  {%- elsif has_blind_measure -%}
+    {%- render 'lc-blind-description',
+      product: product,
+      bp: bp,
+      show_description: false,
+      show_quick_specs: false,
+      show_ideal_uses: false,
+      show_installation: false,
+      show_measure: true
+    -%}
+  {%- endif -%}
+
+  {%- render 'lc-contact-cta', product: product -%}
+  {%- render 'lc-faq', product: product -%}
+</div>
+
+{%- render 'product-quick-buy', product: product -%}
+
+<script>
+  try {
+    let recentlyViewedProducts = JSON.parse(localStorage.getItem('theme:recently-viewed-products') || '[]');
+    recentlyViewedProducts = recentlyViewedProducts.filter(item => item !== {{ product.id }});
+    recentlyViewedProducts.unshift({{ product.id }});
+    localStorage.setItem('theme:recently-viewed-products', JSON.stringify(recentlyViewedProducts));
+  } catch (e) {}
+</script>
+
+{% schema %}
+{
+  "name": "LC Blind Product",
+  "class": "shopify-section--main-product",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "allow_transparent_header",
+      "label": "Allow Transparent Header",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_header_use_primary_colors",
+      "label": "Transparent Header Use Primary Colors",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "container_size",
+      "label": "Section Width",
+      "options": [
+        {
+          "value": "lg",
+          "label": "Large"
+        },
+        {
+          "value": "xl",
+          "label": "X-Large"
+        },
+        {
+          "value": "full",
+          "label": "Full Width"
+        }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "range",
+      "id": "product_info_size",
+      "label": "Right Column Width (%)",
+      "min": 30,
+      "max": 60,
+      "step": 5,
+      "unit": "%",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "center_basic_info",
+      "label": "Center Basic Info (Mobile)",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "desktop_media_layout",
+      "label": "Desktop Media Layout",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "grid_2x",
+          "label": "Grid 2x"
+        },
+        {
+          "value": "grid_2x_highlighted",
+          "label": "Grid 2x Highlighted"
+        },
+        {
+          "value": "carousel_thumbnails_left",
+          "label": "Carousel (Thumbnails Left)"
+        },
+        {
+          "value": "carousel_thumbnails_bottom",
+          "label": "Carousel (Thumbnails Bottom)"
+        },
+        {
+          "value": "carousel_dots",
+          "label": "Carousel (Dots)"
+        }
+      ],
+      "default": "carousel_thumbnails_left"
+    },
+    {
+      "type": "range",
+      "id": "desktop_media_grid_gap",
+      "min": 0,
+      "max": 50,
+      "unit": "px",
+      "label": "Desktop Media Grid Gap",
+      "default": 30
+    },
+    {
+      "type": "select",
+      "id": "mobile_controls",
+      "label": "Mobile Controls",
+      "options": [
+        {
+          "value": "dots",
+          "label": "Dots"
+        },
+        {
+          "value": "thumbnails",
+          "label": "Thumbnails"
+        },
+        {
+          "value": "free_scroll",
+          "label": "Free Scroll"
+        }
+      ],
+      "default": "free_scroll"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_media_autoplay",
+      "label": "Enable Media Autoplay",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_video_looping",
+      "label": "Enable Video Looping",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_zoom",
+      "label": "Enable Image Zoom",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "max_image_zoom_level",
+      "min": 1,
+      "max": 4,
+      "step": 0.5,
+      "label": "Max Image Zoom Level",
+      "default": 2
+    }
+  ]
+}
+{% endschema %}

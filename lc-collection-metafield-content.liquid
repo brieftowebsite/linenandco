@@ -1,0 +1,264 @@
+{%- liquid
+  assign guide_items = collection.metafields.custom.guide_items.value
+  assign faq_items = collection.metafields.custom.faq_items.value
+  assign guide_heading = collection.metafields.custom.guide_heading.value | default: section.settings.guide_heading
+  assign faq_heading = collection.metafields.custom.faq_heading.value | default: section.settings.faq_heading
+-%}
+
+{%- if guide_items != blank or faq_items != blank -%}
+  {%- assign color_scheme_hash = section.settings.color_scheme.settings.background_gradient | default: section.settings.color_scheme.settings.background | md5 -%}
+
+  <div class="lc-collection-meta section-spacing color-scheme color-scheme--{{ section.settings.color_scheme.id }} color-scheme--bg-{{ color_scheme_hash }} {% if section.settings.separate_section_with_border %}bordered-section{% endif %}">
+    <div class="container container--lg">
+      <div class="lc-collection-meta__layout">
+        {%- if guide_items != blank -%}
+          <div class="lc-collection-meta__panel">
+            {%- if guide_heading != blank or section.settings.guide_intro != blank -%}
+              <div class="lc-collection-meta__header">
+                {%- if guide_heading != blank -%}
+                  <h2 class="h3">{{ guide_heading }}</h2>
+                {%- endif -%}
+
+                {%- if section.settings.guide_intro != blank -%}
+                  <div class="prose">
+                    {{- section.settings.guide_intro -}}
+                  </div>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+
+            <div class="lc-collection-meta__guide-list">
+              {%- for item in guide_items -%}
+                {%- liquid
+                  assign item_title = item.title.value
+                  assign item_link_label = item.link_label.value
+                  assign item_link_url = item.link_url.value
+                -%}
+
+                {%- if item_title != blank -%}
+                  <article class="lc-collection-meta__guide-item">
+                    <div class="lc-collection-meta__guide-content">
+                      <h3 class="h6">{{ item_title }}</h3>
+
+                      {%- if item.content != blank -%}
+                        <div class="lc-collection-meta__richtext prose">
+                          {{- item.content | metafield_tag -}}
+                        </div>
+                      {%- endif -%}
+                    </div>
+
+                    {%- if item_link_url != blank and item_link_label != blank -%}
+                      <a class="link" href="{{ item_link_url }}">{{ item_link_label }}</a>
+                    {%- endif -%}
+                  </article>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if faq_items != blank -%}
+          <div class="lc-collection-meta__panel lc-collection-meta__panel--faq">
+            {%- if faq_heading != blank -%}
+              <div class="lc-collection-meta__header">
+                <h2 class="h3">{{ faq_heading }}</h2>
+              </div>
+            {%- endif -%}
+
+            <div class="lc-collection-meta__faq-list">
+              {%- for item in faq_items -%}
+                {%- assign question = item.question.value -%}
+
+                {%- if question != blank and item.answer != blank -%}
+                  <details class="lc-collection-meta__faq-item" {% if forloop.first %}open{% endif %}>
+                    <summary>
+                      <span>{{ question }}</span>
+                    </summary>
+
+                    <div class="lc-collection-meta__faq-answer prose">
+                      {{- item.answer | metafield_tag -}}
+                    </div>
+                  </details>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<style>
+  #shopify-section-{{ section.id }} .lc-collection-meta {
+    --lc-border: rgb(var(--text-color) / 0.12);
+    --lc-muted: rgb(var(--text-color) / 0.66);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+    gap: clamp(28px, 5vw, 72px);
+    align-items: start;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__header {
+    margin-block-end: clamp(18px, 2.4vw, 28px);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__header .h3 {
+    margin: 0;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__header .prose {
+    max-width: 44rem;
+    margin-block-start: 0.65rem;
+    color: var(--lc-muted);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__guide-list {
+    display: grid;
+    gap: 0;
+    border-block-start: 1px solid var(--lc-border);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__guide-item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.25rem;
+    align-items: center;
+    padding: clamp(16px, 2.2vw, 24px) 0;
+    border-block-end: 1px solid var(--lc-border);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__guide-item .h6 {
+    margin: 0;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__richtext {
+    max-width: 46rem;
+    margin-block-start: 0.45rem;
+    color: var(--lc-muted);
+    font-size: 0.94rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__richtext > :first-child,
+  #shopify-section-{{ section.id }} .lc-collection-meta__faq-answer > :first-child {
+    margin-block-start: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__richtext > :last-child,
+  #shopify-section-{{ section.id }} .lc-collection-meta__faq-answer > :last-child {
+    margin-block-end: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__guide-item .link {
+    white-space: nowrap;
+    font-size: 0.9rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__faq-list {
+    border-block-start: 1px solid var(--lc-border);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__faq-item {
+    border-block-end: 1px solid var(--lc-border);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__faq-item summary {
+    display: flex;
+    justify-content: space-between;
+    gap: 1.25rem;
+    align-items: center;
+    padding: clamp(16px, 2vw, 22px) 0;
+    cursor: pointer;
+    list-style: none;
+    font-weight: 600;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__faq-item summary::after {
+    content: "+";
+    flex: 0 0 auto;
+    color: var(--lc-muted);
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__faq-item[open] summary::after {
+    content: "-";
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-meta__faq-answer {
+    padding-block: 0 1.15rem;
+    color: var(--lc-muted);
+    font-size: 0.94rem;
+  }
+
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} .lc-collection-meta__layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .lc-collection-meta__guide-item {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-meta__guide-item .link {
+      white-space: normal;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection metafields",
+  "class": "shopify-section--collection-metafields",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "separate_section_with_border",
+      "label": "Separate section with border",
+      "default": true
+    },
+    {
+      "type": "inline_richtext",
+      "id": "guide_heading",
+      "label": "Fallback guide heading",
+      "default": "Helpful ways to shop"
+    },
+    {
+      "type": "richtext",
+      "id": "guide_intro",
+      "label": "Guide intro"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "faq_heading",
+      "label": "Fallback FAQ heading",
+      "default": "Quick answers"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection metafields"
+    }
+  ]
+}
+{% endschema %}

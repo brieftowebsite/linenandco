@@ -1,0 +1,221 @@
+{%- liquid
+  assign heading = section.settings.heading | default: 'Complete the Room'
+  assign intro = section.settings.intro
+-%}
+
+{%- if section.blocks.size > 0 -%}
+  <section class="lc-home-complete-room color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container">
+      <div class="lc-home-complete-room__header">
+        <div class="lc-home-complete-room__copy">
+          <h2 id="lc-home-complete-room-heading-{{ section.id }}">{{ heading }}</h2>
+
+          {%- if intro != blank -%}
+            <p>{{ intro }}</p>
+          {%- endif -%}
+        </div>
+
+        <nav class="lc-home-complete-room__nav" aria-labelledby="lc-home-complete-room-heading-{{ section.id }}">
+          <ul class="unstyled-list" role="list">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign card_link = block.settings.link
+                assign chip_label = block.settings.chip_label | default: block.settings.title
+              -%}
+
+              {%- if chip_label != blank -%}
+                <li>
+                  <a class="lc-home-complete-room__chip" href="{{ card_link | default: routes.all_products_collection_url }}">
+                    {{- chip_label -}}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+
+      <div class="lc-home-complete-room__mosaic">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign card_link = block.settings.link
+            assign image_asset = block.settings.image_asset | strip
+            assign image_alt = block.settings.image_alt | default: block.settings.title
+            assign image_width = 1400
+
+            if forloop.first
+              assign image_width = 2200
+            endif
+          -%}
+
+          <a class="lc-home-complete-room__card{% if forloop.first %} lc-home-complete-room__card--featured{% endif %}" href="{{ card_link | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }}>
+            <span class="lc-home-complete-room__media">
+              {%- if block.settings.image != blank -%}
+                {{-
+                  block.settings.image
+                  | image_url: width: image_width
+                  | image_tag:
+                    class: 'lc-home-complete-room__image',
+                    alt: image_alt,
+                    loading: 'lazy'
+                -}}
+              {%- elsif image_asset != blank -%}
+                <img
+                  class="lc-home-complete-room__image"
+                  src="{{ image_asset | asset_url }}"
+                  alt="{{ image_alt | escape }}"
+                  width="{{ image_width }}"
+                  height="{{ image_width }}"
+                  loading="lazy"
+                >
+              {%- elsif request.design_mode -%}
+                {{- 'collection-1' | placeholder_svg_tag: 'placeholder lc-home-complete-room__placeholder' -}}
+              {%- endif -%}
+            </span>
+
+            <span class="lc-home-complete-room__card-copy">
+              {%- if block.settings.kicker != blank -%}
+                <span class="lc-home-complete-room__kicker">{{ block.settings.kicker }}</span>
+              {%- endif -%}
+
+              {%- if block.settings.title != blank -%}
+                <span class="lc-home-complete-room__title">{{ block.settings.title }}</span>
+              {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <span class="lc-home-complete-room__text">{{ block.settings.text }}</span>
+              {%- endif -%}
+            </span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LC complete room",
+  "class": "shopify-section--lc-home-complete-room",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Complete the Room"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Curtains, blinds, scatter cushions, bed runners and quilted bedspreads for the finishing layers that bring a room together."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "decor_card",
+      "name": "Decor card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Decor"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Curtains & Blinds"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Window layers made for bedrooms, guest suites and finished interiors."
+        },
+        {
+          "type": "text",
+          "id": "chip_label",
+          "label": "Chip label",
+          "default": "Curtains & Blinds"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_asset",
+          "label": "Theme asset filename"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text",
+          "default": "Linen and Co decor and window treatment detail"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC complete room",
+      "blocks": [
+        {
+          "type": "decor_card"
+        },
+        {
+          "type": "decor_card",
+          "settings": {
+            "kicker": "Soft furnishing",
+            "title": "Scatter Cushions",
+            "text": "Colour, texture and softness for beds, sofas and guest spaces.",
+            "chip_label": "Scatter Cushions"
+          }
+        },
+        {
+          "type": "decor_card",
+          "settings": {
+            "kicker": "Bed styling",
+            "title": "Bed Runners",
+            "text": "A simple finishing layer for hotel beds, lodges and styled bedrooms.",
+            "chip_label": "Bed Runners"
+          }
+        },
+        {
+          "type": "decor_card",
+          "settings": {
+            "kicker": "Layering",
+            "title": "Quilted Bedspreads",
+            "text": "Extra warmth, texture and polish for complete bed settings.",
+            "chip_label": "Quilted Bedspreads"
+          }
+        },
+        {
+          "type": "decor_card",
+          "settings": {
+            "kicker": "Finishing touches",
+            "title": "Decor Finishes",
+            "text": "Runners, cushions and room details that complete the look.",
+            "chip_label": "Decor Finishes"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,213 @@
+{%- liquid
+  assign heading = section.settings.heading | default: 'Custom Finishes'
+  assign intro = section.settings.intro
+-%}
+
+{%- if section.blocks.size > 0 -%}
+  <section class="lc-home-custom-finishes color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container">
+      <div class="lc-home-custom-finishes__header">
+        <div class="lc-home-custom-finishes__copy">
+          <h2 id="lc-home-custom-finishes-heading-{{ section.id }}">{{ heading }}</h2>
+
+          {%- if intro != blank -%}
+            <p>{{ intro }}</p>
+          {%- endif -%}
+        </div>
+
+        <nav class="lc-home-custom-finishes__nav" aria-labelledby="lc-home-custom-finishes-heading-{{ section.id }}">
+          <ul class="unstyled-list" role="list">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign finish_link = block.settings.link
+                assign chip_label = block.settings.chip_label | default: block.settings.title
+              -%}
+
+              {%- if chip_label != blank -%}
+                <li>
+                  <a class="lc-home-custom-finishes__chip" href="{{ finish_link | default: routes.all_products_collection_url }}">
+                    {{- chip_label -}}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+
+      <div class="lc-home-custom-finishes__rail" data-lc-custom-finishes-rail>
+        <div class="lc-home-custom-finishes__track" tabindex="0" data-lc-custom-finishes-track>
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign image_asset = block.settings.image_asset | strip
+              assign finish_link = block.settings.link
+              assign image_alt = block.settings.image_alt | default: block.settings.title
+            -%}
+
+            <a class="lc-home-custom-finishes__card" href="{{ finish_link | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }}>
+              <span class="lc-home-custom-finishes__media">
+                {%- if image_asset != blank -%}
+                  <img
+                    src="{{ image_asset | asset_url }}"
+                    alt="{{ image_alt | escape }}"
+                    width="1200"
+                    height="1200"
+                    loading="{% if forloop.index <= 2 %}eager{% else %}lazy{% endif %}"
+                  >
+                {%- endif -%}
+              </span>
+
+              <span class="lc-home-custom-finishes__card-copy">
+                {%- if block.settings.kicker != blank -%}
+                  <span class="lc-home-custom-finishes__kicker">{{ block.settings.kicker }}</span>
+                {%- endif -%}
+
+                {%- if block.settings.title != blank -%}
+                  <span class="lc-home-custom-finishes__title">{{ block.settings.title }}</span>
+                {%- endif -%}
+
+                {%- if block.settings.text != blank -%}
+                  <span class="lc-home-custom-finishes__text">{{ block.settings.text }}</span>
+                {%- endif -%}
+              </span>
+            </a>
+          {%- endfor -%}
+        </div>
+
+        <div class="lc-home-custom-finishes__controls" data-lc-custom-finishes-controls aria-label="{{ heading | strip_html | escape }}">
+          <button class="lc-home-custom-finishes__arrow" type="button" data-lc-custom-finishes-prev aria-label="Previous custom finishes">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M15 18 9 12l6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" />
+            </svg>
+          </button>
+
+          <button class="lc-home-custom-finishes__arrow" type="button" data-lc-custom-finishes-next aria-label="Next custom finishes">
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LC custom finishes",
+  "class": "shopify-section--lc-home-custom-finishes",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Custom Finishes"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Add satin stitch, embroidery, labels and made-to-measure sizing for homes, guesthouses, lodges and trade projects."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "finish",
+      "name": "Finish",
+      "settings": [
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Custom"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Satin Stitch"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "A refined stitch detail for bed linen in hospitality and luxury interiors."
+        },
+        {
+          "type": "text",
+          "id": "chip_label",
+          "label": "Chip label",
+          "default": "Satin Stitch"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "image_asset",
+          "label": "Theme asset filename",
+          "default": "white-pillow-case-with-satin-stitch-and-embroidery-and-lables-linen-and-co.webp"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text",
+          "default": "White pillowcases with satin stitch, embroidery and Linen and Co labels"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC custom finishes",
+      "blocks": [
+        {
+          "type": "finish"
+        },
+        {
+          "type": "finish",
+          "settings": {
+            "kicker": "Branding",
+            "title": "Embroidery & Branding",
+            "text": "Logos, monograms, room numbers and text for linen, towels, robes and table linen.",
+            "chip_label": "Embroidery & Branding",
+            "image_asset": "placement-and-size-embroidery-linen-and-co.webp",
+            "image_alt": "Embroidered monogram and placement guide on white linen"
+          }
+        },
+        {
+          "type": "finish",
+          "settings": {
+            "kicker": "Labels",
+            "title": "Custom Labels",
+            "text": "Woven label finishing for branded bedding, hospitality linen and repeat projects.",
+            "chip_label": "Custom Labels",
+            "image_asset": "white-bed-linen-with-black-lable-with-white-linen-and-co-logo-square.webp",
+            "image_alt": "White bed linen with a black Linen and Co custom label"
+          }
+        },
+        {
+          "type": "finish",
+          "settings": {
+            "kicker": "Sizing",
+            "title": "Custom Sizing",
+            "text": "Made-to-measure bedding, towels, table linen and window treatments for unusual dimensions.",
+            "chip_label": "Custom Sizing",
+            "image_asset": "king-vs-super-king-bed-linen-sizes-linen-co-square.png",
+            "image_alt": "King and super king bed linen size comparison"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

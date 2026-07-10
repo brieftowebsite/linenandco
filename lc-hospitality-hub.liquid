@@ -1,0 +1,663 @@
+<section class="lc-hospitality-hub color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="container">
+    <div class="lc-hospitality-hub__visuals" aria-label="Hospitality ranges preview">
+      {%- if section.settings.bedroom_image != blank -%}
+        <figure>
+          {{ section.settings.bedroom_image | image_url: width: 760 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 33vw, 100vw', widths: '360, 520, 760, 1040', alt: 'Hotel bed linen supplied by Linen and Co' }}
+          <figcaption>Guest rooms</figcaption>
+        </figure>
+      {%- endif -%}
+
+      {%- if section.settings.bathroom_image != blank -%}
+        <figure>
+          {{ section.settings.bathroom_image | image_url: width: 760 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 33vw, 100vw', widths: '360, 520, 760, 1040', alt: 'Hotel bath linen supplied by Linen and Co' }}
+          <figcaption>Bathrooms and spas</figcaption>
+        </figure>
+      {%- endif -%}
+
+      {%- if section.settings.table_image != blank -%}
+        <figure>
+          {{ section.settings.table_image | image_url: width: 760 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 33vw, 100vw', widths: '360, 520, 760, 1040', alt: 'Hotel table linen supplied by Linen and Co' }}
+          <figcaption>Dining and events</figcaption>
+        </figure>
+      {%- endif -%}
+    </div>
+
+    <div class="lc-hospitality-hub__proof" aria-label="Hospitality proof points">
+      <div>
+        <span class="lc-hospitality-hub__proof-icon">{%- render 'icon' with 'picto-building', width: 28 -%}</span>
+        <strong>Hotel grade</strong>
+        <span>bed linen, bath linen, table linen, decor and window treatments</span>
+      </div>
+      <div>
+        <span class="lc-hospitality-hub__proof-icon">{%- render 'icon' with 'picto-secure-profile', width: 28 -%}</span>
+        <strong>Trade access</strong>
+        <span>approved Shopify customer accounts for hospitality pricing</span>
+      </div>
+      <div>
+        <span class="lc-hospitality-hub__proof-icon">{%- render 'icon' with 'picto-box', width: 28 -%}</span>
+        <strong>No minimum</strong>
+        <span>practical support for top-ups, refurbishments and full openings</span>
+      </div>
+      <div>
+        <span class="lc-hospitality-hub__proof-icon">{%- render 'icon' with 'picto-award-gift', width: 28 -%}</span>
+        <strong>Custom finish</strong>
+        <span>sizing, satin stitch, embroidery, labels and branding support</span>
+      </div>
+    </div>
+
+    <div class="lc-hospitality-hub__section lc-hospitality-hub__section--split">
+      <div class="lc-hospitality-hub__copy">
+        <p class="lc-hospitality-hub__kicker">Built for operations</p>
+        <h3>One supplier for the linen guests see, use and remember.</h3>
+      </div>
+
+      <div class="lc-hospitality-hub__copy rte">
+        <p>Hospitality buying is not just about a pretty bed. It is about stock that washes well, sizes that match your rooms, ranges that can be reordered, finishes that suit the property, and a supplier who can help when quantities, deadlines and budgets are real.</p>
+        <p>Linen and Co supports hotels, lodges, guesthouses, spas, restaurants, decorators, procurement teams and multi-property operators with product guidance, account ordering and quotation support.</p>
+      </div>
+    </div>
+
+    <div class="lc-hospitality-hub__routes" aria-label="Hospitality order routes">
+      <article class="lc-hospitality-hub__route">
+        <span>01</span>
+        <h3>Open a trade account</h3>
+        <p>Register once, then use your approved Shopify customer account for eligible hospitality pricing and repeat ordering.</p>
+        <a href="/pages/trade-registration-form">Register for trade access</a>
+      </article>
+
+      <article class="lc-hospitality-hub__route">
+        <span>02</span>
+        <h3>Send a project list</h3>
+        <p>For openings, refurbishments and mixed-category orders, send room counts, sizes, quantities and deadlines.</p>
+        <a href="/pages/quotation-request">Request a guided quote</a>
+      </article>
+
+      <article class="lc-hospitality-hub__route">
+        <span>03</span>
+        <h3>Reorder essentials</h3>
+        <p>Approved customers can log in, shop the online store, rebuild repeat orders and checkout through their account.</p>
+        <a href="/account/login">Log in to your account</a>
+      </article>
+    </div>
+
+    <div class="lc-hospitality-hub__section">
+      <div class="lc-hospitality-hub__section-head">
+        <p class="lc-hospitality-hub__kicker">Core hospitality ranges</p>
+        <h3>Specify by room, service area or guest touchpoint.</h3>
+      </div>
+
+      <div class="lc-hospitality-hub__range-grid">
+        <a href="{{ routes.collections_url }}/hotel-bed-linen-polycotton-percale-200tc">
+          <strong>Bed linen</strong>
+          <span>Polycotton percale, cotton percale, duvet covers, fitted sheets, flat sheets and pillowcases.</span>
+        </a>
+        <a href="{{ routes.collections_url }}/hotel-bathroom-essentials">
+          <strong>Bath linen</strong>
+          <span>Towels, bath sheets, bath mats, bathrobes and bathroom essentials for guest rooms and spas.</span>
+        </a>
+        <a href="{{ routes.collections_url }}/hotel-table-linen">
+          <strong>Table linen</strong>
+          <span>Napkins, overlays, round cloths, square cloths and rectangular tablecloths.</span>
+        </a>
+        <a href="{{ routes.collections_url }}/hotel-duvet-inners-and-pillows">
+          <strong>Duvets and pillows</strong>
+          <span>Microfibre, feather, down and natural-fill options for different comfort levels.</span>
+        </a>
+        <a href="{{ routes.collections_url }}/hotel-mattress-pillow-protectors">
+          <strong>Protectors and toppers</strong>
+          <span>Mattress protectors, pillow protectors, toppers and convertors for room refreshes.</span>
+        </a>
+        <a href="/pages/curtains-and-blinds">
+          <strong>Light control</strong>
+          <span>Curtains, roller blinds, venetian blinds, zebra blinds and curtain hardware.</span>
+        </a>
+        <a href="{{ routes.collections_url }}/hotel-blankets">
+          <strong>Blankets and decor</strong>
+          <span>Blankets, scatters, runners and soft finishing pieces for guest presentation.</span>
+        </a>
+        <a href="/pages/embroidery-satin-stitch-branding">
+          <strong>Customisation</strong>
+          <span>Embroidery, satin stitch, custom labels, branding and custom sizing support.</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="lc-hospitality-hub__section lc-hospitality-hub__section--dark">
+      <div class="lc-hospitality-hub__section-head">
+        <p class="lc-hospitality-hub__kicker">How we help</p>
+        <h3>Clearer choices before you commit to stock.</h3>
+      </div>
+
+      <div class="lc-hospitality-hub__support-grid">
+        <div>
+          <strong>Fabric and finish guidance</strong>
+          <span>Choose between durable everyday ranges, premium cotton options and custom finishes for the right room standard.</span>
+        </div>
+        <div>
+          <strong>Room-by-room planning</strong>
+          <span>Work from room counts, bed sizes, bathroom needs, restaurant covers or spa requirements.</span>
+        </div>
+        <div>
+          <strong>Lead time clarity</strong>
+          <span>Confirm stock availability, production requirements, custom work and delivery timing before you proceed.</span>
+        </div>
+        <div>
+          <strong>Reorder consistency</strong>
+          <span>Build ranges that can be topped up over time instead of starting from scratch every season.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="lc-hospitality-hub__contact">
+      <div>
+        <p class="lc-hospitality-hub__kicker">Need help specifying?</p>
+        <h3>Send us the list. We will help you make sense of it.</h3>
+      </div>
+      <div class="lc-hospitality-hub__contact-actions">
+        <a href="/pages/quotation-request" class="button">Request a quote</a>
+        <a href="mailto:info@linenco.co.za" class="button button--outline">Email us</a>
+        <a href="https://wa.me/27662918292" class="button button--outline">WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% render 'schema-hospitality' %}
+
+<style>
+  #shopify-section-{{ section.id }} .lc-hospitality-hub {
+    padding-block: clamp(1.5rem, 3vw, 2.25rem) clamp(2.35rem, 4.5vw, 3.4rem);
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub > .container {
+    max-width: 98rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__kicker,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__route span {
+    margin: 0;
+    color: rgb(var(--text-color) / 0.82);
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 0.7rem;
+    margin-top: 0.6rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals {
+    display: grid;
+    grid-template-columns: 1.2fr 0.9fr 0.9fr;
+    gap: 1.2rem;
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals figure {
+    position: relative;
+    min-height: clamp(16rem, 24vw, 22rem);
+    margin: 0;
+    border-radius: 6px;
+    overflow: hidden;
+    background: rgb(var(--text-color) / 0.08);
+    color: #fff;
+    isolation: isolate;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: clamp(16rem, 24vw, 22rem);
+    object-fit: cover;
+    transition: transform 600ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals figure::after {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: linear-gradient(180deg, rgb(0 0 0 / 0.06), rgb(0 0 0 / 0.28));
+    content: "";
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals figure:hover img {
+    transform: scale(1.025);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals figcaption {
+    position: absolute;
+    inset-inline: 1.25rem;
+    inset-block-end: 1.15rem;
+    z-index: 2;
+    font-size: 0.78rem;
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.15;
+    text-transform: uppercase;
+    text-shadow: 0 1px 18px rgb(0 0 0 / 0.24);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__proof {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0;
+    margin: clamp(1.25rem, 2.4vw, 1.9rem) 0 clamp(2rem, 4vw, 3rem);
+    border-top: 1px solid rgb(var(--text-color) / 0.16);
+    border-bottom: 1px solid rgb(var(--text-color) / 0.16);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__proof div {
+    display: grid;
+    gap: 0.36rem;
+    min-height: 5.6rem;
+    padding: clamp(1rem, 1.6vw, 1.35rem);
+    border-right: 1px solid rgb(var(--text-color) / 0.16);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__proof-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-bottom: 0.18rem;
+    color: rgb(var(--text-color) / 0.82);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__proof-icon svg {
+    width: 1.75rem;
+    height: 1.75rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__proof div:last-child {
+    border-right: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__proof strong,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__proof span,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__support-grid strong,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__support-grid span {
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__proof strong {
+    font-size: clamp(0.82rem, 0.92vw, 1rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.15;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__proof span,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__route p,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid span,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__support-grid span {
+    color: rgb(var(--text-color) / 0.68);
+    font-size: var(--text-base);
+    line-height: 1.58;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__section {
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__section--split {
+    display: grid;
+    grid-template-columns: minmax(16rem, 23rem) minmax(0, 1fr);
+    gap: 2rem;
+    align-items: start;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__copy h3,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__section-head h3,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__contact h3 {
+    margin: 0;
+    font-family: var(--heading-font-family);
+    font-size: var(--text-h2);
+    font-weight: var(--heading-font-weight);
+    font-style: var(--heading-font-style);
+    letter-spacing: var(--heading-letter-spacing);
+    line-height: 1.2;
+    text-transform: var(--heading-text-transform);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__copy.rte {
+    font-size: var(--text-base);
+    line-height: 1.65;
+    color: rgb(var(--text-color) / 0.76);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__routes {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-top: clamp(1.35rem, 3vw, 2.25rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__route,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid a {
+    min-height: 100%;
+    border: 1px solid rgb(var(--text-color) / 0.14);
+    border-radius: 6px;
+    padding: clamp(1.05rem, 1.8vw, 1.4rem);
+    background: rgb(var(--background));
+    text-decoration: none;
+    color: inherit;
+    transition:
+      border-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__route:hover,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid a:hover,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__route:focus-within,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid a:focus-visible {
+    border-color: rgb(var(--text-color) / 0.42);
+    transform: translateY(-2px);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__route h3,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid strong {
+    display: block;
+    margin: 0 0 0.55rem;
+    font-size: 1.06rem;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__route p {
+    margin: 0 0 1rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__route a,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid a:hover strong {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__section-head {
+    display: grid;
+    gap: 0.7rem;
+    max-width: 54rem;
+    margin-bottom: clamp(1.25rem, 2.4vw, 1.9rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid a {
+    min-height: 10.5rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__section--dark {
+    padding: clamp(1.5rem, 3vw, 2.25rem);
+    background: rgb(var(--text-color));
+    color: rgb(var(--background));
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__section--dark .lc-hospitality-hub__kicker,
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__section--dark .lc-hospitality-hub__support-grid span {
+    color: rgb(var(--background) / 0.72);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__support-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.5rem);
+    margin-top: clamp(1.1rem, 2vw, 1.65rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__support-grid strong {
+    margin-bottom: 0.45rem;
+    color: inherit;
+    font-weight: 800;
+    line-height: 1.2;
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__contact {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1.5rem;
+    align-items: center;
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding-top: clamp(1.35rem, 3vw, 2.25rem);
+    border-top: 1px solid rgb(var(--text-color) / 0.16);
+  }
+
+  #shopify-section-{{ section.id }} .lc-hospitality-hub__contact-actions {
+    justify-content: flex-end;
+    margin-top: 0;
+  }
+
+  @media screen and (max-width: 1199px) {
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__support-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__routes,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__section--split,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__contact {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals figure {
+      aspect-ratio: 4 / 3;
+      min-height: 0;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals img {
+      height: 100%;
+      min-height: 0;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__copy h3,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__section-head h3,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__contact h3 {
+      font-size: clamp(1.5rem, 4vw, 2rem);
+      line-height: 1.16;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__copy.rte,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__route p,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid span,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__support-grid span {
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof {
+      margin: 1rem 0 1.65rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof div {
+      grid-template-columns: 2rem minmax(0, 1fr);
+      column-gap: 0.75rem;
+      row-gap: 0.16rem;
+      align-items: center;
+      min-height: 0;
+      padding: 0.85rem 0;
+      border-right: 0;
+      border-bottom: 1px solid rgb(var(--text-color) / 0.14);
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof-icon {
+      grid-row: 1 / 3;
+      width: 1.8rem;
+      height: 1.8rem;
+      margin: 0;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof-icon svg {
+      width: 1.35rem;
+      height: 1.35rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof strong {
+      font-size: 0.95rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof div > span:not(.lc-hospitality-hub__proof-icon) {
+      font-size: 0.84rem;
+      line-height: 1.38;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof div:last-child {
+      border-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__route,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid a {
+      padding: 1rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__contact-actions {
+      justify-content: flex-start;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .lc-hospitality-hub {
+      padding-block: 1.6rem 2.4rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__copy h3,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__section-head h3,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__contact h3 {
+      font-size: clamp(1.35rem, 6vw, var(--text-h3));
+      line-height: 1.18;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__copy.rte,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__route p,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid span,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__support-grid span {
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__contact-actions {
+      display: grid;
+      grid-template-columns: 1fr;
+      width: 100%;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof {
+      margin: 1.25rem 0 2rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals {
+      display: flex;
+      gap: 0.75rem;
+      margin-inline: calc(-1 * max(var(--container-gutter), 1rem));
+      overflow-x: auto;
+      padding-inline: max(var(--container-gutter), 1rem);
+      scroll-snap-type: x proximity;
+      scrollbar-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals figure {
+      flex: 0 0 min(82vw, 20rem);
+      aspect-ratio: 4 / 3;
+      min-height: 0;
+      scroll-snap-align: start;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__visuals img {
+      height: 100%;
+      min-height: 0;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof div,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__route,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid a {
+      padding: 1.05rem 1rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof-icon {
+      width: 2rem;
+      height: 2rem;
+      margin-bottom: 0;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__proof-icon svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__section {
+      margin-top: 2rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__section--split {
+      gap: 1rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__range-grid,
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__support-grid {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .lc-hospitality-hub__section--dark {
+      padding-block: 24px;
+      margin-inline: calc(-1 * max(var(--container-gutter), 1rem));
+      padding-inline: max(var(--container-gutter), 1rem);
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Hospitality hub",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "image_picker",
+      "id": "bedroom_image",
+      "label": "Bedroom image"
+    },
+    {
+      "type": "image_picker",
+      "id": "bathroom_image",
+      "label": "Bathroom image"
+    },
+    {
+      "type": "image_picker",
+      "id": "table_image",
+      "label": "Table image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hospitality hub"
+    }
+  ]
+}
+{% endschema %}

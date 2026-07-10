@@ -1,0 +1,192 @@
+{% assign fabric = page.metafields.custom.fabric_profile.value %}
+
+{% if fabric == blank %}
+  <p style="font-family: var(--font-body-family); color: #555; padding: 2rem;">No fabric profile linked to this page.</p>
+{% else %}
+<div class="fabric-profile-wrapper" style="font-family: var(--font-body-family); color: #555555; max-width: 860px; margin: 0 auto; padding: 2rem 1rem;">
+
+  <style>
+    .fp-h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem; }
+    @media (max-width: 749px) { .fp-h1 { font-size: 1.1rem; } }
+    .fp-image-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--fp-cols, 4), 1fr);
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 749px) { .fp-image-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .fp-image-grid { grid-template-columns: 1fr; } }
+    .fp-image-cell { display: flex; flex-direction: column; }
+    .fp-image-label {
+      font-size: 11px; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.05em; color: #888; text-align: center;
+      margin-top: 0.5rem; margin-bottom: 0.4rem; flex-grow: 1;
+    }
+    .fp-image-btn {
+      display: block; text-align: center; font-size: 11px; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; color: #fff;
+      background: #333; padding: 0.4rem 0.5rem; text-decoration: none; margin-top: auto;
+    }
+    .fp-image-btn:hover { background: #555; }
+    .fp-button-wrap {
+      text-align: center; margin-top: 2rem;
+      display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .fp-button {
+      display: inline-block; background: #333; color: #fff; font-size: 14px;
+      font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 1rem 3rem; text-decoration: none;
+    }
+    .fp-button:hover { background: #555; }
+    @media (max-width: 749px) {
+      .fp-button { font-size: 11px; padding: 0.75rem 1.5rem; letter-spacing: 0.05em; }
+    }
+  </style>
+
+  {%- comment -%} Hero Image {%- endcomment -%}
+  {% if fabric.hero_image != blank %}
+  <div style="margin-bottom: 2rem;">
+    <img src="{{ fabric.hero_image | image_url: width: 1200 }}" alt="{{ fabric.fabric_name }}" width="1200" height="600" style="width: 100%; height: auto; display: block;">
+  </div>
+  {% endif %}
+
+  {%- comment -%} Header {%- endcomment -%}
+  <h1 class="fp-h1">{{ fabric.fabric_name }}</h1>
+  {% if fabric.range != blank %}
+  <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+    {% assign range_items = fabric.range | split: '·' %}
+    {% for item in range_items %}
+    <span style="display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: #333; color: #fff; padding: 0.25rem 0.75rem;">{{ item | strip }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if fabric.subtitle != blank %}
+  <p style="font-size: 12px; color: #888; margin-bottom: 2rem;">{{ fabric.subtitle }}</p>
+  {% endif %}
+
+  {%- comment -%} Key Features {%- endcomment -%}
+  {% if fabric.key_features != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Key Features</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ fabric.key_features | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} What is it {%- endcomment -%}
+  {% if fabric.what_is_it != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">What is {{ fabric.fabric_name }}?</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ fabric.what_is_it | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Why Choose {%- endcomment -%}
+  {% if fabric.why_choose != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Why Choose {{ fabric.fabric_name }}?</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ fabric.why_choose | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Ideal Uses {%- endcomment -%}
+  {% if fabric.ideal_uses_hospitality != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Ideal Uses</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ fabric.ideal_uses_hospitality | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Fabric Specs Table {%- endcomment -%}
+  {% if fabric.thread_count != blank or fabric.composition != blank or fabric.weave_type != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Fabric Specifications</h2>
+    <table style="font-size: 12px; line-height: 1.8; width: 100%; border-collapse: collapse;">
+      {% if fabric.thread_count != blank %}
+      <tr>
+        <td style="font-weight: 600; padding: 0.5rem 1rem; white-space: nowrap; border: 1px solid #ddd; width: 30%;">Thread Count</td>
+        <td style="padding: 0.5rem 1rem; border: 1px solid #ddd;">{{ fabric.thread_count }}TC</td>
+      </tr>
+      {% endif %}
+      {% if fabric.composition != blank %}
+      <tr>
+        <td style="font-weight: 600; padding: 0.5rem 1rem; white-space: nowrap; border: 1px solid #ddd;">Composition</td>
+        <td style="padding: 0.5rem 1rem; border: 1px solid #ddd;">{{ fabric.composition }}</td>
+      </tr>
+      {% endif %}
+      {% if fabric.weave_type != blank %}
+      <tr>
+        <td style="font-weight: 600; padding: 0.5rem 1rem; white-space: nowrap; border: 1px solid #ddd;">Weave Type</td>
+        <td style="padding: 0.5rem 1rem; border: 1px solid #ddd;">{{ fabric.weave_type }}</td>
+      </tr>
+      {% endif %}
+    </table>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Care Summary {%- endcomment -%}
+  {% if fabric.care_summary != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Care Instructions</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ fabric.care_summary | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Image Grid — up to 8 images {%- endcomment -%}
+  {% assign fp_count = 0 %}
+  {% if fabric.plain_image_1 != blank %}{% assign fp_count = fp_count | plus: 1 %}{% endif %}
+  {% if fabric.plain_image_2 != blank %}{% assign fp_count = fp_count | plus: 1 %}{% endif %}
+  {% if fabric.plain_image_3 != blank %}{% assign fp_count = fp_count | plus: 1 %}{% endif %}
+  {% if fabric.plain_image_4 != blank %}{% assign fp_count = fp_count | plus: 1 %}{% endif %}
+  {% if fabric.plain_image_5 != blank %}{% assign fp_count = fp_count | plus: 1 %}{% endif %}
+  {% if fabric.plain_image_6 != blank %}{% assign fp_count = fp_count | plus: 1 %}{% endif %}
+  {% if fabric.plain_image_7 != blank %}{% assign fp_count = fp_count | plus: 1 %}{% endif %}
+  {% if fabric.plain_image_8 != blank %}{% assign fp_count = fp_count | plus: 1 %}{% endif %}
+
+  {% if fp_count > 0 %}
+  {% assign fp_cols = fp_count | at_most: 4 %}
+  <div class="fp-image-grid" style="--fp-cols: {{ fp_cols }};">
+    {% assign fp_images = 'plain_image_1,plain_image_2,plain_image_3,plain_image_4,plain_image_5,plain_image_6,plain_image_7,plain_image_8' | split: ',' %}
+    {% assign fp_labels = 'image_label_1,image_label_2,image_label_3,image_label_4,image_label_5,image_label_6,image_label_7,image_label_8' | split: ',' %}
+    {% assign fp_urls = 'shop_now_image_1_url,shop_now_image_2_url,shop_now_image_3_url,shop_now_image_4_url,shop_now_image_5_url,shop_now_image_6_url,shop_now_image_7_url,shop_now_image_8_url' | split: ',' %}
+    {% for i in (0..7) %}
+      {% assign img_key = fp_images[i] %}
+      {% assign img_val = fabric[img_key] %}
+      {% if img_val != blank %}
+      <div class="fp-image-cell">
+        <img src="{{ img_val | image_url: width: 400 }}" alt="{{ fabric.fabric_name }} {{ i | plus: 1 }}" width="400" height="400" style="width: 100%; height: auto; display: block;">
+        {% assign lbl_val = fabric[fp_labels[i]] %}
+        {% if lbl_val != blank %}<p class="fp-image-label">{{ lbl_val }}</p>{% endif %}
+        {% assign url_val = fabric[fp_urls[i]] %}
+        {% if url_val != blank %}<a href="{{ url_val }}" class="fp-image-btn">Shop Now</a>{% endif %}
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {%- comment -%} Buttons {%- endcomment -%}
+  {% if fabric.shop_now_url != blank or fabric.shop_collection != blank or fabric.care_guide_url != blank %}
+  <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 2rem 0;">
+  <div class="fp-button-wrap">
+    {% if fabric.shop_now_url != blank %}
+    <a href="{{ fabric.shop_now_url }}" class="fp-button">Shop Now</a>
+    {% endif %}
+    {% if fabric.shop_collection != blank %}
+    <a href="{{ fabric.shop_collection }}" class="fp-button">Shop Collection</a>
+    {% endif %}
+    {% if fabric.care_guide_url != blank %}
+    <a href="{{ fabric.care_guide_url }}" class="fp-button">View Care Guide</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Fabric Profile",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

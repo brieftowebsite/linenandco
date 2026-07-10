@@ -1,0 +1,255 @@
+<section class="lc-home-fabric-guide color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  {%- if section.blocks.size > 0 -%}
+    <div class="container">
+      <div class="lc-home-fabric-guide__body">
+        <div class="lc-home-fabric-guide__body-header">
+          <div class="lc-home-fabric-guide__panel">
+            {%- if section.settings.panel_heading != blank -%}
+              <h3 id="lc-home-fabric-guide-heading-{{ section.id }}">{{ section.settings.panel_heading }}</h3>
+            {%- endif -%}
+
+            {%- if section.settings.panel_text != blank -%}
+              <p>{{ section.settings.panel_text }}</p>
+            {%- endif -%}
+          </div>
+
+          <nav class="lc-home-fabric-guide__nav" aria-labelledby="lc-home-fabric-guide-heading-{{ section.id }}">
+            <ul class="unstyled-list" role="list">
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign chip_link = block.settings.link | default: routes.all_products_collection_url
+                  assign chip_label = block.settings.button_text | default: block.settings.title
+                -%}
+
+                {%- if chip_label != blank -%}
+                  <li>
+                    <a class="lc-home-fabric-guide__chip" href="{{ chip_link }}">
+                      {{- chip_label -}}
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          </nav>
+        </div>
+
+        <div class="lc-home-fabric-guide__rail" data-lc-fabric-guide-rail>
+          <div class="lc-home-fabric-guide__track" tabindex="0" data-lc-fabric-guide-track>
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign card_image = block.settings.image
+                assign card_alt = block.settings.image_alt | default: block.settings.title | strip_html
+                assign card_link = block.settings.link | default: routes.all_products_collection_url
+              -%}
+
+              <a class="lc-home-fabric-guide__card" href="{{ card_link }}" {{ block.shopify_attributes }}>
+                <span class="lc-home-fabric-guide__card-media">
+                  {%- if card_image != blank -%}
+                    {{-
+                      card_image
+                      | image_url: width: 900
+                      | image_tag:
+                        loading: 'lazy',
+                        widths: '360,540,720,900',
+                        sizes: '(min-width: 1000px) 28vw, 72vw',
+                        alt: card_alt
+                    -}}
+                  {%- endif -%}
+                </span>
+
+                <span class="lc-home-fabric-guide__card-copy">
+                  {%- if block.settings.kicker != blank -%}
+                    <span class="lc-home-fabric-guide__card-kicker">{{ block.settings.kicker }}</span>
+                  {%- endif -%}
+
+                  {%- if block.settings.title != blank -%}
+                    <span class="lc-home-fabric-guide__card-title">{{ block.settings.title }}</span>
+                  {%- endif -%}
+
+                  {%- if block.settings.text != blank -%}
+                    <span class="lc-home-fabric-guide__card-text">{{ block.settings.text }}</span>
+                  {%- endif -%}
+
+                </span>
+              </a>
+            {%- endfor -%}
+          </div>
+
+          <div class="lc-home-fabric-guide__controls" data-lc-fabric-guide-controls aria-label="{{ section.settings.heading | strip_html | escape }}">
+            <button class="lc-home-fabric-guide__arrow" type="button" data-lc-fabric-guide-prev aria-label="Previous fabrics">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="M15 18 9 12l6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" />
+              </svg>
+            </button>
+
+            <button class="lc-home-fabric-guide__arrow" type="button" data-lc-fabric-guide-next aria-label="Next fabrics">
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "LC fabric guide",
+  "class": "shopify-section--lc-home-fabric-guide",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero image"
+    },
+    {
+      "type": "text",
+      "id": "hero_asset",
+      "label": "Fallback theme asset filename",
+      "default": "linen-and-co-homepage-fabric-guide-white-cotton-300tc.webp"
+    },
+    {
+      "type": "text",
+      "id": "hero_alt",
+      "label": "Hero image alt text",
+      "default": "White cotton percale linen folded on a bed"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Fabric guide"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Which fabric is best for your room?"
+    },
+    {
+      "type": "richtext",
+      "id": "intro",
+      "label": "Intro",
+      "default": "<p>From easy-care polycotton to crisp cotton percale and smoother 300TC cotton, choose the fabric that fits the room, the wash routine and the feel you want.</p>"
+    },
+    {
+      "type": "text",
+      "id": "primary_button_text",
+      "label": "Primary button text",
+      "default": "Compare Fabrics"
+    },
+    {
+      "type": "url",
+      "id": "primary_button_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "panel_heading",
+      "label": "Panel heading",
+      "default": "Fabric Types"
+    },
+    {
+      "type": "textarea",
+      "id": "panel_text",
+      "label": "Panel text",
+      "default": "Choose the fabric that fits the room, the wash routine and the feel you want."
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_text",
+      "label": "Secondary link text",
+      "default": "Shop Bed Linen"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "fabric",
+      "name": "Fabric card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text"
+        },
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Durable. Easy-care."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Polycotton Percale 200TC"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "A practical hospitality favourite for everyday rooms and frequent laundering."
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Chip label",
+          "default": "Polycotton 200TC"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC fabric guide",
+      "blocks": [
+        {
+          "type": "fabric"
+        },
+        {
+          "type": "fabric",
+          "settings": {
+            "kicker": "Crisp. Breathable.",
+            "title": "100% Cotton Percale 200TC",
+            "text": "A natural cotton percale with a cooler, crisper handle for everyday luxury.",
+            "button_text": "Cotton 200TC"
+          }
+        },
+        {
+          "type": "fabric",
+          "settings": {
+            "kicker": "Smooth. Refined.",
+            "title": "100% Cotton Percale 300TC",
+            "text": "A softer premium cotton option for suites and elevated bedrooms.",
+            "button_text": "Cotton 300TC"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

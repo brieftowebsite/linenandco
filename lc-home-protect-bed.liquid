@@ -1,0 +1,199 @@
+{%- liquid
+  assign heading = section.settings.heading | default: 'Protect the Bed'
+  assign intro = section.settings.intro
+-%}
+
+{%- if section.blocks.size > 0 -%}
+  <section class="lc-home-protect-bed color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container">
+      <div class="lc-home-protect-bed__header">
+        <div class="lc-home-protect-bed__copy">
+          <h2 id="lc-home-protect-bed-heading-{{ section.id }}">{{ heading }}</h2>
+
+          {%- if intro != blank -%}
+            <p>{{ intro }}</p>
+          {%- endif -%}
+        </div>
+
+        <nav class="lc-home-protect-bed__nav" aria-labelledby="lc-home-protect-bed-heading-{{ section.id }}">
+          <ul class="unstyled-list" role="list">
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign card_link = block.settings.link
+                assign chip_label = block.settings.chip_label | default: block.settings.title
+              -%}
+
+              {%- if chip_label != blank -%}
+                <li>
+                  <a class="lc-home-protect-bed__chip" href="{{ card_link | default: routes.all_products_collection_url }}">
+                    {{- chip_label -}}
+                  </a>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </nav>
+      </div>
+
+      <div class="lc-home-protect-bed__grid">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign image_asset = block.settings.image_asset | strip
+            assign image_alt = block.settings.image_alt | default: block.settings.title
+            assign card_link = block.settings.link
+            assign title_key = block.settings.title | downcase
+
+            if image_asset == blank
+              if title_key contains 'pillow'
+                assign image_asset = 'quilted-wetsafe-pillow-protectors-homepage-linen-and-co.webp'
+              elsif title_key contains 'towelling'
+                assign image_asset = 'towelling-wetsafe-mattress-protectors-homepage-linen-and-co.webp'
+              else
+                assign image_asset = 'quilted-wetsafe-mattress-protectors-homepage-linen-and-co.webp'
+              endif
+            endif
+          -%}
+
+          <a class="lc-home-protect-bed__card" href="{{ card_link | default: routes.all_products_collection_url }}" {{ block.shopify_attributes }}>
+            <span class="lc-home-protect-bed__media">
+              {%- if image_asset != blank -%}
+                <img
+                  src="{{ image_asset | asset_url }}"
+                  alt="{{ image_alt | escape }}"
+                  width="1200"
+                  height="1200"
+                  loading="{% if forloop.index <= 2 %}eager{% else %}lazy{% endif %}"
+                >
+              {%- else -%}
+                {{- 'product-1' | placeholder_svg_tag: 'placeholder' -}}
+              {%- endif -%}
+            </span>
+
+            <span class="lc-home-protect-bed__card-copy">
+              {%- if block.settings.kicker != blank -%}
+                <span class="lc-home-protect-bed__kicker">{{ block.settings.kicker }}</span>
+              {%- endif -%}
+
+              {%- if block.settings.title != blank -%}
+                <span class="lc-home-protect-bed__title">{{ block.settings.title }}</span>
+              {%- endif -%}
+
+              {%- if block.settings.text != blank -%}
+                <span class="lc-home-protect-bed__text">{{ block.settings.text }}</span>
+              {%- endif -%}
+            </span>
+          </a>
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LC protect bed",
+  "class": "shopify-section--lc-home-protect-bed",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Protect the Bed"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Mattress protectors, pillow protectors and waterproof towelling layers for homes, guest rooms and hospitality use."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "protector",
+      "name": "Protector",
+      "settings": [
+        {
+          "type": "text",
+          "id": "kicker",
+          "label": "Kicker",
+          "default": "Protection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Mattress Protectors"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Waterproof and washable protection for everyday bedrooms and guest stays."
+        },
+        {
+          "type": "text",
+          "id": "chip_label",
+          "label": "Chip label",
+          "default": "Mattress Protectors"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "text",
+          "id": "image_asset",
+          "label": "Theme asset filename",
+          "default": "quilted-wetsafe-mattress-protectors-homepage-linen-and-co.webp"
+        },
+        {
+          "type": "text",
+          "id": "image_alt",
+          "label": "Image alt text",
+          "default": "Quilted Wetsafe mattress protector by Linen and Co"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC protect bed",
+      "blocks": [
+        {
+          "type": "protector"
+        },
+        {
+          "type": "protector",
+          "settings": {
+            "kicker": "Pillow protection",
+            "title": "Quilted Wetsafe Pillow Protectors",
+            "text": "A soft washable barrier for pillows in home bedrooms, guest rooms and hospitality spaces.",
+            "chip_label": "Pillow Protectors",
+            "image_asset": "quilted-wetsafe-pillow-protectors-homepage-linen-and-co.webp",
+            "image_alt": "Quilted Wetsafe pillow protectors by Linen and Co"
+          }
+        },
+        {
+          "type": "protector",
+          "settings": {
+            "kicker": "Towelling Wetsafe",
+            "title": "Towelling Wetsafe Mattress Protectors",
+            "text": "A breathable towelling waterproof layer for high-turnover beds and repeat laundering.",
+            "chip_label": "Towelling Wetsafe",
+            "image_asset": "towelling-wetsafe-mattress-protectors-homepage-linen-and-co.webp",
+            "image_alt": "Towelling Wetsafe mattress protector by Linen and Co"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

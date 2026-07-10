@@ -1,0 +1,254 @@
+{% assign product = page.metafields.custom.product_profile.value %}
+
+{% if product == blank %}
+  <p style="font-family: var(--font-body-family); color: #555; padding: 2rem;">No product profile linked to this page.</p>
+{% else %}
+<div class="product-profile-wrapper" style="font-family: var(--font-body-family); color: #555555; max-width: 860px; margin: 0 auto; padding: 2rem 1rem;">
+
+  <style>
+    .pp-h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    @media (max-width: 749px) {
+      .pp-h1 { font-size: 1.1rem; }
+    }
+    .pp-image-grid {
+      display: grid;
+      grid-template-columns: repeat(var(--pp-cols, 4), 1fr);
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+    @media (max-width: 749px) {
+      .pp-image-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 480px) {
+      .pp-image-grid { grid-template-columns: 1fr; }
+    }
+    .pp-image-cell { display: flex; flex-direction: column; }
+    .pp-image-label {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #888;
+      text-align: center;
+      margin-top: 0.5rem;
+      margin-bottom: 0.4rem;
+      flex-grow: 1;
+    }
+    .pp-image-btn {
+      display: block;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: #fff;
+      background: #333;
+      padding: 0.4rem 0.5rem;
+      text-decoration: none;
+      margin-top: auto;
+    }
+    .pp-image-btn:hover { background: #555; }
+  </style>
+
+  {%- comment -%} Hero Image {%- endcomment -%}
+  {% if product.hero_image != blank %}
+  <div style="margin-bottom: 2rem;">
+    <img src="{{ product.hero_image | image_url: width: 1200 }}" alt="{{ product.product_name }}" width="1200" height="600" style="width: 100%; height: auto; display: block;">
+  </div>
+  {% endif %}
+
+  {%- comment -%} Header {%- endcomment -%}
+  <h1 class="pp-h1">{{ product.product_name }}</h1>
+  {% if product.range != blank %}
+  <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+    {% assign range_items = product.range | split: '·' %}
+    {% for item in range_items %}
+    <span style="display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: #333; color: #fff; padding: 0.25rem 0.75rem;">{{ item | strip }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% if product.subtitle != blank %}
+  <p style="font-size: 12px; color: #888; margin-bottom: 2rem;">{{ product.subtitle }}</p>
+  {% endif %}
+
+  {%- comment -%} Key Features {%- endcomment -%}
+  {% if product.key_features != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Key Features</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ product.key_features | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} What is it {%- endcomment -%}
+  {% if product.what_is_it != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">What is {{ product.product_name }}?</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ product.what_is_it | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Why Choose {%- endcomment -%}
+  {% if product.why_choose != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Why Choose {{ product.product_name }}?</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ product.why_choose | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Ideal Uses {%- endcomment -%}
+  {% if product.ideal_uses != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Ideal Uses</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ product.ideal_uses | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Product Details Table {%- endcomment -%}
+  {% if product.available_sizes != blank or product.available_lengths != blank or product.available_pillow_sizes != blank or product.available_colours != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Product Details</h2>
+    <table style="font-size: 12px; line-height: 1.8; width: 100%; border-collapse: collapse;">
+      {% if product.available_sizes != blank %}
+      <tr>
+        <td style="font-weight: 600; padding: 0.5rem 1rem; white-space: nowrap; border: 1px solid #ddd; width: 30%;">Mattress Sizes</td>
+        <td style="padding: 0.5rem 1rem; border: 1px solid #ddd;">{{ product.available_sizes }}</td>
+      </tr>
+      {% endif %}
+      {% if product.available_lengths != blank %}
+      <tr>
+        <td style="font-weight: 600; padding: 0.5rem 1rem; white-space: nowrap; border: 1px solid #ddd;">Mattress Lengths</td>
+        <td style="padding: 0.5rem 1rem; border: 1px solid #ddd;">{{ product.available_lengths }}</td>
+      </tr>
+      {% endif %}
+      {% if product.available_pillow_sizes != blank %}
+      <tr>
+        <td style="font-weight: 600; padding: 0.5rem 1rem; white-space: nowrap; border: 1px solid #ddd;">Pillow Sizes</td>
+        <td style="padding: 0.5rem 1rem; border: 1px solid #ddd;">{{ product.available_pillow_sizes }}</td>
+      </tr>
+      {% endif %}
+      {% if product.available_colours != blank %}
+      <tr>
+        <td style="font-weight: 600; padding: 0.5rem 1rem; white-space: nowrap; border: 1px solid #ddd;">Available Colours</td>
+        <td style="padding: 0.5rem 1rem; border: 1px solid #ddd;">{{ product.available_colours }}</td>
+      </tr>
+      {% endif %}
+    </table>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Care Summary {%- endcomment -%}
+  {% if product.care_summary != blank %}
+  <div style="background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem;">
+    <h2 style="font-size: 1rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.75rem;">Care Instructions</h2>
+    <div style="font-size: 12px; line-height: 1.6;">{{ product.care_summary | metafield_tag }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Divider {%- endcomment -%}
+  <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 2rem 0;">
+
+  {%- comment -%} Centered Guide Links {%- endcomment -%}
+  {% if product.size_guide_url != blank or product.care_guide_url != blank %}
+  <div style="text-align: center; margin-bottom: 2rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+    {% if product.size_guide_url != blank %}
+    <a href="{{ product.size_guide_url }}" style="font-size: 16px; font-weight: 700; color: #333; text-decoration: underline; letter-spacing: 0.03em;">View Size Guide &rarr;</a>
+    {% endif %}
+    {% if product.care_guide_url != blank %}
+    <a href="{{ product.care_guide_url }}" style="font-size: 16px; font-weight: 700; color: #333; text-decoration: underline; letter-spacing: 0.03em;">View Full Care Guide &rarr;</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+  {%- comment -%} Count active images {%- endcomment -%}
+  {% assign pp_count = 0 %}
+  {% if product.plain_image != blank %}{% assign pp_count = pp_count | plus: 1 %}{% endif %}
+  {% if product.plain_image_2 != blank %}{% assign pp_count = pp_count | plus: 1 %}{% endif %}
+  {% if product.lifestyle_image != blank %}{% assign pp_count = pp_count | plus: 1 %}{% endif %}
+  {% if product.lifestyle_image_2 != blank %}{% assign pp_count = pp_count | plus: 1 %}{% endif %}
+  {% if product.image_5 != blank %}{% assign pp_count = pp_count | plus: 1 %}{% endif %}
+  {% if product.image_6 != blank %}{% assign pp_count = pp_count | plus: 1 %}{% endif %}
+  {% if product.image_7 != blank %}{% assign pp_count = pp_count | plus: 1 %}{% endif %}
+
+  {%- comment -%} Image Grid — up to 7 images with labels and per-image shop links {%- endcomment -%}
+  {% if pp_count > 0 %}
+  {% assign pp_cols = pp_count | at_most: 4 %}
+  <div class="pp-image-grid" style="--pp-cols: {{ pp_cols }};">
+    {% if product.plain_image != blank %}
+    <div class="pp-image-cell">
+      <img src="{{ product.plain_image | image_url: width: 400 }}" alt="{{ product.product_name }} 1" width="400" height="400" style="width: 100%; height: auto; display: block;">
+      {% if product.image_label_1 != blank %}<p class="pp-image-label">{{ product.image_label_1 }}</p>{% endif %}
+      {% if product.shop_now_image_1_url != blank %}<a href="{{ product.shop_now_image_1_url }}" class="pp-image-btn">Shop Now</a>{% endif %}
+    </div>
+    {% endif %}
+    {% if product.plain_image_2 != blank %}
+    <div class="pp-image-cell">
+      <img src="{{ product.plain_image_2 | image_url: width: 400 }}" alt="{{ product.product_name }} 2" width="400" height="400" style="width: 100%; height: auto; display: block;">
+      {% if product.image_label_2 != blank %}<p class="pp-image-label">{{ product.image_label_2 }}</p>{% endif %}
+      {% if product.shop_now_image_2_url != blank %}<a href="{{ product.shop_now_image_2_url }}" class="pp-image-btn">Shop Now</a>{% endif %}
+    </div>
+    {% endif %}
+    {% if product.lifestyle_image != blank %}
+    <div class="pp-image-cell">
+      <img src="{{ product.lifestyle_image | image_url: width: 400 }}" alt="{{ product.product_name }} 3" width="400" height="400" style="width: 100%; height: auto; display: block;">
+      {% if product.image_label_3 != blank %}<p class="pp-image-label">{{ product.image_label_3 }}</p>{% endif %}
+      {% if product.shop_now_image_3_url != blank %}<a href="{{ product.shop_now_image_3_url }}" class="pp-image-btn">Shop Now</a>{% endif %}
+    </div>
+    {% endif %}
+    {% if product.lifestyle_image_2 != blank %}
+    <div class="pp-image-cell">
+      <img src="{{ product.lifestyle_image_2 | image_url: width: 400 }}" alt="{{ product.product_name }} 4" width="400" height="400" style="width: 100%; height: auto; display: block;">
+      {% if product.image_label_4 != blank %}<p class="pp-image-label">{{ product.image_label_4 }}</p>{% endif %}
+      {% if product.shop_now_image_4_url != blank %}<a href="{{ product.shop_now_image_4_url }}" class="pp-image-btn">Shop Now</a>{% endif %}
+    </div>
+    {% endif %}
+    {% if product.image_5 != blank %}
+    <div class="pp-image-cell">
+      <img src="{{ product.image_5 | image_url: width: 400 }}" alt="{{ product.product_name }} 5" width="400" height="400" style="width: 100%; height: auto; display: block;">
+      {% if product.image_label_5 != blank %}<p class="pp-image-label">{{ product.image_label_5 }}</p>{% endif %}
+      {% if product.shop_now_image_5_url != blank %}<a href="{{ product.shop_now_image_5_url }}" class="pp-image-btn">Shop Now</a>{% endif %}
+    </div>
+    {% endif %}
+    {% if product.image_6 != blank %}
+    <div class="pp-image-cell">
+      <img src="{{ product.image_6 | image_url: width: 400 }}" alt="{{ product.product_name }} 6" width="400" height="400" style="width: 100%; height: auto; display: block;">
+      {% if product.image_label_6 != blank %}<p class="pp-image-label">{{ product.image_label_6 }}</p>{% endif %}
+      {% if product.shop_now_image_6_url != blank %}<a href="{{ product.shop_now_image_6_url }}" class="pp-image-btn">Shop Now</a>{% endif %}
+    </div>
+    {% endif %}
+    {% if product.image_7 != blank %}
+    <div class="pp-image-cell">
+      <img src="{{ product.image_7 | image_url: width: 400 }}" alt="{{ product.product_name }} 7" width="400" height="400" style="width: 100%; height: auto; display: block;">
+      {% if product.image_label_7 != blank %}<p class="pp-image-label">{{ product.image_label_7 }}</p>{% endif %}
+      {% if product.shop_now_image_7_url != blank %}<a href="{{ product.shop_now_image_7_url }}" class="pp-image-btn">Shop Now</a>{% endif %}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+    {%- comment -%} Global Buttons {%- endcomment -%}
+  {% if product.shop_now_url != blank or product.shop_collectoin != blank %}
+  <div style="text-align: center; margin-top: 2rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+    {% if product.shop_now_url != blank %}
+    <a href="{{ product.shop_now_url }}" style="display: inline-block; background: #333; color: #fff; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 1rem 3rem; text-decoration: none;">Shop Now</a>
+    {% endif %}
+    {% if product.shop_collectoin != blank %}
+    <a href="{{ product.shop_collectoin }}" style="display: inline-block; background: #333; color: #fff; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 1rem 3rem; text-decoration: none;">Shop Collection</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Profile",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+<script src="{{ 'lc-wishlist-page.js' | asset_url }}" defer></script>
+
+<section class="lc-wishlist">
+  <div class="container container--lg">
+    <div class="lc-wishlist__header">
+      <h1 class="lc-wishlist__title">{{ page.title | default: 'Wishlist' }}</h1>
+      <a href="{{ routes.all_products_collection_url }}" class="lc-wishlist__continue link-faded">Continue shopping</a>
+    </div>
+
+    <div data-wishlist-page aria-live="polite">
+      <div class="lc-wishlist__status">Loading your wishlist...</div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Wishlist",
+  "settings": []
+}
+{% endschema %}

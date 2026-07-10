@@ -1,0 +1,114 @@
+{%- liquid
+  assign heading = section.settings.heading | default: 'About Linen and Co'
+  assign intro = section.settings.intro
+  assign image_asset = section.settings.image_asset | strip
+  assign image_alt = section.settings.image_alt | default: heading | strip_html
+  assign button_link = section.settings.button_link | default: routes.root_url
+-%}
+
+<section class="lc-home-about-banner color-scheme color-scheme--{{ section.settings.color_scheme.id }}" style="--lc-about-overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};">
+  <div class="lc-home-about-banner__media">
+    {%- if image_asset != blank -%}
+      <img
+        src="{{ image_asset | asset_url }}"
+        alt="{{ image_alt | escape }}"
+        width="1600"
+        height="900"
+        loading="lazy"
+      >
+    {%- else -%}
+      {{- 'lifestyle-1' | placeholder_svg_tag: 'placeholder' -}}
+    {%- endif -%}
+  </div>
+
+  <div class="lc-home-about-banner__content">
+    <div class="lc-home-about-banner__copy">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="lc-home-about-banner__eyebrow">{{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+
+      <h2>{{ heading }}</h2>
+
+      {%- if intro != blank -%}
+        <p>{{ intro }}</p>
+      {%- endif -%}
+
+      {%- if section.settings.button_text != blank -%}
+        <a class="button button--sm" href="{{ button_link }}">
+          {{- section.settings.button_text -}}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "LC about banner",
+  "class": "shopify-section--lc-home-about-banner",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
+    },
+    {
+      "type": "text",
+      "id": "image_asset",
+      "label": "Theme asset filename",
+      "default": "about-linen-and-co-banner.webp"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "White bed linen with a red scatter cushion by Linen and Co"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Linen and Co"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About Linen and Co"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Premium linen and home textiles for South African homes, guesthouses, lodges, hotels, decorators and trade customers."
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text",
+      "default": "About Linen and Co"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 55,
+      "step": 1,
+      "default": 18
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC about banner"
+    }
+  ]
+}
+{% endschema %}

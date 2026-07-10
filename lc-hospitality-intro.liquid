@@ -1,0 +1,84 @@
+{%- if section.settings.intro_text != blank -%}
+  <section class="lc-collection-intro">
+    <div class="lc-collection-intro__inner">
+      <div class="lc-collection-intro__text rte" id="lc-intro-text">
+        {{ section.settings.intro_text }}
+      </div>
+      <button type="button" class="lc-read-more" aria-expanded="false" aria-controls="lc-intro-text">
+        Read more
+      </button>
+    </div>
+  </section>
+{%- endif -%}
+
+<style>
+  .lc-collection-intro { padding: 32px 0; }
+  .lc-collection-intro__inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(0,0,0,0.75);
+  }
+  .lc-collection-intro__text p { margin: 0 0 14px; }
+  .lc-collection-intro__text p:last-child { margin-bottom: 0; }
+  .lc-collection-intro__text a { color: inherit; text-decoration: none; }
+  .lc-collection-intro__text a:hover,
+  .lc-collection-intro__text a:focus { text-decoration: underline; text-underline-offset: 3px; }
+  .lc-collection-intro__text.is-collapsed {
+    max-height: 4.8em;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+  .lc-read-more {
+    background: none; border: none; padding: 0;
+    margin-top: 10px; cursor: pointer; font-weight: 600;
+    color: inherit; font-size: 14px;
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  @media (max-width: 749px) {
+    .lc-collection-intro { padding: 22px 0; }
+    .lc-collection-intro__inner { padding: 0 18px; font-size: 12px; line-height: 1.6; }
+    .lc-read-more { font-size: 12px; }
+    .lc-collection-intro__text.is-collapsed { max-height: 4.8em; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var section = document.querySelector('.lc-collection-intro');
+    if (!section) return;
+    var text = section.querySelector('#lc-intro-text');
+    var btn = section.querySelector('.lc-read-more');
+    if (!text || !btn) return;
+    text.classList.add('is-collapsed');
+    if (text.scrollHeight <= text.clientHeight + 2) { btn.style.display = 'none'; return; }
+    btn.addEventListener('click', function () {
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      if (!expanded) {
+        text.classList.remove('is-collapsed');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.textContent = 'Read less';
+      } else {
+        text.classList.add('is-collapsed');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.textContent = 'Read more';
+      }
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Hospitality Intro",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "intro_text",
+      "label": "Intro text"
+    }
+  ]
+}
+{% endschema %}
+

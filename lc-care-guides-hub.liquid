@@ -1,0 +1,250 @@
+{%- liquid
+  assign hero_image = images['caring-for-your-bed-linen-linen-and-co.webp']
+-%}
+
+<section class="lc-care-guides color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="lc-care-guides__hero">
+    {%- if hero_image != blank -%}
+      {{ hero_image | image_url: width: 2200 | image_tag: loading: 'eager', sizes: '100vw', widths: '800,1200,1600,2000,2200', class: 'lc-care-guides__hero-image' }}
+    {%- endif -%}
+    <div class="lc-care-guides__hero-overlay">
+      <p>Care guides</p>
+      <h1>Keep every linen piece guest-ready.</h1>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="lc-care-guides__intro">
+      <p class="lc-care-guides__eyebrow">Hospitality and home care</p>
+      <h2>Practical care instructions for longer-lasting linen.</h2>
+      <p>Washing, drying and care guidance for bed linen, towels, protectors, pillows, duvets, table linen and mattress toppers. Built for daily home use and high-turnover hospitality routines.</p>
+    </div>
+
+    {%- capture guide_data -%}
+caring-for-your-poycotton-percale-bed-linen-linen-and-co-land-scape.webp||Polycotton Percale 200TC||Durable, easy-care care notes for busy rooms and repeat laundering.||/pages/care-guide-polycotton-percale-200tc^^
+caring-for-your-cotton-percale-200tc-bed-linen-linen-and-co-landscape.webp||100% Cotton Percale 200TC||Keep cotton percale crisp, breathable and smooth wash after wash.||/pages/care-guide-cotton-percale-200tc^^
+caring-for-your-cotton-percale-300tc-bed-linen-linen-and-co-landscape.webp||100% Cotton Percale 300TC||Care guidance for premium cotton percale with a softer luxury hand feel.||/pages/care-guide-cotton-percale-300tc^^
+caring-for-your-protectors-linen-and-co-land-scape.webp||Wetsafe Protectors||Protect mattress and pillow protectors while keeping them breathable and hygienic.||/pages/care-guide-mattress-and-pillow-protectors^^
+caring-for-your-pillows-linen-and-co-landscape.webp||Pillows||Maintain freshness, support and comfort for guest and home pillows.||/pages/pillow-care-guide^^
+caring-for-your-duvet-inners-linen-and-co-landscape.webp||Duvet Inners||Simple care for keeping duvet inners clean, lofty and comfortable.||/pages/duvet-inner-care-guide^^
+caring-for-your-table-linen-linen-and-co-landscape.webp||Table Linen||Washing, ironing and stain support for polished table settings.||/pages/table-linen-care-guide^^
+caring-for-your-bath-towels-linen-and-landscape.webp||Bath Towels||Keep towels plush, absorbent and long lasting in regular laundering.||/pages/bath-towel-bath-mats-care-guide^^
+caring-for-your-mattress-toppers-and-convertors-linen-and-co-landscape.webp||Toppers and Convertors||Care guidance for toppers and convertors used in hospitality and homes.||/pages/mattress-topper-and-convertor-care-guide
+    {%- endcapture -%}
+
+    <div class="lc-care-guides__grid" role="list">
+      {%- assign guide_items = guide_data | strip | split: '^^' -%}
+      {%- for item in guide_items -%}
+        {%- assign parts = item | strip | split: '||' -%}
+        {%- assign image_name = parts[0] | strip -%}
+        {%- assign title = parts[1] | strip -%}
+        {%- assign text = parts[2] | strip -%}
+        {%- assign url = parts[3] | strip -%}
+        {%- assign card_image = images[image_name] -%}
+
+        <article class="lc-care-guides__card" role="listitem">
+          <a href="{{ url }}" class="lc-care-guides__media" aria-label="View {{ title | escape }}">
+            {%- if card_image != blank -%}
+              {{ card_image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 31vw, (min-width: 700px) 48vw, 100vw', widths: '360,540,720,900', class: 'lc-care-guides__image' }}
+            {%- endif -%}
+          </a>
+          <div class="lc-care-guides__card-copy">
+            <p>Care guide</p>
+            <h3>{{ title }}</h3>
+            <span>{{ text }}</span>
+            <a href="{{ url }}">View care guide</a>
+          </div>
+        </article>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .lc-care-guides {
+    padding-block-end: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__hero {
+    position: relative;
+    display: grid;
+    min-height: clamp(18rem, 34vw, 31rem);
+    overflow: hidden;
+    background: rgb(var(--text-color) / 0.08);
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__hero-image {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 0.32);
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__hero-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: grid;
+    place-content: center;
+    gap: 0.75rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    color: #fff;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__hero-overlay p,
+  #shopify-section-{{ section.id }} .lc-care-guides__eyebrow,
+  #shopify-section-{{ section.id }} .lc-care-guides__card-copy p {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__hero-overlay h1 {
+    max-width: 13ch;
+    margin: 0;
+    font-size: clamp(2.4rem, 5vw, 5rem);
+    line-height: 0.95;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__intro {
+    display: grid;
+    gap: 0.85rem;
+    max-width: 54rem;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__intro h2 {
+    max-width: 17ch;
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3.6rem);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__intro p:not(.lc-care-guides__eyebrow) {
+    max-width: 48rem;
+    margin: 0;
+    color: rgb(var(--text-color) / 0.72);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(1rem, 2vw, 1.35rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__card {
+    display: grid;
+    border: 1px solid rgb(var(--text-color) / 0.12);
+    background: rgb(var(--background));
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__media {
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: rgb(var(--text-color) / 0.06);
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 280ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__card:hover .lc-care-guides__image {
+    transform: scale(1.035);
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__card-copy {
+    display: grid;
+    gap: 0.65rem;
+    align-content: start;
+    min-height: 15rem;
+    padding: 1.25rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__card-copy p,
+  #shopify-section-{{ section.id }} .lc-care-guides__eyebrow {
+    color: rgb(var(--text-color) / 0.56);
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__card-copy h3 {
+    margin: 0;
+    font-size: clamp(1.15rem, 1.7vw, 1.55rem);
+    line-height: 1.08;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__card-copy span {
+    color: rgb(var(--text-color) / 0.7);
+    line-height: 1.55;
+  }
+
+  #shopify-section-{{ section.id }} .lc-care-guides__card-copy a {
+    align-self: end;
+    width: fit-content;
+    color: inherit;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} .lc-care-guides__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .lc-care-guides__hero {
+      min-height: 22rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-care-guides__grid {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .lc-care-guides__card-copy {
+      min-height: 0;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "LC care guides hub",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC care guides hub"
+    }
+  ]
+}
+{% endschema %}

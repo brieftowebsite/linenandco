@@ -1,0 +1,543 @@
+{%- assign colour = section.settings.colour -%}
+
+{%- case colour -%}
+  {%- when 'white' -%}
+    {%- assign hero_image_name = 'white-percale-bed-linen-shop-white-banner-linen-and-co.webp' -%}
+    {%- assign heading = 'White bed linen' -%}
+    {%- assign tone_words = 'Crisp / Classic / Timeless / Fresh' -%}
+    {%- assign intro = 'Crisp, clean and timeless white bed linen for polished hospitality rooms and refined homes. White creates a fresh, guest-ready look that works with every interior style.' -%}
+    {%- assign reason_heading = 'Why choose white?' -%}
+    {%- capture fabric_data -%}
+linen-and-co-white-polycotton-percale-folded-bed-linen.webp||Polycotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/white-polycotton-percale-200tc^^
+linen-and-co-white-pure-cotton-percale-pillow-cases-square.webp||100% Cotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/white-cotton-percale-200tc^^
+linen-and-co-white-luxury-cotton-percale-300tc-pillow-cases-square.webp||100% Cotton Percale||300 Thread Count||Premium white fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/white-cotton-percale-300tc
+    {%- endcapture -%}
+    {%- capture reason_data -%}
+White bed linen essentials||White is the foundation of a polished luxury look and keeps rooms feeling crisp, fresh and guest-ready.^^
+Timeless and versatile||White works with every decor style, brightens rooms and pairs effortlessly with seasonal colours.^^
+Easy care and durable||White is practical for frequent laundering and high turnover in hospitality and daily home use.
+    {%- endcapture -%}
+  {%- when 'cream' -%}
+    {%- assign hero_image_name = 'cream-percale-bed-linen-shop-white-banner-linen-and-co.webp' -%}
+    {%- assign heading = 'Cream bed linen' -%}
+    {%- assign tone_words = 'Warm / Soft / Inviting / Elegant' -%}
+    {%- assign intro = 'Warm, soft and inviting cream bed linen for hospitality and residential spaces. Cream creates a sophisticated, welcoming look that works beautifully with layered neutrals.' -%}
+    {%- assign reason_heading = 'Why choose cream?' -%}
+    {%- capture fabric_data -%}
+linen-and-co-cream-polycotton-percale-200tc-pillow-case-and-folded-bed-linen-square.webp||Polycotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/cream-polycotton-percale-200tc^^
+linen-and-co-cream-pure-cotton-percale-200tc-pillow-cases-square.webp||100% Cotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/cream-cotton-percale-200tc
+    {%- endcapture -%}
+    {%- capture reason_data -%}
+Cream bed linen essentials||Cream is the foundation of a warm, sophisticated room that feels soft and elegant.^^
+Warm and versatile||Cream is warmer than white and pairs easily with natural textures, stone tones and muted colour schemes.^^
+Easy care and durable||Cream is practical for frequent laundering and high-use hospitality routines.
+    {%- endcapture -%}
+  {%- when 'stone' -%}
+    {%- assign hero_image_name = 'stone-percale-bed-linen-shop-white-banner-linen-and-co.webp' -%}
+    {%- assign heading = 'Stone bed linen' -%}
+    {%- assign tone_words = 'Neutral / Modern / Grounded / Subtle' -%}
+    {%- assign intro = 'Neutral, modern and grounded stone bed linen for calm hospitality rooms and refined homes. Stone offers a sophisticated greige tone that balances warm and cool interiors.' -%}
+    {%- assign reason_heading = 'Why choose stone?' -%}
+    {%- capture fabric_data -%}
+linen-and-co-stone-polycotton-percale-200tc-plain-pillow-cases-square.webp||Polycotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/stone-polycotton-percale-200tc^^
+linen-and-co-stone-pure-cotton-percale-200tc-folded-bed-linen-square.webp||100% Cotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/stone-cotton-percale-200tc
+    {%- endcapture -%}
+    {%- capture reason_data -%}
+Stone bed linen essentials||Stone creates a calm, elegant room foundation for hospitality and residential schemes.^^
+Neutral and grounded||The warm greige tone pairs easily with natural materials, whites, greys and layered textures.^^
+Easy care and durable||Stone is practical for frequent laundering, high turnover and everyday use.
+    {%- endcapture -%}
+  {%- when 'grey' -%}
+    {%- assign hero_image_name = 'linen-and-co-grey-hospitality-bed-linen.webp' -%}
+    {%- assign heading = 'Grey bed linen' -%}
+    {%- assign tone_words = 'Cool / Bold / Sophisticated / Versatile' -%}
+    {%- assign intro = 'Cool, bold and sophisticated grey bed linen for contemporary hospitality and residential spaces. Grey creates a modern look that works with warm and cool interiors.' -%}
+    {%- assign reason_heading = 'Why choose grey?' -%}
+    {%- capture fabric_data -%}
+linen-and-co-grey-polycotton-percale-200tc-pillow-cases-square.webp||Polycotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/grey-polycotton-percale-200tc^^
+linen-and-co-grey-pure-cotton-percale-200tc-folded-duvet-cover-square.webp||100% Cotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/grey-cotton-percale-200tc
+    {%- endcapture -%}
+    {%- capture reason_data -%}
+Grey bed linen essentials||Grey gives rooms a modern, sophisticated look without feeling stark.^^
+Cool and versatile||Grey works with most palettes and brings contrast to soft neutrals, white linen and natural textures.^^
+Easy care and durable||Grey is practical for frequent laundering and high turnover environments.
+    {%- endcapture -%}
+  {%- when 'duck_egg' -%}
+    {%- assign hero_image_name = 'duck-egg-percale-bed-linen-shop-white-banner-linen-and-co.webp' -%}
+    {%- assign heading = 'Duck egg bed linen' -%}
+    {%- assign tone_words = 'Calm / Fresh / Subtle / Serene' -%}
+    {%- assign intro = 'Calm, fresh and subtle duck egg bed linen for serene hospitality and residential spaces. Duck egg adds soft colour while still reading as refined and easy to coordinate.' -%}
+    {%- assign reason_heading = 'Why choose duck egg?' -%}
+    {%- capture fabric_data -%}
+linen-and-co-duck-egg-pure-cotton-percale-200tc-folded-bed-linen-square.webp||Polycotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/duck-egg-polycotton-percale-200tc^^
+linen-and-co-duck-egg-pure-cotton-percale-200tc-pillow-cases-square.webp||100% Cotton Percale||200 Thread Count||Fitted sheets, flat sheets, duvet covers and pillowcases.||/collections/duck-egg-cotton-percale-200tc
+    {%- endcapture -%}
+    {%- capture reason_data -%}
+Duck egg bed linen essentials||Duck egg creates a calm, elevated room with a soft wash of colour.^^
+Fresh and subtle||It pairs beautifully with whites, greys, stone tones and natural textures.^^
+Easy care and durable||Duck egg is suitable for hospitality laundering and everyday home routines.
+    {%- endcapture -%}
+  {%- else -%}
+    {%- assign hero_image_name = 'linen-and-co-luxury-plain-pillowcases-in-white-cream-stone-grey-duck-egg-landscape-1.webp' -%}
+    {%- assign heading = 'Shop by colour' -%}
+    {%- assign tone_words = 'White / Cream / Stone / Grey / Duck egg' -%}
+    {%- assign intro = 'Explore premium bed linen in clean hospitality neutrals and soft accent shades. Choose by colour first, then select the fabric range that suits your rooms, care routine and budget.' -%}
+    {%- assign reason_heading = 'Build a coordinated linen scheme' -%}
+{%- endcase -%}
+
+{%- assign hero_image = images[hero_image_name] -%}
+
+{%- capture colour_data -%}
+white-fabric-for-choose-your-colour-linen-and-co-1.webp||White||Crisp, classic, timeless and fresh.||/pages/shop-white-bed-linen^^
+cream-fabric-for-choose-your-colour-linen-and-co-1.webp||Cream||Warm, soft, inviting and elegant.||/pages/shop-cream-bed-linen^^
+stone-fabric-for-choose-your-colour-linen-and-co.webp||Stone||Neutral, modern, grounded and subtle.||/pages/shop-stone-bed-linen^^
+grey-fabric-for-choose-your-colour-linen-and-co.webp||Grey||Cool, bold, sophisticated and versatile.||/pages/shop-grey-bed-linen^^
+duck-egg-fabric-for-choose-your-colour-linen-and-co-1.webp||Duck egg||Calm, fresh, subtle and serene.||/pages/shop-duck-egg-bed-linen
+{%- endcapture -%}
+
+<section class="lc-colour-page color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="lc-colour-page__hero">
+    {%- if hero_image != blank -%}
+      {{ hero_image | image_url: width: 2200 | image_tag: loading: 'eager', sizes: '100vw', widths: '800,1200,1600,2000,2200', class: 'lc-colour-page__hero-image' }}
+    {%- endif -%}
+    <div class="lc-colour-page__hero-copy">
+      <p>Shop collection</p>
+      <h1>{{ heading }}</h1>
+      <span>{{ tone_words }}</span>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="lc-colour-page__intro">
+      <p class="lc-colour-page__eyebrow">Colour-led shopping</p>
+      <h2>{{ reason_heading }}</h2>
+      <p>{{ intro }}</p>
+    </div>
+
+    {%- if colour == 'hub' -%}
+      <div class="lc-colour-page__colour-grid" role="list">
+        {%- assign colour_items = colour_data | strip | split: '^^' -%}
+        {%- for item in colour_items -%}
+          {%- assign parts = item | strip | split: '||' -%}
+          {%- assign image_name = parts[0] | strip -%}
+          {%- assign title = parts[1] | strip -%}
+          {%- assign text = parts[2] | strip -%}
+          {%- assign url = parts[3] | strip -%}
+          {%- assign card_image = images[image_name] -%}
+          <article class="lc-colour-page__colour-card" role="listitem">
+            <a href="{{ url }}" class="lc-colour-page__media">
+              {%- if card_image != blank -%}
+                {{ card_image | image_url: width: 900 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 19vw, (min-width: 700px) 32vw, 100vw', widths: '360,540,720,900' }}
+              {%- endif -%}
+            </a>
+            <div>
+              <h3>{{ title }}</h3>
+              <p>{{ text }}</p>
+              <a href="{{ url }}">Shop {{ title }}</a>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <div class="lc-colour-page__fabric-grid" role="list">
+        {%- assign fabric_items = fabric_data | strip | split: '^^' -%}
+        {%- for item in fabric_items -%}
+          {%- assign parts = item | strip | split: '||' -%}
+          {%- assign image_name = parts[0] | strip -%}
+          {%- assign title = parts[1] | strip -%}
+          {%- assign thread = parts[2] | strip -%}
+          {%- assign text = parts[3] | strip -%}
+          {%- assign url = parts[4] | strip -%}
+          {%- assign card_image = images[image_name] -%}
+          <article class="lc-colour-page__fabric-card" role="listitem">
+            <a href="{{ url }}" class="lc-colour-page__media">
+              {%- if card_image != blank -%}
+                {{ card_image | image_url: width: 1000 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 31vw, (min-width: 700px) 48vw, 100vw', widths: '360,540,720,900,1000' }}
+              {%- endif -%}
+            </a>
+            <div>
+              <p>{{ thread }}</p>
+              <h3>{{ title }}</h3>
+              <span>{{ text }}</span>
+              <a href="{{ url }}">Shop the collection</a>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      <div class="lc-colour-page__reasons" role="list">
+        {%- assign reason_items = reason_data | strip | split: '^^' -%}
+        {%- for item in reason_items -%}
+          {%- assign parts = item | strip | split: '||' -%}
+          <article role="listitem">
+            <span>{{ forloop.index | prepend: '0' }}</span>
+            <h3>{{ parts[0] | strip }}</h3>
+            <p>{{ parts[1] | strip }}</p>
+          </article>
+        {%- endfor -%}
+      </div>
+
+      <div class="lc-colour-page__section-heading">
+        <p class="lc-colour-page__eyebrow">Explore other colours</p>
+        <h2>Compare the full colour palette.</h2>
+      </div>
+
+      <div class="lc-colour-page__other-grid" role="list">
+        {%- assign colour_items = colour_data | strip | split: '^^' -%}
+        {%- for item in colour_items -%}
+          {%- assign parts = item | strip | split: '||' -%}
+          {%- assign image_name = parts[0] | strip -%}
+          {%- assign title = parts[1] | strip -%}
+          {%- assign text = parts[2] | strip -%}
+          {%- assign url = parts[3] | strip -%}
+          {%- assign title_handle = title | handleize -%}
+          {%- assign current_handle = colour | replace: '_', '-' -%}
+          {%- if title_handle != current_handle -%}
+            {%- assign card_image = images[image_name] -%}
+            <article class="lc-colour-page__other-card" role="listitem">
+              <a href="{{ url }}">
+                {%- if card_image != blank -%}
+                  {{ card_image | image_url: width: 620 | image_tag: loading: 'lazy', sizes: '(min-width: 1000px) 23vw, (min-width: 700px) 48vw, 100vw', widths: '280,420,620' }}
+                {%- endif -%}
+                <span>{{ title }}</span>
+              </a>
+            </article>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    <div class="lc-colour-page__cta">
+      <div>
+        <p class="lc-colour-page__eyebrow">Need help choosing?</p>
+        <h2>Send us your room style and we will help narrow it down.</h2>
+      </div>
+      <a href="/pages/contact">Get a recommendation</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .lc-colour-page {
+    padding-block-end: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__hero {
+    position: relative;
+    min-height: clamp(20rem, 36vw, 32rem);
+    overflow: hidden;
+    background: rgb(var(--text-color) / 0.08);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__hero-image {
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 0.28);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__hero-copy {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    display: grid;
+    place-content: center;
+    gap: 0.75rem;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    color: #fff;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__hero-copy p,
+  #shopify-section-{{ section.id }} .lc-colour-page__eyebrow,
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-card > div > p {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__hero-copy h1 {
+    margin: 0;
+    font-size: clamp(2.6rem, 5.4vw, 5.8rem);
+    line-height: 0.92;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__hero-copy span {
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__intro,
+  #shopify-section-{{ section.id }} .lc-colour-page__section-heading {
+    display: grid;
+    gap: 0.8rem;
+    max-width: 62rem;
+    padding-block: clamp(2rem, 5vw, 4rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__intro h2,
+  #shopify-section-{{ section.id }} .lc-colour-page__section-heading h2,
+  #shopify-section-{{ section.id }} .lc-colour-page__cta h2 {
+    max-width: 16ch;
+    margin: 0;
+    font-size: clamp(1.9rem, 4vw, 3.45rem);
+    line-height: 0.98;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__intro p:not(.lc-colour-page__eyebrow) {
+    max-width: 50rem;
+    margin: 0;
+    color: rgb(var(--text-color) / 0.72);
+    line-height: 1.65;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__eyebrow,
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-card > div > p {
+    color: rgb(var(--text-color) / 0.56);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__colour-grid,
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-grid,
+  #shopify-section-{{ section.id }} .lc-colour-page__other-grid {
+    display: grid;
+    gap: clamp(1rem, 2vw, 1.35rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__colour-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__colour-card,
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-card {
+    display: grid;
+    border: 1px solid rgb(var(--text-color) / 0.12);
+    background: rgb(var(--background));
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__media {
+    display: block;
+    aspect-ratio: 1;
+    overflow: hidden;
+    background: rgb(var(--text-color) / 0.06);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-card .lc-colour-page__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__media img,
+  #shopify-section-{{ section.id }} .lc-colour-page__other-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__colour-card > div,
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-card > div {
+    display: grid;
+    gap: 0.7rem;
+    padding: 1.2rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__colour-card h3,
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-card h3,
+  #shopify-section-{{ section.id }} .lc-colour-page__reasons h3 {
+    margin: 0;
+    font-size: clamp(1.08rem, 1.6vw, 1.4rem);
+    line-height: 1.1;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__colour-card p,
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-card span,
+  #shopify-section-{{ section.id }} .lc-colour-page__reasons p {
+    margin: 0;
+    color: rgb(var(--text-color) / 0.7);
+    line-height: 1.58;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__colour-card a,
+  #shopify-section-{{ section.id }} .lc-colour-page__fabric-card a {
+    color: inherit;
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__reasons {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    margin-block-start: clamp(2rem, 5vw, 4rem);
+    border: 1px solid rgb(var(--text-color) / 0.12);
+    background: rgb(var(--text-color) / 0.12);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__reasons article {
+    display: grid;
+    gap: 0.65rem;
+    padding: 1.35rem;
+    background: rgb(var(--background));
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__reasons span {
+    color: rgb(var(--text-color) / 0.52);
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__other-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__other-card a {
+    position: relative;
+    display: block;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    color: #fff;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__other-card a::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgb(0 0 0 / 0.24);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__other-card span {
+    position: absolute;
+    inset-block-end: 1rem;
+    inset-inline-start: 1rem;
+    z-index: 1;
+    font-weight: 800;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__cta {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem;
+    align-items: end;
+    margin-block-start: clamp(2.5rem, 5vw, 4rem);
+    border-block: 1px solid rgb(var(--text-color) / 0.14);
+    padding-block: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__cta > div {
+    display: grid;
+    gap: 0.8rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-colour-page__cta a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.95rem;
+    border: 1px solid rgb(var(--text-color));
+    padding: 0.75rem 1rem;
+    background: rgb(var(--text-color));
+    color: rgb(var(--background));
+    font-size: 0.74rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  @media screen and (max-width: 1099px) {
+    #shopify-section-{{ section.id }} .lc-colour-page__colour-grid,
+    #shopify-section-{{ section.id }} .lc-colour-page__fabric-grid,
+    #shopify-section-{{ section.id }} .lc-colour-page__other-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .lc-colour-page__hero {
+      min-height: 24rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-colour-page__colour-grid,
+    #shopify-section-{{ section.id }} .lc-colour-page__fabric-grid,
+    #shopify-section-{{ section.id }} .lc-colour-page__other-grid,
+    #shopify-section-{{ section.id }} .lc-colour-page__reasons,
+    #shopify-section-{{ section.id }} .lc-colour-page__cta {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "LC colour page",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "colour",
+      "label": "Colour page",
+      "options": [
+        {
+          "value": "hub",
+          "label": "Shop by colour hub"
+        },
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "cream",
+          "label": "Cream"
+        },
+        {
+          "value": "stone",
+          "label": "Stone"
+        },
+        {
+          "value": "grey",
+          "label": "Grey"
+        },
+        {
+          "value": "duck_egg",
+          "label": "Duck egg"
+        }
+      ],
+      "default": "hub"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC colour page"
+    }
+  ]
+}
+{% endschema %}

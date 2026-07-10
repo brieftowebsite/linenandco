@@ -1,0 +1,703 @@
+{%- liquid
+  assign footer_shop_menu = linklists['footer-shop']
+  assign footer_trade_menu = linklists['footer-hospitality-trade']
+  assign footer_help_menu = linklists['footer-help']
+  assign footer_company_menu = linklists['footer-company']
+  assign footer_policies_menu = linklists['footer-policies']
+  assign contact_page = pages.contact
+  assign size_guide_page = pages['size-guides']
+  assign care_guides_page = pages['care-guides']
+  assign lead_times_page = pages['lead-times']
+  assign hospitality_page = pages.hospitality
+  assign trade_registration_page = pages['trade-registration-form']
+  assign compare_fabrics_page = pages['compare-fabrics']
+  assign shop_white_bed_linen_page = pages['shop-white-bed-linen']
+  assign custom_sizing_page = pages['custom-sizing']
+  assign custom_embroidery_page = pages['custom-embroidery']
+  assign satin_stitch_page = pages['satin-stitch']
+  assign about_page = pages['about-linen-and-co']
+  assign privacy_policy_page = pages['privacy-policy']
+  assign terms_page = pages['terms-and-conditions']
+  assign returns_page = pages['returns-refunds']
+  assign industries_blog = blogs['industries-we-serve']
+  assign hospitality_guides_blog = blogs['hospitality-guides']
+  assign bed_linen_collection = collections['bed-linen']
+  assign mattress_pillow_collection = collections['duvet-inners']
+  assign bath_linen_collection = collections['bathroom']
+  assign table_linen_collection = collections['table-linen']
+  assign window_treatments_collection = collections['window-treatments']
+  assign mattress_protector_collection = collections['mattress-protector']
+  assign decor_collection = collections.decor
+  assign shop_by_colour_url = shop_white_bed_linen_page.url | default: '/pages/shop-white-bed-linen'
+  assign shop_by_fabric_url = compare_fabrics_page.url | default: '/pages/compare-fabrics'
+  assign complete_room_url = window_treatments_collection.url | default: '/collections/window-treatments'
+  assign protect_bed_url = mattress_protector_collection.url | default: '/collections/mattress-protector'
+-%}
+
+<section class="lc-footer color-scheme color-scheme--{{ section.settings.color_scheme.id }}" aria-label="Footer">
+  <div class="container">
+    <div class="lc-footer__main">
+      <div class="lc-footer__brand">
+        <a href="{{ routes.root_url }}" class="lc-footer__logo" aria-label="{{ shop.name | escape }} home">
+          <img
+            src="https://cdn.shopify.com/s/files/1/0931/8347/5996/files/linen-and-co-black-logo-text-side-transparent.webp?v=1773069356"
+            alt="{{ shop.name | escape }}"
+            width="240"
+            height="80"
+            loading="lazy"
+          >
+        </a>
+
+        <div class="lc-footer__brand-copy">
+          <p>Hotel-quality linen, towels, curtains, blinds and custom finishes for homes, hospitality and trade.</p>
+        </div>
+
+        <div class="lc-footer__contact" aria-label="Contact details">
+          <a href="tel:+27101094950"><span>Call</span>010 109 4950</a>
+          <a href="https://wa.me/27662918292" target="_blank" rel="noopener"><span>WhatsApp</span>066 291 8292</a>
+          <a href="mailto:info@linenco.co.za"><span>Email</span>info@linenco.co.za</a>
+        </div>
+      </div>
+
+      <nav class="lc-footer__nav" aria-label="Footer navigation">
+        <div class="lc-footer__group">
+          <button class="lc-footer__toggle" type="button" aria-expanded="false" aria-controls="footer-shop-{{ section.id }}">
+            <span>Shop essentials</span>
+            <span aria-hidden="true">+</span>
+          </button>
+          <div class="lc-footer__panel" id="footer-shop-{{ section.id }}">
+            <h2>Shop essentials</h2>
+            <ul role="list">
+              {%- if footer_shop_menu.links.size > 0 -%}
+                {%- for link in footer_shop_menu.links limit: 8 -%}
+                  {%- assign footer_link_url = link.url -%}
+                  {%- if footer_link_url == '/collections/bed-linen-sale' -%}
+                    {%- assign footer_link_url = '/collections/bed-linen' -%}
+                  {%- endif -%}
+                  <li><a href="{{ footer_link_url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              {%- else -%}
+                {%- assign fallback_shop_links_rendered = false -%}
+                {%- if bed_linen_collection.url != blank -%}
+                  {%- assign fallback_shop_links_rendered = true -%}
+                  <li><a href="{{ bed_linen_collection.url }}">Bed Linen</a></li>
+                {%- endif -%}
+                {%- if mattress_pillow_collection.url != blank -%}
+                  {%- assign fallback_shop_links_rendered = true -%}
+                  <li><a href="{{ mattress_pillow_collection.url }}">Mattress and Pillow Accessories</a></li>
+                {%- endif -%}
+                {%- if bath_linen_collection.url != blank -%}
+                  {%- assign fallback_shop_links_rendered = true -%}
+                  <li><a href="{{ bath_linen_collection.url }}">Bath Linen</a></li>
+                {%- endif -%}
+                {%- if table_linen_collection.url != blank -%}
+                  {%- assign fallback_shop_links_rendered = true -%}
+                  <li><a href="{{ table_linen_collection.url }}">Table Linen</a></li>
+                {%- endif -%}
+                {%- if window_treatments_collection.url != blank -%}
+                  {%- assign fallback_shop_links_rendered = true -%}
+                  <li><a href="{{ window_treatments_collection.url }}">Window Treatments</a></li>
+                {%- endif -%}
+                {%- if decor_collection.url != blank -%}
+                  {%- assign fallback_shop_links_rendered = true -%}
+                  <li><a href="{{ decor_collection.url }}">Decor</a></li>
+                {%- endif -%}
+                {%- unless fallback_shop_links_rendered -%}
+                  <li><a href="{{ routes.all_products_collection_url }}">All products</a></li>
+                {%- endunless -%}
+              {%- endif -%}
+            </ul>
+          </div>
+        </div>
+
+        <div class="lc-footer__group">
+          <button class="lc-footer__toggle" type="button" aria-expanded="false" aria-controls="footer-need-{{ section.id }}">
+            <span>Choose well</span>
+            <span aria-hidden="true">+</span>
+          </button>
+          <div class="lc-footer__panel" id="footer-need-{{ section.id }}">
+            <h2>Choose well</h2>
+            <ul role="list">
+              <li><a href="{{ shop_by_colour_url }}">Shop by colour</a></li>
+              <li><a href="{{ shop_by_fabric_url }}">Compare fabrics</a></li>
+              <li><a href="{{ complete_room_url }}">Complete the room</a></li>
+              <li><a href="{{ protect_bed_url }}">Protect the bed</a></li>
+              {%- if care_guides_page.url != blank -%}
+                <li><a href="{{ care_guides_page.url }}">Care guides</a></li>
+              {%- endif -%}
+              {%- if size_guide_page.url != blank -%}
+                <li><a href="{{ size_guide_page.url }}">Size guides</a></li>
+              {%- endif -%}
+              {%- if hospitality_guides_blog.url != blank -%}
+                <li><a href="{{ hospitality_guides_blog.url }}">Hospitality guides</a></li>
+              {%- endif -%}
+            </ul>
+          </div>
+        </div>
+
+        <div class="lc-footer__group">
+          <button class="lc-footer__toggle" type="button" aria-expanded="false" aria-controls="footer-trade-{{ section.id }}">
+            <span>Hospitality + Trade</span>
+            <span aria-hidden="true">+</span>
+          </button>
+          <div class="lc-footer__panel" id="footer-trade-{{ section.id }}">
+            <h2>Hospitality + Trade</h2>
+            <ul role="list">
+              {%- if footer_trade_menu.links.size > 0 -%}
+                {%- for link in footer_trade_menu.links limit: 8 -%}
+                  {%- unless link.title == 'Request a Quote' or link.title == 'Request a quote' -%}
+                    <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                  {%- endunless -%}
+                {%- endfor -%}
+              {%- else -%}
+                {%- if hospitality_page.url != blank -%}
+                  <li><a href="{{ hospitality_page.url }}">Hospitality hub</a></li>
+                {%- endif -%}
+                {%- if trade_registration_page.url != blank -%}
+                  <li><a href="{{ trade_registration_page.url }}">Trade registration</a></li>
+                {%- endif -%}
+                <li><a href="/account/login">Customer login</a></li>
+                {%- if custom_sizing_page.url != blank -%}
+                  <li><a href="{{ custom_sizing_page.url }}">Custom sizing</a></li>
+                {%- endif -%}
+                {%- if custom_embroidery_page.url != blank -%}
+                  <li><a href="{{ custom_embroidery_page.url }}">Embroidery &amp; branding</a></li>
+                {%- endif -%}
+                {%- if satin_stitch_page.url != blank -%}
+                  <li><a href="{{ satin_stitch_page.url }}">Satin stitch</a></li>
+                {%- endif -%}
+              {%- endif -%}
+            </ul>
+          </div>
+        </div>
+
+        <div class="lc-footer__group">
+          <button class="lc-footer__toggle" type="button" aria-expanded="false" aria-controls="footer-help-{{ section.id }}">
+            <span>Help</span>
+            <span aria-hidden="true">+</span>
+          </button>
+          <div class="lc-footer__panel" id="footer-help-{{ section.id }}">
+            <h2>Help</h2>
+            <ul role="list">
+              {%- if footer_help_menu.links.size > 0 -%}
+                {%- for link in footer_help_menu.links limit: 5 -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              {%- else -%}
+                {%- if contact_page.url != blank -%}
+                  <li><a href="{{ contact_page.url }}">Contact us</a></li>
+                {%- endif -%}
+                {%- if care_guides_page.url != blank -%}
+                  <li><a href="{{ care_guides_page.url }}">Care guides</a></li>
+                {%- endif -%}
+                {%- if size_guide_page.url != blank -%}
+                  <li><a href="{{ size_guide_page.url }}">Size guides</a></li>
+                {%- endif -%}
+                {%- if lead_times_page.url != blank -%}
+                  <li><a href="{{ lead_times_page.url }}">Lead times</a></li>
+                {%- endif -%}
+                {%- if returns_page.url != blank -%}
+                  <li><a href="{{ returns_page.url }}">Returns &amp; Refunds</a></li>
+                {%- endif -%}
+              {%- endif -%}
+            </ul>
+          </div>
+        </div>
+
+        <div class="lc-footer__group">
+          <button class="lc-footer__toggle" type="button" aria-expanded="false" aria-controls="footer-company-{{ section.id }}">
+            <span>Company</span>
+            <span aria-hidden="true">+</span>
+          </button>
+          <div class="lc-footer__panel" id="footer-company-{{ section.id }}">
+            <h2>Company</h2>
+            <ul role="list">
+              {%- if footer_company_menu.links.size > 0 -%}
+                {%- for link in footer_company_menu.links limit: 3 -%}
+                  <li>
+                    <a href="{{ link.url }}">
+                      {%- if link.title == 'Who We Serve' or link.title == 'Who we serve' -%}
+                        Who We Supply
+                      {%- else -%}
+                        {{- link.title -}}
+                      {%- endif -%}
+                    </a>
+                  </li>
+                {%- endfor -%}
+              {%- else -%}
+                {%- if about_page.url != blank -%}
+                  <li><a href="{{ about_page.url }}">About Linen and Co</a></li>
+                {%- endif -%}
+                {%- if industries_blog.url != blank -%}
+                  <li><a href="{{ industries_blog.url }}">Who We Supply</a></li>
+                {%- endif -%}
+                {%- if hospitality_guides_blog.url != blank -%}
+                  <li><a href="{{ hospitality_guides_blog.url }}">Hospitality guides</a></li>
+                {%- endif -%}
+              {%- endif -%}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </div>
+
+    <div class="lc-footer__newsletter">
+      <div>
+        <p class="lc-footer__eyebrow">Stay in touch</p>
+        <h2>Care guides, trade notes and new collections.</h2>
+        <p class="lc-footer__newsletter-copy">A concise note when there is something useful to choose, care for or reorder.</p>
+      </div>
+
+      <form class="lc-footer__form" action="https://linenco.us21.list-manage.com/subscribe/post?u=d8ebb717db8b29f2532a8c94e&amp;id=6dd60583d7&amp;f_id=0051a6e6f0" method="post" target="_blank" novalidate>
+        <label class="sr-only" for="footer-email-{{ section.id }}">Email address</label>
+        <input id="footer-email-{{ section.id }}" type="email" name="EMAIL" placeholder="Email address" autocomplete="email" required>
+        <div aria-hidden="true" style="position:absolute; left:-5000px;">
+          <input type="text" name="b_d8ebb717db8b29f2532a8c94e_6dd60583d7" tabindex="-1" value="">
+        </div>
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
+
+    <div class="lc-footer__bottom">
+      <div class="lc-footer__social">
+        {%- render 'social-media', layout: 'list' -%}
+      </div>
+
+      <nav class="lc-footer__policies" aria-label="Footer policies">
+        {%- if footer_policies_menu.links.size > 0 -%}
+          {%- for link in footer_policies_menu.links limit: 4 -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        {%- else -%}
+          {%- if returns_page.url != blank -%}
+            <a href="{{ returns_page.url }}">Returns &amp; Refunds</a>
+          {%- endif -%}
+          {%- if privacy_policy_page.url != blank -%}
+            <a href="{{ privacy_policy_page.url }}">Privacy policy</a>
+          {%- endif -%}
+          {%- if terms_page.url != blank -%}
+            <a href="{{ terms_page.url }}">Terms and conditions</a>
+          {%- endif -%}
+        {%- endif -%}
+      </nav>
+
+      <p>&copy; {{ 'now' | date: '%Y' }} Linen and Co (Pty) Ltd. All rights reserved.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .lc-footer {
+    padding: clamp(2rem, 4vw, 3.2rem) 0 1.35rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__eyebrow {
+    margin: 0;
+    color: currentColor;
+    opacity: 0.68;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__newsletter h2 {
+    margin: 0;
+    max-width: 28rem;
+    font-size: clamp(1.28rem, 1.7vw, 1.6rem);
+    line-height: 1.08;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__newsletter-copy {
+    max-width: 29rem;
+    margin: 0;
+    color: currentColor;
+    opacity: 0.72;
+    font-size: 0.82rem;
+    line-height: 1.55;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__newsletter > div {
+    display: grid;
+    gap: 0.75rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__brand p {
+    max-width: 28rem;
+    margin: 0;
+    color: rgb(var(--text-color) / 0.72);
+    font-size: 0.86rem;
+    line-height: 1.58;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__brand-copy {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__form button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    border: 1px solid currentColor;
+    padding: 0.75rem 1rem;
+    background: #ffffff;
+    color: #171717;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    text-transform: uppercase;
+    transition: background 0.18s ease, color 0.18s ease;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__form button:hover {
+    background: transparent;
+    color: currentColor;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__main {
+    display: grid;
+    grid-template-columns: minmax(15rem, 0.72fr) minmax(0, 2.7fr);
+    gap: clamp(2rem, 4vw, 3.6rem);
+    align-items: start;
+    padding-block: 0 clamp(1.4rem, 2.8vw, 2.35rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__brand {
+    display: grid;
+    gap: 0.95rem;
+    align-content: start;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__logo img {
+    display: block;
+    width: min(190px, 70vw);
+    height: auto;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__contact {
+    display: grid;
+    gap: 0.45rem;
+    max-width: 18rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__contact a {
+    display: grid;
+    grid-template-columns: 4.8rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: baseline;
+    color: rgb(var(--text-color) / 0.74);
+    font-size: 0.8rem;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__contact a:hover {
+    text-decoration: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__contact span {
+    color: rgb(var(--text-color));
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__nav {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: clamp(1rem, 2.2vw, 2rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__toggle {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__panel h2 {
+    margin: 0 0 0.85rem;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__panel ul {
+    display: grid;
+    gap: 0.45rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__panel a {
+    color: rgb(var(--text-color) / 0.72);
+    font-size: 0.8rem;
+    line-height: 1.45;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__newsletter {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(20rem, 29rem);
+    gap: clamp(1.4rem, 4vw, 4rem);
+    align-items: center;
+    margin: 0 0 1.15rem;
+    padding: clamp(1.35rem, 2.7vw, 2.25rem) clamp(1.25rem, 3vw, 2.4rem);
+    background: #171717;
+    color: #ffffff;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__form {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 0.65rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__form input {
+    min-width: 0;
+    width: 100%;
+    min-height: 3rem;
+    border: 1px solid rgb(255 255 255 / 0.34);
+    padding: 0 0.95rem;
+    background: rgb(255 255 255 / 0.06);
+    color: #ffffff;
+    font-size: 0.9rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__form input::placeholder {
+    color: rgb(255 255 255 / 0.72);
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__form button {
+    cursor: pointer;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 1rem 1.5rem;
+    align-items: center;
+    border-top: 1px solid rgb(var(--text-color) / 0.12);
+    padding-top: 1.15rem;
+    color: rgb(var(--text-color) / 0.64);
+    font-size: 0.72rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__social {
+    grid-column: 1;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__policies {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.15rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__policies a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__bottom p {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+    margin: 0;
+    text-align: right;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__social .social-media {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    --social-media-icon-size: 1rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__social .social-media__item {
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__social .social-media a {
+    display: inline-flex;
+    width: 1.4rem;
+    height: 1.4rem;
+    align-items: center;
+    justify-content: center;
+    color: rgb(var(--text-color) / 0.74);
+    transition: color 0.18s ease, opacity 0.18s ease, transform 0.18s ease;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__social .social-media svg {
+    width: 15px;
+    height: 15px;
+  }
+
+  #shopify-section-{{ section.id }} .lc-footer__social .social-media a:hover {
+    color: rgb(var(--text-color));
+    opacity: 1;
+    transform: translateY(-1px);
+    text-decoration: none;
+  }
+
+  @media (max-width: 989px) {
+    #shopify-section-{{ section.id }} .lc-footer {
+      padding: 1.7rem 0 1.35rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__main,
+    #shopify-section-{{ section.id }} .lc-footer__newsletter {
+      grid-template-columns: 1fr;
+      gap: 1.35rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__contact {
+      max-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__contact a {
+      grid-template-columns: minmax(4.8rem, auto) minmax(0, 1fr);
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__newsletter {
+      margin-top: 0.35rem;
+      margin-bottom: 1.1rem;
+      padding: 1.25rem 1.05rem 1.15rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__nav {
+      grid-template-columns: 1fr;
+      gap: 0;
+      border-top: 1px solid rgb(var(--text-color) / 0.12);
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__toggle {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+      border: 0;
+      border-bottom: 1px solid rgb(var(--text-color) / 0.12);
+      padding: 0.95rem 0;
+      background: transparent;
+      color: inherit;
+      cursor: pointer;
+      font: inherit;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-align: left;
+      text-transform: uppercase;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__toggle span:last-child {
+      flex: 0 0 auto;
+      font-size: 1.2rem;
+      line-height: 1;
+      transition: transform 0.18s ease;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__toggle[aria-expanded="true"] span:last-child {
+      transform: rotate(45deg);
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__panel {
+      display: none;
+      padding: 0.85rem 0 1.05rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__panel.is-open {
+      display: block;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__panel h2 {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__form {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__bottom {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__social,
+    #shopify-section-{{ section.id }} .lc-footer__bottom p {
+      grid-column: auto;
+      grid-row: auto;
+      text-align: center;
+    }
+
+    #shopify-section-{{ section.id }} .lc-footer__social .social-media,
+    #shopify-section-{{ section.id }} .lc-footer__policies {
+      justify-content: center;
+    }
+  }
+
+</style>
+
+<script>
+  (function () {
+    var root = document.getElementById('shopify-section-{{ section.id }}');
+    if (!root) return;
+
+    root.querySelectorAll('.lc-footer__toggle').forEach(function (toggle) {
+      toggle.addEventListener('click', function () {
+        var panel = root.querySelector('#' + toggle.getAttribute('aria-controls'));
+        if (!panel) return;
+
+        var expanded = toggle.getAttribute('aria-expanded') === 'true';
+        toggle.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        panel.classList.toggle('is-open', !expanded);
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Linen and Co footer",
+  "class": "shopify-section--footer",
+  "tag": "footer",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-2"
+    },
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop menu"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Linen and Co footer"
+    }
+  ]
+}
+{% endschema %}

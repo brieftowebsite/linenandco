@@ -1,0 +1,694 @@
+<div class="section-spacing section-spacing--tight">
+  <div class="container container--lg">
+    <div class="section-stack">
+      <div class="v-stack justify-items-start gap-6">
+        <a href="{{ routes.account_logout_url }}" class="text-with-icon h6 link-faded" data-no-instant>
+          {%- render 'icon' with 'chevron-left', width: 10, direction_aware: true -%}
+          {{- 'customer.account.logout' | t -}}
+        </a>
+
+        <div class="section-header text-start">
+          <div class="prose">
+            <h1 class="h3">{{ 'customer.account.title' | t }}</h1>
+            <p>{{ 'customer.account.tagline' | t }}</p>
+          </div>
+        </div>
+      </div>
+
+      {%- if customer.b2b? -%}
+        {%- liquid
+          assign account_company_name = customer.current_company.name | default: customer.default_address.company | default: customer.name
+          assign account_location_name = customer.current_location.name
+          assign last_order_date = customer.last_order.created_at | date: format: 'date'
+        -%}
+
+        <div class="lc-trade-portal">
+          <div class="lc-trade-portal__hero">
+            <div class="lc-trade-portal__copy">
+              <p class="lc-trade-portal__eyebrow">{{ 'customer.account.hospitality_portal.eyebrow' | t }}</p>
+              <h2 class="lc-trade-portal__title">{{ 'customer.account.hospitality_portal.title' | t: name: account_company_name }}</h2>
+              <p class="lc-trade-portal__intro">{{ 'customer.account.hospitality_portal.intro' | t }}</p>
+            </div>
+
+            <div class="lc-trade-portal__actions">
+              {%- assign shop_catalogue_label = 'customer.account.hospitality_portal.shop_catalogue' | t -%}
+              {%- assign request_quote_label = 'customer.account.hospitality_portal.request_quote' | t -%}
+              {%- render 'button', href: routes.all_products_collection_url, content: shop_catalogue_label -%}
+              {%- render 'button', href: '/pages/quotation-request', content: request_quote_label, style: 'outline' -%}
+            </div>
+          </div>
+
+          <div class="lc-trade-portal__status-grid" role="list">
+            <div class="lc-trade-portal__status" role="listitem">
+              <span>{{ 'customer.account.hospitality_portal.trade_status_label' | t }}</span>
+              <strong>{{ 'customer.account.hospitality_portal.trade_status_value' | t }}</strong>
+            </div>
+
+            <div class="lc-trade-portal__status" role="listitem">
+              <span>{{ 'customer.account.hospitality_portal.orders_label' | t }}</span>
+              <strong>{{ 'customer.account.hospitality_portal.orders_value' | t: count: customer.orders_count }}</strong>
+            </div>
+
+            <div class="lc-trade-portal__status" role="listitem">
+              <span>{{ 'customer.account.hospitality_portal.last_order_label' | t }}</span>
+              <strong>
+                {%- if customer.orders_count > 0 and customer.last_order != blank -%}
+                  {{- customer.last_order.name }} · {{ last_order_date -}}
+                {%- else -%}
+                  {{- 'customer.account.hospitality_portal.no_last_order' | t -}}
+                {%- endif -%}
+              </strong>
+            </div>
+
+            <div class="lc-trade-portal__status" role="listitem">
+              <span>{{ 'customer.account.hospitality_portal.location_label' | t }}</span>
+              <strong>
+                {%- if account_location_name != blank -%}
+                  {{- account_location_name -}}
+                {%- else -%}
+                  {{- 'customer.account.hospitality_portal.location_value' | t -}}
+                {%- endif -%}
+              </strong>
+            </div>
+          </div>
+
+          <div class="lc-trade-portal__content-grid">
+            <div class="lc-trade-portal__panel lc-trade-portal__panel--reorder">
+              <div class="lc-trade-portal__panel-header">
+                <div>
+                  <p class="lc-trade-portal__panel-kicker">{{ 'customer.account.hospitality_portal.reorder_kicker' | t }}</p>
+                  <h3 class="lc-trade-portal__panel-title">{{ 'customer.account.hospitality_portal.reorder_title' | t }}</h3>
+                </div>
+                <a href="{{ routes.account_url }}" class="link text-sm">{{ 'customer.account.hospitality_portal.view_orders' | t }}</a>
+              </div>
+
+              <div class="lc-trade-reorder">
+                {%- liquid
+                  assign rendered_variant_ids = ','
+                  assign reorder_count = 0
+                -%}
+
+                {%- for order in customer.orders limit: 12 -%}
+                  {%- for line_item in order.line_items -%}
+                    {%- liquid
+                      assign skip_reorder_item = false
+
+                      for property in line_item.properties
+                        if property.first == '_lc_blind_order' or property.first == 'Blind width mm'
+                          assign skip_reorder_item = true
+                        endif
+                      endfor
+
+                      if line_item.variant == blank or line_item.product == blank or line_item.gift_card or skip_reorder_item
+                        continue
+                      endif
+
+                      assign variant_token = ',' | append: line_item.variant.id | append: ','
+
+                      if rendered_variant_ids contains variant_token
+                        continue
+                      endif
+
+                      assign rendered_variant_ids = rendered_variant_ids | append: line_item.variant.id | append: ','
+                      assign reorder_count = reorder_count | plus: 1
+                      assign reorder_quantity = line_item.quantity | at_least: line_item.variant.quantity_rule.min
+                      assign image_to_use = line_item.variant.featured_media | default: line_item.product.featured_media | default: line_item.image
+                      assign reorder_form_id = 'lc-trade-reorder-form-' | append: line_item.variant.id
+                    -%}
+
+                    <div class="lc-trade-reorder__item">
+                      <a href="{{ line_item.url }}" class="lc-trade-reorder__media" aria-label="{{ line_item.product.title | escape }}">
+                        {%- if image_to_use != blank -%}
+                          {{-
+                            image_to_use
+                            | image_url: width: 180
+                            | image_tag: loading: 'lazy', sizes: '72px', widths: '72,120,180', class: 'lc-trade-reorder__image'
+                          -}}
+                        {%- endif -%}
+                      </a>
+
+                      <div class="lc-trade-reorder__details">
+                        <a href="{{ line_item.url }}" class="lc-trade-reorder__title">{{ line_item.product.title | default: line_item.title }}</a>
+
+                        {%- unless line_item.product.has_only_default_variant -%}
+                          <p class="lc-trade-reorder__variant">{{ line_item.variant.title }}</p>
+                        {%- endunless -%}
+
+                        {%- if line_item.sku != blank -%}
+                          <p class="lc-trade-reorder__sku">{{ line_item.sku }}</p>
+                        {%- endif -%}
+
+                        <p class="lc-trade-reorder__meta">{{ 'customer.account.hospitality_portal.last_ordered' | t: order: order.name }}</p>
+                      </div>
+
+                      <div class="lc-trade-reorder__price">
+                        <span>{{ 'customer.account.hospitality_portal.current_price' | t }}</span>
+                        {%- if line_item.variant.compare_at_price > line_item.variant.price -%}
+                          <s>{{ line_item.variant.compare_at_price | money }}</s>
+                        {%- endif -%}
+                        <strong>{{ line_item.variant.price | money }}</strong>
+                      </div>
+
+                      <div class="lc-trade-reorder__purchase">
+                        {%- if line_item.variant.available -%}
+                          <product-form>
+                            {%- form 'product', line_item.product, id: reorder_form_id, class: 'lc-trade-reorder__form' -%}
+                              <input type="hidden" name="on_success" value="force_open_drawer">
+                              <input type="hidden" name="id" value="{{ line_item.variant.id }}">
+                              <label class="sr-only" for="lc-trade-quantity-{{ line_item.variant.id }}">{{ 'customer.order.quantity' | t }}</label>
+                              <input
+                                id="lc-trade-quantity-{{ line_item.variant.id }}"
+                                class="lc-trade-reorder__quantity"
+                                type="number"
+                                name="quantity"
+                                value="{{ reorder_quantity }}"
+                                min="{{ line_item.variant.quantity_rule.min }}"
+                                {% if line_item.variant.quantity_rule.max != null %}
+                                  max="{{ line_item.variant.quantity_rule.max }}"
+                                {% endif %}
+                                step="{{ line_item.variant.quantity_rule.increment }}"
+                                inputmode="numeric"
+                              >
+                              <button type="submit" class="lc-trade-reorder__button">{{ 'customer.account.hospitality_portal.add_to_cart' | t }}</button>
+                            {%- endform -%}
+                          </product-form>
+                        {%- else -%}
+                          <a href="{{ line_item.url }}" class="lc-trade-reorder__button lc-trade-reorder__button--outline">{{ 'customer.account.hospitality_portal.view_product' | t }}</a>
+                        {%- endif -%}
+                      </div>
+                    </div>
+
+                    {%- if reorder_count >= 6 -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+
+                  {%- if reorder_count >= 6 -%}
+                    {%- break -%}
+                  {%- endif -%}
+                {%- endfor -%}
+
+                {%- if reorder_count == 0 -%}
+                  <div class="lc-trade-reorder__empty">
+                    <p>{{ 'customer.account.hospitality_portal.empty_reorder' | t }}</p>
+                    <a href="/pages/contact" class="link">{{ 'customer.account.hospitality_portal.contact_support' | t }}</a>
+                  </div>
+                {%- endif -%}
+              </div>
+            </div>
+
+            <div class="lc-trade-portal__panel lc-trade-portal__panel--support">
+              <p class="lc-trade-portal__panel-kicker">{{ 'customer.account.hospitality_portal.support_kicker' | t }}</p>
+              <h3 class="lc-trade-portal__panel-title">{{ 'customer.account.hospitality_portal.support_title' | t }}</h3>
+              <p class="lc-trade-portal__support-copy">{{ 'customer.account.hospitality_portal.support_text' | t }}</p>
+
+              <div class="lc-trade-portal__support-links">
+                <a href="/pages/hospitality" class="lc-trade-portal__support-link">
+                  <span>{{ 'customer.account.hospitality_portal.hospitality_hub' | t }}</span>
+                  {%- render 'icon' with 'chevron-right', width: 12, direction_aware: true -%}
+                </a>
+                <a href="/pages/contact" class="lc-trade-portal__support-link">
+                  <span>{{ 'customer.account.hospitality_portal.account_support' | t }}</span>
+                  {%- render 'icon' with 'chevron-right', width: 12, direction_aware: true -%}
+                </a>
+                <a href="/pages/hospitality#payment-support" class="lc-trade-portal__support-link">
+                  <span>{{ 'customer.account.hospitality_portal.payment_support' | t }}</span>
+                  {%- render 'icon' with 'chevron-right', width: 12, direction_aware: true -%}
+                </a>
+                <a href="/pages/quotation-request" class="lc-trade-portal__support-link">
+                  <span>{{ 'customer.account.hospitality_portal.quote_support' | t }}</span>
+                  {%- render 'icon' with 'chevron-right', width: 12, direction_aware: true -%}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      <div class="v-stack gap-10">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {%- render block -%}
+
+            {%- when 'liquid' -%}
+              {%- if block.settings.liquid != blank -%}
+                <div {{ block.shopify_attributes }}>
+                  {{- block.settings.liquid -}}
+                </div>
+              {%- endif -%}
+
+            {%- when 'orders' -%}
+              <div class="customer-account-overview" {{ block.shopify_attributes }}>
+                <!-- CUSTOMER ORDERS -->
+                <div class="v-stack gap-6 sm:gap-8">
+                  {%- if customer.orders.size == 0 -%}
+                    <p class="customer-account-category h6 text-subdued">{{ 'customer.account.orders' | t }}</p>
+
+                    <div class="prose">
+                      <p>{{ 'customer.account.no_orders' | t }}</p>
+
+                      {%- assign button_label = 'customer.account.continue_shopping' | t -%}
+                      {%- render 'button', href: routes.all_products_collection_url, content: button_label -%}
+                    </div>
+                  {%- else -%}
+                    {%- paginate customer.orders by 16 -%}
+                      <div class="v-stack gap-6 md:hidden">
+                        <p class="customer-account-category h6 text-subdued">{{ 'customer.account.orders' | t }}</p>
+
+                        <div class="v-stack gap-8">
+                          {%- for order in customer.orders -%}
+                            <div class="v-stack gap-2">
+                              <p class="bold">{{ 'customer.order.order_name' | t: name: order.name }}</p>
+
+                              <div class="v-stack gap-4">
+                                <div class="customer-account-order-grid">
+                                  <div>
+                                    <p class="text-subdued">{{ 'customer.order.date' | t }}</p>
+                                    <p>{{ order.created_at | date: format: 'date' }}</p>
+                                  </div>
+
+                                  <div>
+                                    <p class="text-subdued">{{ 'customer.order.fulfillment_status' | t }}</p>
+                                    <p>{{ order.fulfillment_status_label }}</p>
+                                  </div>
+
+                                  <div>
+                                    <p class="text-subdued">{{ 'customer.order.payment_status' | t }}</p>
+                                    <p>{{ order.financial_status_label }}</p>
+                                  </div>
+
+                                  <div>
+                                    <p class="text-subdued">{{ 'customer.order.total' | t }}</p>
+                                    <p>{{ order.total_net_amount | money }}</p>
+                                  </div>
+                                </div>
+
+                                {%- capture button_label -%}{{ 'customer.order.view_details' | t }}{%- endcapture -%}
+                                {%- render 'button', href: order.customer_url, content: button_label, style: 'outline' -%}
+                              </div>
+                            </div>
+                          {%- endfor -%}
+                        </div>
+                      </div>
+
+                      <table class="table table--reduce-border table--lg hidden md:table">
+                        <thead>
+                          <tr>
+                            <th>{{ 'customer.order.order' | t }}</th>
+                            <th>{{ 'customer.order.date' | t }}</th>
+                            <th>{{ 'customer.order.payment_status' | t }}</th>
+                            <th>{{ 'customer.order.fulfillment_status' | t }}</th>
+                            <th class="text-end">{{ 'customer.order.total' | t }}</th>
+                          </tr>
+                        </thead>
+
+                        <tbody>
+                          {%- for order in customer.orders -%}
+                            <tr onclick="window.location.href = '{{ order.customer_url }}'">
+                              <td>{{ order.name }}</td>
+                              <td>{{ order.created_at | date: format: 'date' }}</td>
+                              <td>{{ order.financial_status_label }}</td>
+                              <td>{{ order.fulfillment_status_label }}</td>
+                              <td class="text-end">{{ order.total_net_amount | money }}</td>
+                            </tr>
+                          {%- endfor -%}
+                        </tbody>
+                      </table>
+
+                      {%- render 'pagination', paginate: paginate -%}
+                    {%- endpaginate -%}
+                  {%- endif -%}
+                </div>
+
+                <!-- CUSTOMER PRIMARY ADDRESS -->
+                <div class="v-stack gap-6 sm:gap-8">
+                  <p class="customer-account-category h6 text-subdued">{{ 'customer.account.primary_address' | t }}</p>
+
+                  <div class="prose">
+                    {%- if customer.addresses_count == 0 -%}
+                      <p>{{ 'customer.addresses.no_addresses' | t }}</p>
+                    {%- else -%}
+                      {{- customer.default_address | format_address -}}
+                    {%- endif -%}
+
+                    {%- assign button_label = 'customer.account.manage_addresses' | t -%}
+                    {%- render 'button', href: routes.account_addresses_url, content: button_label -%}
+                  </div>
+                </div>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% stylesheet %}
+  .lc-trade-portal {
+    display: grid;
+    gap: 24px;
+    padding: 28px;
+    border: 1px solid rgb(var(--border-color));
+    background: rgb(var(--background));
+  }
+
+  .lc-trade-portal__hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 24px;
+    align-items: end;
+  }
+
+  .lc-trade-portal__copy {
+    max-width: 760px;
+  }
+
+  .lc-trade-portal__eyebrow,
+  .lc-trade-portal__panel-kicker {
+    margin: 0 0 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgb(var(--text-color) / 0.58);
+  }
+
+  .lc-trade-portal__title {
+    margin: 0;
+    font-size: clamp(1.65rem, 2.4vw, 2.35rem);
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  .lc-trade-portal__intro {
+    max-width: 680px;
+    margin: 14px 0 0;
+    color: rgb(var(--text-color) / 0.72);
+    line-height: 1.7;
+  }
+
+  .lc-trade-portal__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: end;
+  }
+
+  .lc-trade-portal__status-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    border: 1px solid rgb(var(--border-color));
+  }
+
+  .lc-trade-portal__status {
+    display: grid;
+    gap: 8px;
+    min-height: 104px;
+    padding: 18px;
+    align-content: center;
+    border-inline-start: 1px solid rgb(var(--border-color));
+  }
+
+  .lc-trade-portal__status:first-child {
+    border-inline-start: 0;
+  }
+
+  .lc-trade-portal__status span,
+  .lc-trade-reorder__price span,
+  .lc-trade-reorder__meta,
+  .lc-trade-reorder__variant,
+  .lc-trade-reorder__sku {
+    color: rgb(var(--text-color) / 0.62);
+    font-size: 0.82rem;
+  }
+
+  .lc-trade-portal__status strong {
+    font-size: 1rem;
+    line-height: 1.35;
+  }
+
+  .lc-trade-portal__content-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(280px, 0.75fr);
+    gap: 18px;
+    align-items: start;
+  }
+
+  .lc-trade-portal__panel {
+    border: 1px solid rgb(var(--border-color));
+    background: rgb(var(--background));
+  }
+
+  .lc-trade-portal__panel-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: start;
+    padding: 22px;
+    border-block-end: 1px solid rgb(var(--border-color));
+  }
+
+  .lc-trade-portal__panel-title {
+    margin: 0;
+    font-size: 1.18rem;
+    letter-spacing: 0;
+  }
+
+  .lc-trade-reorder {
+    display: grid;
+  }
+
+  .lc-trade-reorder__item {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) minmax(118px, auto) minmax(188px, auto);
+    gap: 16px;
+    align-items: center;
+    padding: 18px 22px;
+    border-block-end: 1px solid rgb(var(--border-color));
+  }
+
+  .lc-trade-reorder__item:last-child {
+    border-block-end: 0;
+  }
+
+  .lc-trade-reorder__media {
+    display: block;
+    width: 72px;
+    aspect-ratio: 1;
+    background: rgb(var(--text-color) / 0.04);
+    overflow: hidden;
+  }
+
+  .lc-trade-reorder__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .lc-trade-reorder__details {
+    display: grid;
+    gap: 4px;
+  }
+
+  .lc-trade-reorder__title {
+    font-weight: 650;
+    line-height: 1.35;
+  }
+
+  .lc-trade-reorder__sku {
+    text-transform: uppercase;
+  }
+
+  .lc-trade-reorder__price {
+    display: grid;
+    gap: 4px;
+    justify-items: start;
+  }
+
+  .lc-trade-reorder__price s {
+    color: rgb(var(--text-color) / 0.48);
+    font-size: 0.82rem;
+  }
+
+  .lc-trade-reorder__form {
+    display: grid;
+    grid-template-columns: 72px minmax(110px, 1fr);
+    gap: 8px;
+  }
+
+  .lc-trade-reorder__quantity {
+    min-height: 44px;
+    border: 1px solid rgb(var(--border-color));
+    background: transparent;
+    text-align: center;
+  }
+
+  .lc-trade-reorder__button {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    justify-content: center;
+    padding: 0 16px;
+    border: 1px solid rgb(var(--text-color));
+    background: rgb(var(--text-color));
+    color: rgb(var(--background));
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .lc-trade-reorder__button--outline {
+    background: transparent;
+    color: rgb(var(--text-color));
+  }
+
+  .lc-trade-reorder__empty {
+    display: grid;
+    gap: 8px;
+    padding: 24px;
+    color: rgb(var(--text-color) / 0.72);
+  }
+
+  .lc-trade-portal__panel--support {
+    padding: 22px;
+  }
+
+  .lc-trade-portal__support-copy {
+    margin: 12px 0 22px;
+    color: rgb(var(--text-color) / 0.72);
+    line-height: 1.7;
+  }
+
+  .lc-trade-portal__support-links {
+    display: grid;
+    border-block-start: 1px solid rgb(var(--border-color));
+  }
+
+  .lc-trade-portal__support-link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 0;
+    border-block-end: 1px solid rgb(var(--border-color));
+    font-weight: 650;
+  }
+
+  @media screen and (max-width: 999px) {
+    .lc-trade-portal__hero,
+    .lc-trade-portal__content-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .lc-trade-portal__actions {
+      justify-content: start;
+    }
+
+    .lc-trade-portal__status-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lc-trade-portal__status:nth-child(odd) {
+      border-inline-start: 0;
+    }
+
+    .lc-trade-portal__status:nth-child(n + 3) {
+      border-block-start: 1px solid rgb(var(--border-color));
+    }
+
+    .lc-trade-reorder__item {
+      grid-template-columns: 72px minmax(0, 1fr);
+    }
+
+    .lc-trade-reorder__price,
+    .lc-trade-reorder__purchase {
+      grid-column: 2;
+    }
+
+    .lc-trade-reorder__form {
+      max-width: 320px;
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    .lc-trade-portal {
+      gap: 18px;
+      padding: 18px;
+    }
+
+    .lc-trade-portal__status-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .lc-trade-portal__status,
+    .lc-trade-portal__status:nth-child(odd) {
+      min-height: auto;
+      border-inline-start: 0;
+      border-block-start: 1px solid rgb(var(--border-color));
+    }
+
+    .lc-trade-portal__status:first-child {
+      border-block-start: 0;
+    }
+
+    .lc-trade-portal__panel-header {
+      display: grid;
+      padding: 18px;
+    }
+
+    .lc-trade-reorder__item {
+      grid-template-columns: 60px minmax(0, 1fr);
+      gap: 12px;
+      padding: 16px 18px;
+    }
+
+    .lc-trade-reorder__media {
+      width: 60px;
+    }
+
+    .lc-trade-reorder__price,
+    .lc-trade-reorder__purchase {
+      grid-column: 1 / -1;
+    }
+
+    .lc-trade-reorder__form {
+      grid-template-columns: 72px minmax(0, 1fr);
+      max-width: none;
+    }
+
+    .lc-trade-portal__actions .button {
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "t:sections.main_customers_account.name",
+  "class": "shopify-section--main-customers-account",
+  "tag": "section",
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "liquid",
+      "name": "t:sections.main_customers_account.blocks.liquid.name",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "liquid",
+          "label": "t:global.code.liquid"
+        }
+      ]
+    },
+    {
+      "type": "orders",
+      "name": "t:sections.main_customers_account.blocks.order_list.name",
+      "limit": 1
+    }
+  ]
+}
+{% endschema %}

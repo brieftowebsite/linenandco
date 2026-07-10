@@ -1,0 +1,248 @@
+{%- liquid
+  assign hub_collections = section.settings.collections
+  assign heading = section.settings.heading | default: 'Shop Linen and Co'
+  assign intro = section.settings.intro
+-%}
+
+{%- if hub_collections != empty -%}
+  <section class="lc-home-product-hub lc-home-product-hub--desktop-{{ section.settings.products_per_row_desktop }} lc-home-product-hub--mobile-{{ section.settings.products_per_row_mobile }} color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container">
+      <header class="lc-home-product-hub__header">
+        <div class="lc-home-product-hub__heading">
+          {%- if section.settings.eyebrow != blank -%}
+            <p>{{ section.settings.eyebrow }}</p>
+          {%- endif -%}
+
+          <h2>{{ heading }}</h2>
+        </div>
+
+        {%- if intro != blank -%}
+          <div class="lc-home-product-hub__intro">
+            <p>{{ intro }}</p>
+          </div>
+        {%- endif -%}
+      </header>
+
+      {%- if section.settings.show_quick_links -%}
+        <nav class="lc-home-product-hub__pills" aria-label="{{ section.settings.quick_links_label | escape }}">
+          {%- for nav_collection in hub_collections -%}
+            {%- if nav_collection != blank and nav_collection.products_count > 0 -%}
+              <a href="#lc-home-hub-row-{{ section.id }}-{{ nav_collection.handle | handleize }}">{{ nav_collection.title }}</a>
+            {%- endif -%}
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+
+      <div class="lc-home-product-hub__rows">
+        {%- for row_collection in hub_collections -%}
+          {%- liquid
+            assign row_title = row_collection.title
+            assign row_text = ''
+            assign row_link_label = section.settings.view_all_label
+            assign row_link = row_collection.url
+
+            if section.settings.use_row_collection_descriptions and row_collection.description != blank
+              assign row_text = row_collection.description | strip_html | truncatewords: 18
+            endif
+
+            assign rendered_product_count = row_collection.products_count
+            if rendered_product_count > section.settings.products_to_show
+              assign rendered_product_count = section.settings.products_to_show
+            endif
+
+            assign show_rail_controls = false
+            if rendered_product_count > section.settings.products_per_row_desktop
+              assign show_rail_controls = true
+            endif
+          -%}
+
+          {%- if row_collection != blank and row_collection.products_count > 0 -%}
+            <section class="lc-home-product-hub__row" id="lc-home-hub-row-{{ section.id }}-{{ row_collection.handle | handleize }}">
+              <div class="lc-home-product-hub__row-heading">
+                <div>
+                  {%- if section.settings.row_eyebrow != blank -%}
+                    <p>{{ section.settings.row_eyebrow }}</p>
+                  {%- endif -%}
+
+                  <h3>{{ row_title }}</h3>
+                </div>
+
+                {%- if row_text != blank -%}
+                  <p>{{ row_text }}</p>
+                {%- endif -%}
+
+                {%- if row_link != blank and row_link_label != blank -%}
+                  <a href="{{ row_link }}">{{ row_link_label }}</a>
+                {%- endif -%}
+              </div>
+
+              <div class="lc-home-product-hub__rail" data-lc-home-product-rail>
+                <div class="lc-home-product-hub__products" id="lc-home-products-{{ section.id }}-{{ row_collection.handle | handleize }}" role="list" data-lc-home-product-track>
+                  {%- for product in row_collection.products limit: section.settings.products_to_show -%}
+                    <div class="lc-home-product-hub__product" role="listitem">
+                      {%- render 'product-card',
+                        product: product,
+                        stacked: true,
+                        position: forloop.index,
+                        show_quick_buy: section.settings.show_quick_buy,
+                        show_secondary_image: section.settings.show_secondary_image,
+                        quick_buy_context: row_collection.handle
+                      -%}
+                    </div>
+                  {%- endfor -%}
+                </div>
+
+                {%- if show_rail_controls -%}
+                  <div class="lc-home-product-hub__rail-controls" data-lc-home-rail-controls aria-label="{{ row_title | escape }} products">
+                    <button class="lc-home-product-hub__arrow" type="button" data-lc-home-rail-prev aria-controls="lc-home-products-{{ section.id }}-{{ row_collection.handle | handleize }}" aria-label="Previous products">
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M15 18 9 12l6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" />
+                      </svg>
+                    </button>
+
+                    <button class="lc-home-product-hub__arrow" type="button" data-lc-home-rail-next aria-controls="lc-home-products-{{ section.id }}-{{ row_collection.handle | handleize }}" aria-label="Next products">
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" />
+                      </svg>
+                    </button>
+                  </div>
+                {%- endif -%}
+              </div>
+            </section>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </section>
+{%- elsif request.design_mode -%}
+  <section class="lc-home-product-hub lc-home-product-hub--desktop-{{ section.settings.products_per_row_desktop }} lc-home-product-hub--mobile-{{ section.settings.products_per_row_mobile }} color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container">
+      <div class="lc-home-product-hub__empty">
+        <p>Choose collections to build the homepage product hub.</p>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+
+
+{% schema %}
+{
+  "name": "LC home product hub",
+  "class": "shopify-section--lc-home-product-hub",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop by category"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop Linen and Co"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Move from best sellers into bed, bath and guest-ready essentials without losing the thread."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_links",
+      "label": "Show category links",
+      "default": true
+    },
+    {
+      "type": "collection_list",
+      "id": "collections",
+      "label": "Collections",
+      "limit": 12
+    },
+    {
+      "type": "text",
+      "id": "quick_links_label",
+      "label": "Category links label",
+      "default": "Homepage product categories"
+    },
+    {
+      "type": "text",
+      "id": "row_eyebrow",
+      "label": "Row eyebrow",
+      "default": "Shop"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_row_collection_descriptions",
+      "label": "Use collection descriptions",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "View all label",
+      "default": "View all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_buy",
+      "label": "Show quick buy buttons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show secondary image on hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products per rail",
+      "min": 3,
+      "max": 16,
+      "step": 1,
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "products_per_row_mobile",
+      "label": "Mobile columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC home product hub"
+    }
+  ]
+}
+{% endschema %}

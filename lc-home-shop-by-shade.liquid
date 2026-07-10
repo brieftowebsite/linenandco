@@ -1,0 +1,262 @@
+{%- liquid
+  assign shade_count = 0
+
+  for block in section.blocks
+    if block.settings.collection != blank
+      assign shade_count = shade_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if shade_count > 0 -%}
+  <section id="lc-home-shop-by-shade-{{ section.id }}" class="lc-home-shop-by-shade color-scheme color-scheme--{{ section.settings.color_scheme.id }}" data-lc-shade-section>
+    <div class="container">
+      <div class="lc-home-shop-by-shade__layout">
+        <div class="lc-home-shop-by-shade__header">
+          <div class="lc-home-shop-by-shade__copy">
+            {%- if section.settings.eyebrow != blank -%}
+              <p class="lc-home-shop-by-shade__eyebrow">{{ section.settings.eyebrow }}</p>
+            {%- endif -%}
+
+            {%- if section.settings.heading != blank -%}
+              <h2 id="lc-home-shop-by-shade-heading-{{ section.id }}">{{ section.settings.heading }}</h2>
+            {%- endif -%}
+
+            {%- if section.settings.intro != blank -%}
+              <p class="lc-home-shop-by-shade__intro">{{ section.settings.intro }}</p>
+            {%- endif -%}
+          </div>
+
+          <div class="lc-home-shop-by-shade__swatches" role="tablist" aria-label="{{ section.settings.swatches_label | escape }}">
+            {%- assign shade_index = 0 -%}
+
+            {%- for block in section.blocks -%}
+              {%- liquid
+                assign shade_collection = block.settings.collection
+                assign shade_label = block.settings.label | default: shade_collection.title
+                assign tab_id = 'lc-home-shade-tab-' | append: section.id | append: '-' | append: block.id
+                assign panel_id = 'lc-home-shade-panel-' | append: section.id | append: '-' | append: block.id
+              -%}
+
+              {%- if shade_collection != blank -%}
+                <div class="lc-home-shop-by-shade__swatch-item" {{ block.shopify_attributes }}>
+                  <button
+                    type="button"
+                    id="{{ tab_id }}"
+                    class="lc-home-shop-by-shade__swatch{% if shade_index == 0 %} is-active{% endif %}"
+                    role="tab"
+                    aria-controls="{{ panel_id }}"
+                    aria-selected="{% if shade_index == 0 %}true{% else %}false{% endif %}"
+                    data-lc-shade-tab
+                    style="--lc-shade-color: {{ block.settings.swatch_color }};"
+                  >
+                    <span class="lc-home-shop-by-shade__swatch-label">{{ shade_label }}</span>
+                  </button>
+                </div>
+
+                {%- assign shade_index = shade_index | plus: 1 -%}
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+        </div>
+
+        <div class="lc-home-shop-by-shade__products">
+          {%- assign panel_index = 0 -%}
+
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign shade_collection = block.settings.collection
+              assign shade_label = block.settings.label | default: shade_collection.title
+              assign tab_id = 'lc-home-shade-tab-' | append: section.id | append: '-' | append: block.id
+              assign panel_id = 'lc-home-shade-panel-' | append: section.id | append: '-' | append: block.id
+              assign quick_buy_context = 'shade-' | append: block.id
+            -%}
+
+            {%- if shade_collection != blank -%}
+              <div
+                id="{{ panel_id }}"
+                class="lc-home-shop-by-shade__panel-products{% if panel_index == 0 %} is-active{% endif %}"
+                role="tabpanel"
+                aria-labelledby="{{ tab_id }}"
+                {% if panel_index != 0 %}hidden{% endif %}
+                data-lc-shade-panel
+              >
+                <div class="lc-home-shop-by-shade__rail" data-lc-shade-rail>
+                  <div class="lc-home-shop-by-shade__track" role="list" tabindex="0" data-lc-shade-track>
+                    {%- for product in shade_collection.products limit: section.settings.products_to_show -%}
+                      <div class="lc-home-shop-by-shade__product" role="listitem">
+                        {%- render 'product-card',
+                          product: product,
+                          stacked: false,
+                          position: forloop.index,
+                          show_quick_buy: section.settings.show_quick_buy,
+                          show_secondary_image: section.settings.show_secondary_image,
+                          quick_buy_context: quick_buy_context
+                        -%}
+                      </div>
+                    {%- else -%}
+                      <div class="lc-home-shop-by-shade__empty" role="listitem">
+                        <p>No products are available in {{ shade_label }} yet.</p>
+                      </div>
+                    {%- endfor -%}
+                  </div>
+
+                  <div class="lc-home-shop-by-shade__controls" data-lc-shade-controls aria-label="{{ shade_label | escape }} products">
+                    <button class="lc-home-shop-by-shade__arrow" type="button" data-lc-shade-prev aria-label="Previous products">
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="M15 18 9 12l6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.65" />
+                      </svg>
+                    </button>
+
+                    <button class="lc-home-shop-by-shade__arrow" type="button" data-lc-shade-next aria-label="Next products">
+                      <svg aria-hidden="true" viewBox="0 0 24 24">
+                        <path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.65" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {%- assign panel_index = panel_index | plus: 1 -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </section>
+{%- elsif request.design_mode -%}
+  <section class="lc-home-shop-by-shade color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+    <div class="container">
+      <div class="lc-home-shop-by-shade__empty">
+        <p>Choose shade collections to build this section.</p>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "LC shop by shade",
+  "class": "shopify-section--lc-home-shop-by-shade",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop by colour"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Colour"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro",
+      "default": "Build a coordinated bed linen palette from crisp white to soft neutrals and calming colour."
+    },
+    {
+      "type": "text",
+      "id": "swatches_label",
+      "label": "Swatches accessibility label",
+      "default": "Colour shades"
+    },
+    {
+      "type": "text",
+      "id": "button_prefix",
+      "label": "Button prefix",
+      "default": "Shop"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_buy",
+      "label": "Show quick buy",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show second image on hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to show per shade",
+      "min": 3,
+      "max": 12,
+      "step": 1,
+      "default": 8
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shade",
+      "name": "Shade",
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "White"
+        },
+        {
+          "type": "color",
+          "id": "swatch_color",
+          "label": "Swatch colour",
+          "default": "#f7f5f0"
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC shop by shade",
+      "blocks": [
+        {
+          "type": "shade"
+        },
+        {
+          "type": "shade",
+          "settings": {
+            "label": "Cream",
+            "swatch_color": "#e2d9ca"
+          }
+        },
+        {
+          "type": "shade",
+          "settings": {
+            "label": "Stone",
+            "swatch_color": "#a9a19a"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

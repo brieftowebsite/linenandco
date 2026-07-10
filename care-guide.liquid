@@ -1,0 +1,119 @@
+{% assign guide = page.metafields.custom.care_guide.value %}
+
+{% if guide == blank %}
+  <p style="font-family: var(--font-body-family); color: #555; padding: 2rem;">No care guide linked to this page.</p>
+{% else %}
+<div class="care-guide-wrapper" style="font-family: var(--font-body-family); color: #555555; max-width: 860px; margin: 0 auto; padding: 2rem 1rem;">
+
+   <style>
+    .cg-h1 { font-size: 1.5rem; font-weight: 600; margin-bottom: 0.25rem; }
+    @media (max-width: 749px) { .cg-h1 { font-size: 1.1rem; } }
+    .cg-section { background: #f9f9f9; padding: 1.25rem 1.5rem; margin-bottom: 2rem; }
+    .cg-h2 { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #555; margin-bottom: 0.75rem; }
+    .cg-text { font-size: 12px; line-height: 1.6; }
+    .cg-text ul { padding-left: 1.25rem; margin: 0.5rem 0; }
+    .cg-text li { margin-bottom: 0.35rem; }
+    .cg-button-wrap {
+      text-align: center; margin-top: 2rem;
+      display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    }
+    .cg-button {
+      display: inline-block; background: #333; color: #fff; font-size: 14px;
+      font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase;
+      padding: 1rem 3rem; text-decoration: none;
+    }
+    .cg-button:hover { background: #555; }
+    @media (max-width: 749px) {
+      .cg-button { font-size: 11px; padding: 0.75rem 1.5rem; letter-spacing: 0.05em; }
+    }
+  </style>
+
+
+  {%- comment -%} Hero Image {%- endcomment -%}
+  {% if guide.hero_image != blank %}
+  <div style="margin-bottom: 2rem;">
+    <img src="{{ guide.hero_image | image_url: width: 1200 }}" alt="{{ guide.product_name }}" width="1200" height="600" style="width: 100%; height: auto; display: block;">
+  </div>
+  {% endif %}
+
+  {%- comment -%} Header {%- endcomment -%}
+  <h1 class="cg-h1">
+    {% if guide.product_name != blank %}{{ guide.product_name }}{% else %}{{ page.title }}{% endif %}
+  </h1>
+
+  {% if guide.range != blank %}
+  <div style="display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.5rem;">
+    {% assign range_items = guide.range | split: '·' %}
+    {% for item in range_items %}
+    <span style="display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; background: #333; color: #fff; padding: 0.25rem 0.75rem;">{{ item | strip }}</span>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if guide.subtitle != blank %}
+  <p style="font-size: 12px; color: #888; margin-bottom: 2rem;">{{ guide.subtitle }}</p>
+  {% endif %}
+
+  {%- comment -%} Intro Text {%- endcomment -%}
+  {% if guide.intro_text != blank %}
+  <div class="cg-section">
+    <h2 class="cg-h2">Overview</h2>
+    <div class="cg-text">{{ guide.intro_text | newline_to_br }}</div>
+  </div>
+  {% endif %}
+
+  {%- comment -%} Dynamic Sections 1–8 {%- endcomment -%}
+  {% assign cg_headings = 'section_1_heading,section_2_heading,section_3_heading,section_4_heading,section_5_heading,section_6_heading,section_7_heading,section_8_heading' | split: ',' %}
+  {% assign cg_contents = 'section_1_content,section_2_content,section_3_content,section_4_content,section_5_content,section_6_content,section_7_content,section_8_content' | split: ',' %}
+
+  {% for i in (0..7) %}
+    {% assign h_key = cg_headings[i] %}
+    {% assign c_key = cg_contents[i] %}
+    {% assign h_val = guide[h_key] %}
+    {% assign c_val = guide[c_key] %}
+    {% if c_val != blank %}
+    <div class="cg-section">
+      {% if h_val != blank %}<h2 class="cg-h2">{{ h_val }}</h2>{% endif %}
+      <div class="cg-text">{{ c_val | metafield_tag }}</div>
+    </div>
+    {% endif %}
+  {% endfor %}
+
+  {%- comment -%} Warranty Note {%- endcomment -%}
+  {% if guide.warranty_note != blank %}
+  <div class="cg-section">
+    <h2 class="cg-h2">Warranty & Guarantee</h2>
+    <div class="cg-text">{{ guide.warranty_note | newline_to_br }}</div>
+  </div>
+  {% endif %}
+
+    <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 2rem 0;">
+
+  {%- comment -%} Inline Buttons {%- endcomment -%}
+  {% assign pp = guide.product_profile.value %}
+  {% if guide.shop_collection != blank or guide.fabric_profile_page_url != blank or pp != blank %}
+  <div class="cg-button-wrap">
+    {% if guide.shop_collection != blank %}
+    <a href="{{ guide.shop_collection }}" class="cg-button">Shop Collection</a>
+    {% endif %}
+    {% if guide.fabric_profile_page_url != blank %}
+    <a href="{{ guide.fabric_profile_page_url }}" class="cg-button">View Fabric Profile</a>
+    {% endif %}
+    {% if pp != blank %}
+    <a href="{{ pp.shop_now_url }}" class="cg-button">View Product Profile</a>
+    {% endif %}
+  </div>
+  {% endif %}
+
+
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Care Guide",
+  "tag": "section",
+  "settings": []
+}
+{% endschema %}
+

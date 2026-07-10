@@ -1,0 +1,780 @@
+{%- liquid
+  assign heading = section.settings.heading
+  assign intro = section.settings.intro
+  assign hub_collections = section.settings.collections
+
+  if heading == blank
+    if collection != blank
+      assign heading = collection.title
+    else
+      assign heading = 'Collection hub'
+    endif
+  endif
+
+  if intro == blank
+    if section.settings.use_collection_description and collection.description != blank
+      assign intro = collection.description | strip_html
+    endif
+  endif
+-%}
+
+<section class="lc-collection-hub color-scheme color-scheme--{{ section.settings.color_scheme.id }}">
+  <div class="container">
+    <header class="lc-collection-hub__header">
+      <div class="lc-collection-hub__heading">
+        {%- if section.settings.eyebrow != blank -%}
+          <p>{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+
+        <h1>{{ heading }}</h1>
+      </div>
+
+      {%- if intro != blank -%}
+        <div class="lc-collection-hub__intro">
+          <p>{{ intro }}</p>
+        </div>
+      {%- endif -%}
+    </header>
+
+    {%- if section.settings.show_quick_links and hub_collections != empty -%}
+      <nav class="lc-collection-hub__pills" aria-label="{{ section.settings.quick_links_label | escape }}">
+        {%- for nav_collection in hub_collections -%}
+          {%- if nav_collection != blank and nav_collection.products_count > 0 -%}
+            <a href="#lc-hub-row-{{ nav_collection.handle | handleize }}">{{ nav_collection.title }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+
+    <div class="lc-collection-hub__rows">
+      {%- for row_collection in hub_collections -%}
+        {%- liquid
+          assign row_title = row_collection.title
+          assign row_text = ''
+          assign row_eyebrow = section.settings.row_eyebrow
+          assign row_link_label = section.settings.view_all_label
+          assign row_link = row_collection.url
+
+          if section.settings.use_row_collection_descriptions and row_collection.description != blank
+            assign row_text = row_collection.description | strip_html | truncatewords: 22
+          endif
+        -%}
+
+        {%- if row_collection != blank and row_collection.products_count > 0 -%}
+          {%- liquid
+            assign rendered_product_count = row_collection.products_count
+            if rendered_product_count > section.settings.products_to_show
+              assign rendered_product_count = section.settings.products_to_show
+            endif
+
+            assign show_rail_controls = false
+            if rendered_product_count > 1
+              assign show_rail_controls = true
+            endif
+          -%}
+
+          <section class="lc-collection-hub__row" id="lc-hub-row-{{ row_collection.handle | handleize }}">
+            <div class="lc-collection-hub__row-heading">
+              <div>
+                {%- if row_eyebrow != blank -%}
+                  <p>{{ row_eyebrow }}</p>
+                {%- endif -%}
+
+                <h2>{{ row_title }}</h2>
+              </div>
+
+              {%- if row_text != blank -%}
+                <p>{{ row_text }}</p>
+              {%- endif -%}
+
+              {%- if row_link != blank and row_link_label != blank -%}
+                <a href="{{ row_link }}">{{ row_link_label }}</a>
+              {%- endif -%}
+            </div>
+
+            <div class="lc-collection-hub__rail" data-lc-product-rail>
+              <div class="lc-collection-hub__products" id="lc-hub-products-{{ row_collection.handle | handleize }}" role="list" data-lc-product-track>
+                {%- for product in row_collection.products limit: section.settings.products_to_show -%}
+                  <div class="lc-collection-hub__product" role="listitem">
+                    {%- render 'product-card',
+                      product: product,
+                      stacked: true,
+                      position: forloop.index,
+                      show_quick_buy: section.settings.show_quick_buy,
+                      show_secondary_image: section.settings.show_secondary_image,
+                      quick_buy_context: row_collection.handle
+                    -%}
+                  </div>
+                {%- endfor -%}
+              </div>
+
+              {%- if show_rail_controls -%}
+                <div class="lc-collection-hub__rail-controls" data-lc-rail-controls aria-label="{{ row_title | escape }} products">
+                  <button class="lc-collection-hub__arrow" type="button" data-lc-rail-prev aria-controls="lc-hub-products-{{ row_collection.handle | handleize }}" aria-label="Previous products">
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                      <path d="M15 18 9 12l6-6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" />
+                    </svg>
+                  </button>
+
+                  <button class="lc-collection-hub__arrow" type="button" data-lc-rail-next aria-controls="lc-hub-products-{{ row_collection.handle | handleize }}" aria-label="Next products">
+                    <svg aria-hidden="true" viewBox="0 0 24 24">
+                      <path d="m9 6 6 6-6 6" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7" />
+                    </svg>
+                  </button>
+                </div>
+              {%- endif -%}
+            </div>
+          </section>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- if hub_collections == empty and request.design_mode -%}
+        <div class="lc-collection-hub__empty">
+          <p>Choose collections in the LC collection hub settings to build this hub.</p>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+<style>
+  #shopify-section-{{ section.id }} .lc-collection-hub {
+    padding-block: clamp(1.75rem, 3vw, 3rem) clamp(2.5rem, 5vw, 4rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub > .container {
+    max-width: 98rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__header {
+    display: grid;
+    grid-template-columns: minmax(0, 0.42fr) minmax(0, 0.58fr);
+    gap: clamp(1rem, 3vw, 3rem);
+    align-items: end;
+    padding-block-end: clamp(1rem, 2vw, 1.65rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__heading {
+    display: grid;
+    gap: 0.6rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__heading p,
+  #shopify-section-{{ section.id }} .lc-collection-hub__row-heading > div p {
+    margin: 0;
+    color: rgb(var(--text-color) / 0.58);
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.11em;
+    line-height: 1.15;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__heading h1 {
+    max-width: 14ch;
+    margin: 0;
+    font-size: clamp(1.65rem, 2.7vw, 2.6rem);
+    line-height: 1.05;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__intro p {
+    max-width: 45rem;
+    margin: 0;
+    color: rgb(var(--text-color) / 0.68);
+    font-size: clamp(0.82rem, 0.9vw, 0.92rem);
+    line-height: 1.55;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    position: sticky;
+    inset-block-start: var(--sticky-area-height, 0px);
+    z-index: 40;
+    border-block: 1px solid rgb(var(--text-color) / 0.12);
+    padding-block: clamp(0.85rem, 1.8vw, 1.15rem);
+    background: rgb(var(--background));
+    box-shadow: 0 1px 0 rgb(var(--text-color) / 0.06);
+  }
+
+  body:has(.header__primary-nav [aria-expanded="true"]) #shopify-section-{{ section.id }} .lc-collection-hub__pills,
+  body:has(.header__secondary-nav [aria-expanded="true"]) #shopify-section-{{ section.id }} .lc-collection-hub__pills,
+  body:has(.header-search[open]) #shopify-section-{{ section.id }} .lc-collection-hub__pills {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__pills a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.2rem;
+    border: 1px solid rgb(var(--text-color) / 0.32);
+    border-radius: 0;
+    padding: 0.5rem 0.85rem;
+    color: rgb(var(--text-color) / 0.76);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    line-height: 1.1;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: background-color 160ms ease, border-color 160ms ease, color 160ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__pills a:hover,
+  #shopify-section-{{ section.id }} .lc-collection-hub__pills a:focus-visible {
+    border-color: rgb(var(--text-color));
+    background: rgb(var(--text-color));
+    color: rgb(var(--background));
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__rows {
+    display: grid;
+    gap: clamp(1.35rem, 3vw, 2.5rem);
+    padding-block-start: clamp(1.1rem, 2.4vw, 1.9rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__row {
+    display: grid;
+    grid-template-columns: minmax(13.5rem, 0.24fr) minmax(0, 1fr);
+    gap: clamp(0.9rem, 1.8vw, 1.35rem);
+    align-items: stretch;
+    scroll-margin-block-start: calc(var(--sticky-area-height, 0px) + 4.75rem);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__row-heading {
+    display: grid;
+    align-content: start;
+    gap: 0.75rem;
+    min-height: clamp(10.5rem, 16vw, 14rem);
+    border: 1px solid rgb(var(--text-color) / 0.12);
+    padding: clamp(0.95rem, 1.5vw, 1.25rem);
+    background: rgb(var(--text-color) / 0.03);
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__row-heading > div {
+    display: grid;
+    gap: 0.55rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__row-heading h2 {
+    margin: 0;
+    padding-block-end: 0.55rem;
+    border-bottom: 1px solid rgb(var(--text-color) / 0.24);
+    font-size: clamp(1.12rem, 1.55vw, 1.55rem);
+    line-height: 1.08;
+    letter-spacing: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__row-heading > p {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: rgb(var(--text-color) / 0.64);
+    font-size: 0.78rem;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__row-heading a {
+    align-self: end;
+    width: fit-content;
+    color: inherit;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-decoration: underline;
+    text-transform: uppercase;
+    text-underline-offset: 4px;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__rail {
+    display: grid;
+    gap: 0.6rem;
+    min-width: 0;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__products {
+    --lc-hub-product-gap: clamp(0.75rem, 1.5vw, 1.1rem);
+    --lc-hub-column-width: calc((100% - (var(--lc-hub-product-gap) * {{ section.settings.products_per_row_desktop | minus: 1 }})) / {{ section.settings.products_per_row_desktop }});
+    display: grid;
+    grid-auto-columns: var(--lc-hub-column-width);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    gap: var(--lc-hub-product-gap);
+    min-width: 0;
+    overflow-x: auto;
+    overscroll-behavior-inline: contain;
+    scroll-behavior: smooth;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__products::-webkit-scrollbar {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__product {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__rail-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.45rem;
+    min-height: 2.2rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__rail-controls[hidden] {
+    display: none;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__arrow {
+    display: inline-grid;
+    place-items: center;
+    width: 2.15rem;
+    height: 2.15rem;
+    border: 0;
+    padding: 0;
+    background: transparent;
+    color: rgb(var(--text-color));
+    cursor: pointer;
+    opacity: 0.72;
+    transition: opacity 160ms ease;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__arrow:hover,
+  #shopify-section-{{ section.id }} .lc-collection-hub__arrow:focus-visible {
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__arrow[disabled] {
+    cursor: default;
+    opacity: 0.22;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__arrow svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub product-card {
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub [reveal-on-scroll="true"] {
+    opacity: 1;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__figure,
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__media {
+    overflow: hidden;
+    background: #f7f7f7;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__media {
+    aspect-ratio: 1 / 1;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__image--secondary {
+    background: #f7f7f7;
+    mix-blend-mode: normal;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__info {
+    padding-block-start: 0.65rem;
+    gap: 0.45rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__info .v-stack,
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__info .justify-items-center {
+    gap: 0.35rem;
+    justify-items: center;
+    text-align: center;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-title {
+    font-size: clamp(0.74rem, 0.78vw, 0.86rem);
+    line-height: 1.28;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .price-list,
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__pack-size,
+  #shopify-section-{{ section.id }} .lc-collection-hub .text-subdued {
+    font-size: 0.74rem;
+    line-height: 1.35;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__info fieldset {
+    justify-content: center;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .product-card__info .color-swatch {
+    --swatch-size: 1rem;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub .price-list {
+    justify-content: center;
+    justify-self: center;
+  }
+
+  #shopify-section-{{ section.id }} .lc-collection-hub__empty {
+    border: 1px solid rgb(var(--text-color) / 0.12);
+    padding: 1rem;
+    color: rgb(var(--text-color) / 0.62);
+  }
+
+  @media screen and (max-width: 1199px) {
+    #shopify-section-{{ section.id }} .lc-collection-hub__row {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__row-heading {
+      gap: 0.55rem;
+      min-height: 0;
+      padding: 0.85rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__row-heading > div {
+      gap: 0.38rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__row-heading > div p {
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__row-heading h2 {
+      padding-block-end: 0.42rem;
+      font-size: clamp(1rem, 3.4vw, 1.18rem);
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__row-heading > p {
+      font-size: 0.72rem;
+      line-height: 1.35;
+      -webkit-line-clamp: 2;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__row-heading a {
+      font-size: 0.6rem;
+      letter-spacing: 0.075em;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__rail {
+      gap: 0.35rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__rail-controls {
+      min-height: 1.6rem;
+      margin-block-start: -0.45rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__arrow {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__arrow svg {
+      width: 1.15rem;
+      height: 1.15rem;
+    }
+  }
+
+  @media screen and (max-width: 999px) {
+    #shopify-section-{{ section.id }} .lc-collection-hub__header {
+      grid-template-columns: 1fr;
+      gap: 0.9rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__heading h1 {
+      max-width: 14ch;
+      font-size: clamp(1.5rem, 5.6vw, 2.15rem);
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__products {
+      --lc-hub-column-width: calc((100% - (var(--lc-hub-product-gap) * 1)) / 2);
+    }
+  }
+
+  @media screen and (max-width: 699px) {
+    #shopify-section-{{ section.id }} .lc-collection-hub {
+      padding-block-start: 1.2rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__pills {
+      flex-wrap: nowrap;
+      margin-inline: calc(-1 * max(var(--container-gutter), 1rem));
+      gap: 0.35rem;
+      padding-block: 0.48rem;
+      padding-inline: max(var(--container-gutter), 1rem);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__pills::before,
+    #shopify-section-{{ section.id }} .lc-collection-hub__pills::after {
+      content: "";
+      position: sticky;
+      z-index: 2;
+      flex: 0 0 1.1rem;
+      align-self: stretch;
+      min-height: 1.72rem;
+      pointer-events: none;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__pills::before {
+      inset-inline-start: 0;
+      margin-inline-end: -1.1rem;
+      background: linear-gradient(to right, rgb(var(--background)) 18%, rgb(var(--background) / 0));
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__pills::after {
+      inset-inline-end: 0;
+      margin-inline-start: -1.1rem;
+      background: linear-gradient(to left, rgb(var(--background)) 18%, rgb(var(--background) / 0));
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__pills::-webkit-scrollbar {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__pills a {
+      position: relative;
+      z-index: 1;
+      flex: 0 0 auto;
+      min-height: 1.72rem;
+      padding: 0.32rem 0.58rem;
+      font-size: 0.58rem;
+      letter-spacing: 0.075em;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub__products {
+      --lc-hub-product-gap: 0.7rem;
+      --lc-hub-column-width: calc((100% - (var(--lc-hub-product-gap) * {{ section.settings.products_per_row_mobile | times: 1 | minus: 1 }})) / {{ section.settings.products_per_row_mobile }});
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub .product-card__media {
+      aspect-ratio: 1 / 1;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub .product-title {
+      font-size: 0.76rem;
+    }
+
+    #shopify-section-{{ section.id }} .lc-collection-hub .price-list,
+    #shopify-section-{{ section.id }} .lc-collection-hub .product-card__pack-size,
+    #shopify-section-{{ section.id }} .lc-collection-hub .text-subdued {
+      font-size: 0.72rem;
+    }
+  }
+</style>
+
+{% javascript %}
+  (() => {
+    const initRail = (rail) => {
+      if (rail.dataset.lcRailReady === 'true') {
+        return;
+      }
+
+      rail.dataset.lcRailReady = 'true';
+
+      const track = rail.querySelector('[data-lc-product-track]');
+      const controls = rail.querySelector('[data-lc-rail-controls]');
+      const prev = rail.querySelector('[data-lc-rail-prev]');
+      const next = rail.querySelector('[data-lc-rail-next]');
+
+      if (!track || !controls || !prev || !next) {
+        return;
+      }
+
+      const getStep = () => {
+        const firstProduct = track.querySelector('.lc-collection-hub__product');
+
+        if (!firstProduct) {
+          return track.clientWidth * 0.85;
+        }
+
+        const styles = window.getComputedStyle(track);
+        const gap = Number.parseFloat(styles.columnGap || styles.gap) || 0;
+
+        return firstProduct.getBoundingClientRect().width + gap;
+      };
+
+      const update = () => {
+        const maxScroll = track.scrollWidth - track.clientWidth - 1;
+        const hasOverflow = maxScroll > 1;
+
+        controls.hidden = !hasOverflow;
+
+        if (!hasOverflow) {
+          return;
+        }
+
+        prev.disabled = track.scrollLeft <= 1;
+        next.disabled = track.scrollLeft >= maxScroll;
+      };
+
+      prev.addEventListener('click', () => {
+        track.scrollBy({ left: getStep() * -1, behavior: 'smooth' });
+      });
+
+      next.addEventListener('click', () => {
+        track.scrollBy({ left: getStep(), behavior: 'smooth' });
+      });
+
+      track.addEventListener('scroll', update, { passive: true });
+      window.addEventListener('resize', update);
+
+      update();
+      window.setTimeout(update, 300);
+    };
+
+    const initHubs = (root = document) => {
+      root.querySelectorAll('[data-lc-product-rail]').forEach(initRail);
+    };
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => initHubs());
+    } else {
+      initHubs();
+    }
+
+    document.addEventListener('shopify:section:load', (event) => initHubs(event.target));
+  })();
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "LC collection hub",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Shop by category"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading"
+    },
+    {
+      "type": "textarea",
+      "id": "intro",
+      "label": "Intro"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_collection_description",
+      "label": "Use current collection description when intro is blank",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_links",
+      "label": "Show category links",
+      "default": true
+    },
+    {
+      "type": "collection_list",
+      "id": "collections",
+      "label": "Collections",
+      "limit": 48
+    },
+    {
+      "type": "text",
+      "id": "quick_links_label",
+      "label": "Category links label",
+      "default": "Collection categories"
+    },
+    {
+      "type": "text",
+      "id": "row_eyebrow",
+      "label": "Default row eyebrow",
+      "default": "Shop"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_row_collection_descriptions",
+      "label": "Use row collection descriptions when row text is blank",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "view_all_label",
+      "label": "Default view all label",
+      "default": "View all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_quick_buy",
+      "label": "Show quick buy buttons",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_secondary_image",
+      "label": "Show secondary image on hover",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products per rail",
+      "min": 3,
+      "max": 16,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "range",
+      "id": "products_per_row_desktop",
+      "label": "Desktop columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "select",
+      "id": "products_per_row_mobile",
+      "label": "Mobile columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "2"
+    }
+  ],
+  "presets": [
+    {
+      "name": "LC collection hub"
+    }
+  ]
+}
+{% endschema %}
