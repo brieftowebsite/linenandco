@@ -499,6 +499,49 @@
       "message_label": "Message (optional)"
     }
   },
+  "curtain_profile": {
+    "facts": {
+      "label": "Curtain details",
+      "heading": "The important details at a glance",
+      "sold_as": "Sold as",
+      "sold_as_value": "1 curtain drop",
+      "heading_style": "Heading",
+      "light_control": "Light control",
+      "fabric": "Fabric",
+      "texture": "Texture",
+      "colours": "Colours"
+    },
+    "heading_guide": {
+      "label": "Heading guide",
+      "heading": "Choose the finish that suits your window",
+      "intro": "Eyelet and taped curtains hang differently. Use the guide below to check which heading works with your pole or track.",
+      "current": "Current product",
+      "eyelet": "Eyelet",
+      "eyelet_alt": "Eyelet heading for {{ product }}",
+      "eyelet_copy": "A clean, modern heading that slides directly onto a curtain pole and falls into relaxed waves.",
+      "eyelet_point_1": "Designed for curtain poles",
+      "eyelet_point_2": "Visible metal eyelets",
+      "eyelet_point_3": "Quick to hang and easy to move",
+      "taped": "Taped",
+      "taped_alt": "Taped heading for {{ product }}",
+      "taped_copy": "A classic gathered heading for hooks, rings or tracks, with flexible fullness across the window.",
+      "taped_point_1": "Suitable for tracks or poles with rings",
+      "taped_point_2": "Uses curtain hooks or gliders",
+      "taped_point_3": "Adjustable gathered finish"
+    },
+    "measure": {
+      "label": "How to measure",
+      "heading": "Width, drop, then heading",
+      "intro": "Measure the fitted pole or track rather than the glass alone, and check the finished drop before selecting your curtain.",
+      "width_title": "Measure the width",
+      "width_copy": "Measure the full usable pole or track from end to end. Allow enough fabric for the curtain to gather rather than hang completely flat.",
+      "drop_title": "Choose the drop",
+      "drop_copy": "Measure from the pole or track position to where you want the curtain to finish, then choose the closest available ready-made length.",
+      "heading_title": "Confirm the heading",
+      "heading_copy": "Choose Eyelet for a curtain pole. Choose Taped for hooks, rings or a track with compatible gliders.",
+      "note": "If you are unsure, send us your window width, finished drop and a photo of the pole or track before ordering."
+    }
+  },
   "password": {
     "general": {
       "follow_us": "Follow us",
