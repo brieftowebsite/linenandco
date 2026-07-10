@@ -1,0 +1,178 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection-banner": {
+      "type": "collection-banner",
+      "settings": {
+        "color_scheme": "scheme-28c7d702-9088-499e-93c6-4fe777458476",
+        "image_size": "xs",
+        "allow_transparent_header": false,
+        "show_image": true,
+        "reveal": false,
+        "enable_parallax": false,
+        "show_collection_title": true,
+        "show_collection_description": false,
+        "show_breadcrumb": true,
+        "content_width": "sm",
+        "text_alignment": "center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 24
+      }
+    },
+    "custom_liquid_fYfwq7": {
+      "type": "custom-liquid",
+      "disabled": true,
+      "name": "Collection Intro",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": true,
+        "remove_horizontal_spacing": true,
+        "liquid": "<section class=\"lc-collection-intro\">\n  <div class=\"lc-collection-intro__inner\">\n    <div class=\"lc-collection-intro__text rte is-collapsed\" id=\"lc-intro-text\">\n      <p>\n Enjoy limited-time offers on selected bed linen, including sheets, duvet covers, and pillowcases across our ranges—ideal for hospitality use and everyday home comfort.\n      </p>\n\n      <p>\n        From guest-ready sheet sets to premium duvet covers and soft pillowcases, these essentials are designed for comfort, durability, and frequent use. A great time to refresh bedrooms, guest rooms, and hospitality suites with premium-quality bed linen.\n      </p>\n\n      <p>\n        Offers end at midnight on Thursday. Shop now and save on bed linen essentials.\n      </p>\n    </div>\n\n    <button type=\"button\" class=\"lc-readmore-button\" aria-expanded=\"false\" aria-controls=\"lc-intro-text\">\n      Read more\n    </button>\n  </div>\n</section>\n\n<style>\n  .lc-collection-intro { padding: 10px 0; }\n\n  .lc-collection-intro__inner {\n    max-width: 1200px;\n    margin: 0 auto;\n    padding: 0 24px;\n    font-size: 14px;\n    line-height: 1.7;\n  }\n\n  .lc-collection-intro__text p { margin: 0 0 14px; }\n  .lc-collection-intro__text p:last-child { margin-bottom: 0; }\n\n  .lc-collection-intro__text a {\n    text-decoration: underline;\n    text-underline-offset: 3px;\n  }\n  .lc-collection-intro__text a:hover,\n  .lc-collection-intro__text a:focus {\n    opacity: 0.8;\n  }\n\n  .lc-collection-intro__text.is-collapsed {\n    display: -webkit-box;\n    -webkit-box-orient: vertical;\n    overflow: hidden;\n    -webkit-line-clamp: 2;\n  }\n\n  .lc-readmore-button {\n    background: none;\n    border: none;\n    padding: 0;\n    margin-top: 8px;\n    cursor: pointer;\n    font-weight: 550;\n    font-size: 14px;\n    text-decoration: underline;\n    text-underline-offset: 3px;\n    letter-spacing: 0.01em;\n    transition: opacity 0.2s ease;\n  }\n\n  .lc-readmore-button:hover,\n  .lc-readmore-button:focus {\n    opacity: 0.8;\n  }\n\n  @media (max-width: 749px) {\n    .lc-collection-intro { padding: 22px 0; }\n\n    .lc-collection-intro__inner {\n      padding: 0 18px;\n      font-size: 13px;\n      line-height: 1.6;\n    }\n\n    .lc-readmore-button { font-size: 13px; }\n\n    .lc-collection-intro__text.is-collapsed {\n      -webkit-line-clamp: 2;\n    }\n  }\n</style>\n\n<script>\n  document.addEventListener('DOMContentLoaded', function () {\n    var section = document.querySelector('.lc-collection-intro');\n    if (!section) return;\n\n    var text = section.querySelector('#lc-intro-text');\n    var btn = section.querySelector('.lc-readmore-button');\n    if (!text || !btn) return;\n\n    text.classList.add('is-collapsed');\n\n    var isOverflowing = text.scrollHeight > text.clientHeight + 2;\n    if (!isOverflowing) {\n      btn.style.display = 'none';\n      return;\n    }\n\n    btn.addEventListener('click', function () {\n      var expanded = btn.getAttribute('aria-expanded') === 'true';\n\n      if (!expanded) {\n        text.classList.remove('is-collapsed');\n        btn.setAttribute('aria-expanded', 'true');\n        btn.textContent = 'Read less';\n      } else {\n        text.classList.add('is-collapsed');\n        btn.setAttribute('aria-expanded', 'false');\n        btn.textContent = 'Read more';\n      }\n    });\n  });\n</script>",
+        "text_alignment": "start"
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "hide_product_information": false,
+        "products_per_page": 48,
+        "products_per_row_mobile": "2",
+        "products_size_desktop": "medium",
+        "show_grid_mode_selector": true,
+        "horizontal_spacing_factor": 0.6,
+        "vertical_spacing_factor": 0.7,
+        "filter_layout": "sidebar",
+        "quick_links_menu": "",
+        "show_sort_by": true,
+        "show_filters": true,
+        "show_results_count": true,
+        "show_filter_group_name": true,
+        "show_filter_values_count": true,
+        "open_filters_by_default": false
+      }
+    },
+    "rich_text_XmHBCy": {
+      "type": "rich-text",
+      "blocks": {
+        "subheading_6aRcWq": {
+          "type": "subheading",
+          "settings": {
+            "text": "<strong>Don't Miss Out </strong>"
+          }
+        },
+        "heading_iVQBGg": {
+          "type": "heading",
+          "settings": {
+            "text": "Extended Monday 30 March",
+            "heading_tag": "h2"
+          }
+        },
+        "button_dVtU4J": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "Shop BedLinen Now!",
+            "url": "shopify://collections/bed-linen",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_6aRcWq",
+        "heading_iVQBGg",
+        "button_dVtU4J"
+      ],
+      "name": "t:sections.rich_text.presets.rich_text.name",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "separate_section_with_border": false,
+        "content_width": "sm",
+        "text_position": "center",
+        "remove_vertical_spacing": false
+      }
+    },
+    "faq_CLf8iq": {
+      "type": "faq",
+      "blocks": {
+        "question_6wadia": {
+          "type": "question",
+          "settings": {
+            "question": "What's included in the Bed Linen Sale?",
+            "answer": "<ul><li>Sheets</li><li>Duvet Covers</li><li>Pillowcases</li><li>Fitted Sheets</li><li>Flat Sheets</li><li>Valances</li></ul><p>Available in Polycotton Percale 200 thead count.</p>"
+          }
+        },
+        "question_aU6Vn3": {
+          "type": "question",
+          "settings": {
+            "question": "How long is the offer valid?",
+            "answer": "<ul><li>Until Friday 20 March</li><li>After that, pricing returns to normal.</li><li>We recommend ordering soon to avoid missing out.</li></ul>"
+          }
+        },
+        "question_MzT4Vz": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer custom sizes or embroidery?",
+            "answer": "<ul><li>Yes. Custom sizing, embroidery, and branding are available on request. </li><li>Contact us directly at <a href=\"mailto:info@linenco.co.za\" target=\"_blank\">info@linenco.co.za</a> or <a href=\"https://wa.me/27662918292\" target=\"_blank\">WhatsApp 066 291 8292</a> for a quote.</li></ul>"
+          }
+        },
+        "question_KQQazm": {
+          "type": "question",
+          "settings": {
+            "question": "Is the bed linen in this sale made to order?",
+            "answer": "<ul><li>Yes, all bed linen in this sale is made to order, which means it's crafted specifically for you.</li><li>This allows us to maintain the highest quality standards and offer you customization options if needed.</li><li>Lead time: 7–14 business days for made-to-order items.</li><li>The benefit of made-to-order is that you get a fresh, quality product made just for your order.</li><li>For more details on our lead times and ordering process, please refer to our <a href=\"https://www.linenco.co.za/pages/lead-times\" target=\"_blank\"><strong>lead times and ordering information</strong></a>.</li></ul>"
+          }
+        },
+        "question_6dneqg": {
+          "type": "question",
+          "settings": {
+            "question": "What's your lead time?",
+            "answer": "<ul><li>Ready-made items: 2–5 working days. </li><li>Made-to-order items: 7–14 business days. </li><li>Please refer to our →<strong> </strong><a href=\"https://www.linenco.co.za/pages/lead-times\" target=\"_blank\"><strong>lead times and ordering information</strong></a> for full details.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "question_6wadia",
+        "question_aU6Vn3",
+        "question_MzT4Vz",
+        "question_KQQazm",
+        "question_6dneqg"
+      ],
+      "name": "t:sections.faq.presets.faq.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "show_categories": false,
+        "subheading": "",
+        "title": "Questions?",
+        "content": ""
+      }
+    },
+    "lc-collection-intro": {
+      "type": "lc-collection-intro",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_read_more": true,
+        "intro_content": ""
+      }
+    }
+  },
+  "order": [
+    "collection-banner",
+    "lc-collection-intro",
+    "main",
+    "rich_text_XmHBCy",
+    "faq_CLf8iq",
+    "custom_liquid_fYfwq7"
+  ]
+}

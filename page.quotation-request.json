@@ -1,0 +1,59 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "rich_text_RABY37": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_FnNLLG": {
+          "type": "heading",
+          "settings": {
+            "text": "Quotation Request",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_VyQYEj": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Request a tailored quotation for your project or bulk order. Share what you need, your quantities, and your required delivery date, and we’ll come back to you with pricing, lead times, and the best options for your space.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_FnNLLG",
+        "richtext_VyQYEj"
+      ],
+      "name": "t:sections.rich_text.presets.rich_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "content_width": "sm",
+        "text_position": "center",
+        "remove_vertical_spacing": true
+      }
+    },
+    "custom_liquid_MG86Xw": {
+      "type": "custom-liquid",
+      "name": "t:sections.custom_liquid.presets.custom_liquid.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "remove_vertical_spacing": true,
+        "remove_horizontal_spacing": false,
+        "liquid": "<div class=\"quote-request\">\n<div id=\"quoteSuccess\" class=\"success-message\">Thank you — your quote request has been submitted successfully. We’ll be in touch shortly.</div>\n<form id=\"quote-form\" method=\"post\" action=\"/contact#contact_form\">\n<input value=\"contact\" name=\"form_type\" type=\"hidden\"> <input value=\"✓\" name=\"utf8\" type=\"hidden\"> <input value=\"Custom Quote Request\" name=\"contact[subject]\" type=\"hidden\">\n<div class=\"form-section\">\n<h3 class=\"section-title\">Customer Information</h3>\n<div class=\"form-row\">\n<div class=\"form-group\">\n<label for=\"customer_type\">Customer Type <span class=\"required\">*</span></label><select required=\"\" id=\"customer_type\" name=\"contact[customer_type]\">\n<option value=\"\">Select Customer Type</option>\n<option value=\"residential\">Residential</option>\n<option value=\"hospitality\">Hospitality/Commercial</option>\n<option value=\"interior_designer\">Interior Designer</option>\n<option value=\"event_planner\">Event Planner</option>\n<option value=\"retail_buyer\">Retail Buyer</option>\n<option value=\"other\">Other</option>\n</select>\n</div>\n<div class=\"form-group\">\n<label for=\"urgency\">Project Urgency</label><select id=\"urgency\" name=\"contact[urgency]\">\n<option value=\"\">Select Urgency</option>\n<option value=\"standard\">Standard (2–3 weeks)</option>\n<option value=\"priority\">Priority (1–2 weeks)</option>\n<option value=\"urgent\">Urgent (Rush order)</option>\n</select>\n</div>\n</div>\n<div class=\"form-row\">\n<div class=\"form-group\">\n<label for=\"first_name\">First Name <span class=\"required\">*</span></label> <input required=\"\" id=\"first_name\" name=\"contact[first_name]\" type=\"text\">\n</div>\n<div class=\"form-group\">\n<label for=\"last_name\">Last Name <span class=\"required\">*</span></label> <input required=\"\" id=\"last_name\" name=\"contact[last_name]\" type=\"text\">\n</div>\n</div>\n<div class=\"form-row\">\n<div class=\"form-group\">\n<label for=\"email\">Email Address <span class=\"required\">*</span></label> <input required=\"\" id=\"email\" name=\"contact[email]\" type=\"email\">\n</div>\n<div class=\"form-group\">\n<label for=\"phone\">Phone Number <span class=\"required\">*</span></label> <input required=\"\" id=\"phone\" name=\"contact[phone]\" type=\"tel\">\n</div>\n</div>\n<div class=\"form-group\">\n<label for=\"company\">Company/Organisation Name</label> <input id=\"company\" name=\"contact[company]\" type=\"text\">\n</div>\n</div>\n<div class=\"form-section\">\n<h3 class=\"section-title\">Project Details</h3>\n<div class=\"form-group\">\n<label for=\"project_description\">Project Description</label> <textarea placeholder=\"Describe your project, intended use, style preferences, etc.\" rows=\"4\" id=\"project_description\" name=\"contact[project_description]\"></textarea>\n</div>\n<div class=\"form-row\">\n<div class=\"form-group full-width\">\n<label for=\"delivery_date\">Required Delivery Date</label> <input id=\"delivery_date\" name=\"contact[delivery_date]\" type=\"date\">\n</div>\n</div>\n</div>\n<div class=\"form-section\">\n<h3 class=\"section-title\">Items Required</h3>\n<div class=\"form-group\">\n<label for=\"item_description\">Item Description <span class=\"required\">*</span></label> <textarea required=\"\" placeholder=\"Describe the items you are requesting\" rows=\"4\" id=\"item_description\" name=\"contact[item_description]\"></textarea>\n</div>\n</div>\n<div class=\"form-section\">\n<h3 class=\"section-title\">Additional Requirements</h3>\n<div class=\"form-group\">\n<label for=\"consultation_method\">Preferred Consultation Method</label><select id=\"consultation_method\" name=\"contact[consultation_method]\">\n<option value=\"\">Select Consultation Method</option>\n<option value=\"email\">Email</option>\n<option value=\"phone\">Phone</option>\n<option value=\"whatsapp\">WhatsApp</option>\n</select>\n</div>\n<div class=\"form-group\">\n<label for=\"embroidery\">Embroidery Requirements</label> <textarea placeholder=\"Describe any embroidery, monogramming, or personalisation requirements\" rows=\"3\" id=\"embroidery\" name=\"contact[embroidery]\"></textarea>\n</div>\n<div class=\"form-group\">\n<label for=\"special_instructions\">Special Instructions</label> <textarea placeholder=\"Any special requirements, delivery instructions, or additional information\" rows=\"3\" id=\"special_instructions\" name=\"contact[special_instructions]\"></textarea>\n</div>\n</div>\n<button class=\"submit-btn\" type=\"submit\">REQUEST QUOTATION</button>\n</form>\n</div>\n<p> </p>\n<style>\n /* =========================\n   Quote Request Form\n   Match Trade Registration styling\n   ========================= */\n\n/* IMPORTANT: avoid global resets here (no * {}, no body {}) */\n\n.quote-request{\n  max-width: 800px;\n  margin: 40px auto;\n  padding: 20px;\n  background-color: #FFFFFF;\n  font-family: 'Nunito', sans-serif;\n  color: #333;\n  font-size: 12px;\n  line-height: 1.6;\n}\n\n.quote-request .success-message{\n  display: none;\n  margin: 0 0 18px 0;\n  padding: 12px 14px;\n  border: 1px solid #e8e8e8;\n  background-color: rgba(232,232,232,0.12);\n  font-family: 'Nunito', sans-serif;\n  font-size: 12px;\n  line-height: 1.5;\n}\n\n/* Sections */\n.quote-request .form-section{\n  margin-bottom: 22px;\n}\n\n.quote-request .section-title{\n  font-family: 'Instrument Sans', sans-serif;\n  font-weight: 600;\n  background-color: #e8e8e8;\n  color: #333;\n  padding: 15px 25px;\n  margin-bottom: 18px;\n  border-radius: 0;\n  font-size: 1.3em;\n}\n\n/* Layout */\n.quote-request .form-row{\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 15px;\n  margin-bottom: 16px;\n}\n\n.quote-request .form-group{\n  width: 100%;\n  margin-bottom: 16px;\n}\n\n.quote-request .full-width{\n  grid-column: 1 / -1;\n}\n\n/* Labels */\n.quote-request label{\n  display: block;\n  margin-bottom: 8px;\n  font-family: 'Nunito', sans-serif;\n  font-weight: 400;\n  color: #333;\n  font-size: 1em;\n}\n\n/* Inputs */\n.quote-request input,\n.quote-request select,\n.quote-request textarea{\n  width: 100%;\n  padding: 12px 15px;\n  border: 2px solid #e8e8e8;\n  border-radius: 0;\n  font-size: 14px;\n  font-family: 'Nunito', sans-serif;\n  background-color: #FFFFFF;\n  color: #333;\n  transition: all 0.3s ease;\n}\n\n.quote-request input:focus,\n.quote-request select:focus,\n.quote-request textarea:focus{\n  outline: none;\n  border-color: #333;\n  box-shadow: 0 0 10px rgba(51, 51, 51, 0.2);\n  background-color: #FFFFFF;\n}\n\n.quote-request select{\n  min-height: 44px;\n  padding: 12px 15px;\n}\n\n.quote-request textarea{\n  height: 120px;\n  resize: vertical;\n}\n\n.quote-request ::placeholder{\n  color: rgba(51, 51, 51, 0.5);\n  opacity: 1;\n  font-size: 12px;\n}\n\n.quote-request .required{\n  opacity: 0.7;\n}\n\n/* Submit button */\n.quote-request .submit-btn{\n  font-family: 'Instrument Sans', sans-serif;\n  font-weight: 600;\n  background-color: #e8e8e8;\n  color: #333;\n  padding: 18px 40px;\n  border: none;\n  border-radius: 0;\n  font-size: 18px;\n  cursor: pointer;\n  transition: all 0.3s ease;\n  width: 100%;\n  margin-top: 10px;\n  text-transform: uppercase;\n  letter-spacing: 1px;\n}\n\n.quote-request .submit-btn:hover{\n  background-color: #d4d4d4;\n  transform: translateY(-2px);\n  box-shadow: 0 5px 15px rgba(232, 232, 232, 0.3);\n}\n\n/* Mobile: tighten sizing like we did for trade form */\n@media (max-width: 768px){\n  .quote-request{\n    margin: 16px auto;\n    padding: 12px;\n    font-size: 12px;\n  }\n\n  .quote-request .form-row{\n    grid-template-columns: 1fr;\n    gap: 12px;\n    margin-bottom: 12px;\n  }\n\n  .quote-request .form-group{\n    margin-bottom: 12px;\n  }\n\n  .quote-request .section-title{\n    font-size: 12px;\n    padding: 10px 12px;\n    margin-bottom: 14px;\n    letter-spacing: 0.08em;\n    text-transform: uppercase;\n  }\n\n  .quote-request label{\n    font-size: 12px;\n    margin-bottom: 6px;\n  }\n\n  .quote-request input,\n  .quote-request select,\n  .quote-request textarea{\n    padding: 10px 12px;\n    font-size: 12px;\n    border-width: 1px;\n  }\n\n  .quote-request select{\n    min-height: 40px;\n    padding: 10px 12px;\n  }\n\n  .quote-request textarea{\n    height: 110px;\n  }\n\n  .quote-request .submit-btn{\n    font-size: 13px;\n    padding: 14px 16px;\n    letter-spacing: 0.08em;\n    margin-top: 14px;\n  }\n}\n\n</style>",
+        "text_alignment": "start"
+      }
+    }
+  },
+  "order": [
+    "rich_text_RABY37",
+    "custom_liquid_MG86Xw"
+  ]
+}

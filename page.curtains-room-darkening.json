@@ -1,0 +1,311 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_liquid_YtMkCU": {
+      "type": "custom-liquid",
+      "name": "Page Intro",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": true,
+        "remove_vertical_spacing": true,
+        "remove_horizontal_spacing": true,
+        "liquid": "<section class=\"lc-page-intro\">\n  <div class=\"lc-page-intro__inner\">\n    <header class=\"lc-page-intro__header\">\n      <h1 class=\"lc-page-intro__title\">Curtains, Blinds and Hardware</h1>\n    </header>\n\n    <div class=\"lc-page-intro__text rte\" id=\"lc-page-intro-text\">\n      <p>\n        Curtains, blinds, and hardware are essential elements in creating comfortable, stylish, and functional hospitality spaces. Our range offers tailored solutions for hotels, guesthouses, lodges, and luxury suites, designed to provide effective light control, privacy, and a polished finish that enhances every room.\n      </p>\n      <p>\n        Choose from blockout and self-lined curtains suited to guest rooms and public areas. Our blinds collection includes wood, eco wood, aluminium, zebra, and Venetian styles, offering versatile options to meet diverse design and operational needs.\n      </p>\n      <p>\n        Complete your window treatments with commercial-grade curtain hardware available in black steel, antique brass, stainless steel, and bronze finishes. These durable rods, brackets, finials, and accessories support professional installation and long-lasting performance in high-use environments.\n      </p>\n      <p>\n        Whether you are outfitting new developments, refurbishing existing properties, or upgrading premium suites, custom <strong>sizing</strong> and expert guidance help you select the right solution for your space.\n      </p>\n      <p>\n        <a href=\"https://www.linenco.co.za/pages/trade-registration-form\" target=\"_blank\" rel=\"noopener\"><strong>Apply for trade pricing</strong></a> or contact us on <a href=\"tel:0101094950\"><strong>010 109 4950</strong></a> or WhatsApp <a href=\"https://wa.me/27662918292\" target=\"_blank\" rel=\"noopener\"><strong>066 291 8292</strong></a>.\n      </p>\n    </div>\n\n    <button type=\"button\" class=\"lc-read-more\" aria-expanded=\"false\" aria-controls=\"lc-page-intro-text\">\n      Read more\n    </button>\n  </div>\n</section>\n\n<style>\n  .lc-page-intro {\n    padding: 32px 0;\n  }\n  .lc-page-intro__inner {\n    max-width: 1200px;\n    margin: 0 auto;\n    padding: 0 24px;\n  }\n  .lc-page-intro__header {\n    margin-bottom: 14px;\n  }\n  .lc-page-intro__title {\n    margin: 0;\n    font-size: 28px;\n    line-height: 1.15;\n    letter-spacing: 0.02em;\n    font-weight: 700;\n  }\n  .lc-page-intro__text {\n    font-size: 14px;\n    line-height: 1.5;\n    margin-bottom: 0;\n    transition: max-height 0.35s ease;\n  }\n  .lc-page-intro__text p {\n    margin: 0 0 14px;\n  }\n  .lc-page-intro__text p:last-child {\n    margin-bottom: 0;\n  }\n  .lc-page-intro__text a {\n    text-decoration: none;\n    font-weight: 600;\n  }\n  .lc-page-intro__text a:hover,\n  .lc-page-intro__text a:focus {\n    text-decoration: underline;\n    text-underline-offset: 3px;\n  }\n  /* Collapsed state - showing 4 lines */\n  .lc-page-intro__text.is-collapsed {\n    max-height: 8.4em; /* 4 lines × 1.5 line-height × 14px font-size = 84px */\n    overflow: hidden;\n  }\n  .lc-read-more {\n    background: none;\n    border: none;\n    padding: 0;\n    margin-top: 10px;\n    cursor: pointer;\n    font-weight: 600;\n    font-size: 14px;\n    text-decoration: underline;\n    text-underline-offset: 3px;\n    letter-spacing: 0.01em;\n    transition: opacity 0.2s;\n  }\n  .lc-read-more:hover,\n  .lc-read-more:focus {\n    opacity: 0.7;\n  }\n  @media (max-width: 749px) {\n    .lc-page-intro {\n      padding: 22px 0;\n    }\n    .lc-page-intro__inner {\n      padding: 0 12px;\n    }\n    .lc-page-intro__title {\n      font-size: 22px;\n      line-height: 1.2;\n    }\n    .lc-page-intro__text {\n      font-size: 12px;\n      line-height: 1.6;\n    }\n    .lc-read-more {\n      font-size: 12px;\n    }\n    .lc-page-intro__text.is-collapsed {\n      max-height: 7.7em; /* 4 lines at mobile: 4 × 1.6 × 12px ≈ 77px */\n    }\n  }\n</style>\n\n<script>\n  document.addEventListener('DOMContentLoaded', function () {\n    var section = document.querySelector('.lc-page-intro');\n    if (!section) return;\n\n    var text = section.querySelector('#lc-page-intro-text');\n    var btn = section.querySelector('.lc-read-more');\n    if (!text || !btn) return;\n\n    // Start collapsed\n    text.classList.add('is-collapsed');\n\n    // Hide button if content doesn't overflow\n    if (text.scrollHeight <= text.clientHeight + 2) {\n      btn.style.display = 'none';\n      return;\n    }\n\n    btn.addEventListener('click', function () {\n      var expanded = btn.getAttribute('aria-expanded') === 'true';\n\n      if (!expanded) {\n        text.classList.remove('is-collapsed');\n        btn.setAttribute('aria-expanded', 'true');\n        btn.textContent = 'Read less';\n      } else {\n        text.classList.add('is-collapsed');\n        btn.setAttribute('aria-expanded', 'false');\n        btn.textContent = 'Read more';\n      }\n    });\n  });\n</script>",
+        "text_alignment": "start"
+      }
+    },
+    "image_with_text_N9gVMD": {
+      "type": "image-with-text",
+      "blocks": {
+        "subheading_6JjjpG": {
+          "type": "subheading",
+          "settings": {
+            "text": "Made to Measure Window Dressing for Hospitality"
+          }
+        },
+        "heading_nfRAeR": {
+          "type": "heading",
+          "settings": {
+            "text": "Curtains",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_FFnhCk": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Explore our curtain collection designed for hospitality spaces where light control, privacy, and a polished finish matter. Choose from blockout and self-lined options in a range of colours and styles, with durable fabrics suited to guest rooms, suites, and public areas. Custom sizing is available to ensure the right fit and a professional, tailored look throughout your property.</p>"
+          }
+        },
+        "button_Ffzjie": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "View collection",
+            "url": "shopify://collections/hotel-blockout-curtains",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading_6JjjpG",
+        "heading_nfRAeR",
+        "richtext_FFnhCk",
+        "button_Ffzjie"
+      ],
+      "name": "t:sections.image_with_text.presets.image_with_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image": "shopify://shop_images/grey-eyelid-curtains-lifestyle-linen-and-co.webp",
+        "mobile_image": "shopify://shop_images/grey-eyelet-curtains-lifestyle-m-linen-and-co.webp",
+        "reveal_on_scroll": true,
+        "image_position": "start",
+        "content_width": "sm",
+        "remove_vertical_spacing": true
+      }
+    },
+    "media_grid_tN8b3a": {
+      "type": "media-grid",
+      "blocks": {
+        "image_mbz6ix": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "scheme-9affcb12-7ce9-42be-9be4-830684648293",
+            "image": "shopify://shop_images/zebra-blinds-linen-and-co.webp",
+            "column_count": "12",
+            "row_count": 2,
+            "add_padding": false,
+            "title": "<strong>Zebra Blinds</strong>",
+            "heading_tag": "h2",
+            "content": "",
+            "link_text": "View Collection",
+            "link_url": "shopify://collections/zebra-blinds",
+            "link_style": "solid",
+            "text_position": "place-self-end-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 11
+          }
+        },
+        "image_tJrWNP": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "scheme-9affcb12-7ce9-42be-9be4-830684648293",
+            "image": "shopify://shop_images/grey-curtains-wooden-ventian-living-room-linen-and-co-landscape-1.webp",
+            "column_count": "8",
+            "row_count": 2,
+            "add_padding": false,
+            "title": "<strong>Wood Venetian</strong>",
+            "heading_tag": "h2",
+            "content": "",
+            "link_text": "View Collection",
+            "link_url": "shopify://collections/wood-eco-wood-venetian-blinds",
+            "link_style": "solid",
+            "text_position": "place-self-end-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 22
+          }
+        },
+        "image_JLn6C6": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "scheme-9affcb12-7ce9-42be-9be4-830684648293",
+            "image": "shopify://shop_images/silver-aluminium-office-blind-lifestyle-linen-and-co.webp",
+            "column_count": "4",
+            "row_count": 1,
+            "add_padding": false,
+            "title": "<strong>Aluminium</strong>",
+            "heading_tag": "h4",
+            "content": "",
+            "link_text": "View Collection",
+            "link_url": "shopify://collections/aluminium-50mm-blinds",
+            "link_style": "link",
+            "text_position": "place-self-end-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 20
+          }
+        },
+        "image_MxceGm": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "scheme-9affcb12-7ce9-42be-9be4-830684648293",
+            "image": "shopify://shop_images/sheer-bathroom-roller-blind-linen-and-co.webp",
+            "column_count": "4",
+            "row_count": 1,
+            "add_padding": false,
+            "title": "<strong>Blockout Roller</strong>",
+            "heading_tag": "h4",
+            "content": "",
+            "link_text": "View Product",
+            "link_url": "shopify://products/blockout-roller-blinds",
+            "link_style": "link",
+            "text_position": "place-self-end-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 19
+          }
+        }
+      },
+      "block_order": [
+        "image_mbz6ix",
+        "image_tJrWNP",
+        "image_JLn6C6",
+        "image_MxceGm"
+      ],
+      "name": "t:sections.media_grid.presets.media_grid.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "desktop_row_height": 240,
+        "mobile_row_height": 180,
+        "section_width": "lg",
+        "spacing": "xs",
+        "subheading": "Stylish and Functional Window Coverings for Hospitality",
+        "title": "Window Blinds",
+        "content": "<p>Explore our comprehensive blinds collection designed for hospitality settings, featuring wood, eco wood, aluminium, zebra, and Venetian blinds. </p><p>These window coverings offer excellent light control, privacy, and durability to meet the demands of hotels, guesthouses, and luxury suites. </p><p>Crafted from high-quality materials, our blinds combine timeless style with practical performance, enhancing guest comfort and room aesthetics while withstanding frequent commercial use</p>"
+      }
+    },
+    "media_grid_am39xd": {
+      "type": "media-grid",
+      "blocks": {
+        "image_Pe9Nbm": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "scheme-9affcb12-7ce9-42be-9be4-830684648293",
+            "image": "shopify://shop_images/25mm-stainless-steel-nebula-finial-linen-and-co.webp",
+            "column_count": "8",
+            "row_count": 2,
+            "add_padding": false,
+            "title": "<strong>Stainless Steel</strong>",
+            "heading_tag": "h2",
+            "content": "<p>Rods, Finials and Brackets</p>",
+            "link_text": "View Collection",
+            "link_url": "shopify://collections/25mm-stainless-steel-curtain-hardware",
+            "link_style": "outline",
+            "text_position": "place-self-end-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 1
+          }
+        },
+        "image_3M4bMe": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "scheme-9affcb12-7ce9-42be-9be4-830684648293",
+            "image": "shopify://shop_images/25mm-antique-brass-mace-finial-linen-and-co.webp",
+            "column_count": "4",
+            "row_count": 1,
+            "add_padding": false,
+            "title": "<strong>Antique Brass</strong>",
+            "heading_tag": "h4",
+            "content": "<p>Rods, Finials, Brackets</p>",
+            "link_text": "View Collection",
+            "link_url": "shopify://collections/25mm-antique-brass-curtain-hardware",
+            "link_style": "link",
+            "text_position": "place-self-end-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 10
+          }
+        },
+        "image_NqCcqt": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "scheme-9affcb12-7ce9-42be-9be4-830684648293",
+            "image": "shopify://shop_images/25mm-bronze-caesar-stone-finial-linen-and-co.webp",
+            "column_count": "4",
+            "row_count": 1,
+            "add_padding": false,
+            "title": "<strong>Bronze</strong>",
+            "heading_tag": "h4",
+            "content": "<p><strong>Rods, Finials, Brackets</strong></p>",
+            "link_text": "View Product",
+            "link_url": "shopify://collections/25mm-antique-bronze-curtain-hardware",
+            "link_style": "link",
+            "text_position": "place-self-end-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        },
+        "image_Yzcr4C": {
+          "type": "image",
+          "settings": {
+            "color_scheme": "scheme-9affcb12-7ce9-42be-9be4-830684648293",
+            "image": "shopify://shop_images/25mm-black-prism-finial-linen-and-co.webp",
+            "column_count": "12",
+            "row_count": 1,
+            "add_padding": false,
+            "title": "<strong>Black</strong>",
+            "heading_tag": "h4",
+            "content": "<p><strong>Rods, Finials, Brackets</strong></p>",
+            "link_text": "View Collection",
+            "link_url": "shopify://collections/25mm-black-curtain-hardware",
+            "link_style": "link",
+            "text_position": "place-self-end-center text-center",
+            "overlay_color": "#000000",
+            "overlay_opacity": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_Pe9Nbm",
+        "image_3M4bMe",
+        "image_NqCcqt",
+        "image_Yzcr4C"
+      ],
+      "name": "t:sections.media_grid.presets.media_grid.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "desktop_row_height": 290,
+        "mobile_row_height": 160,
+        "section_width": "lg",
+        "spacing": "xs",
+        "subheading": "Durable Hardware for Professional Curtain Solutions",
+        "title": "Curtain Hardware",
+        "content": "<p>Explore our range of commercial-grade curtain hardware designed to complement hospitality curtains and blinds. Featuring black steel, antique brass, stainless steel, and bronze steel finishes, our hardware collection includes sturdy rods, finials, brackets, and accessories built for durability and style. Perfect for hotels, guesthouses, and luxury suites, these components ensure smooth operation and a refined finish, supporting professional installations that stand up to frequent use.</p>"
+      }
+    },
+    "rich_text_thUDAN": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_zhHJeG": {
+          "type": "heading",
+          "settings": {
+            "text": "Need Help Choosing?",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_iEXkqP": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>We offer custom sizing across all our curtain and blind ranges to perfectly fit your space and style. </p><p>Whether you're upgrading a single room or outfitting an entire property, our expert team is here to guide you every step of the way.</p><p>Need help choosing the right product or measurements?<br/></p><p>Contact the Linen and Co Team for personalised advice and tailored solutions.</p><p><a href=\"/pages/contact\" target=\"_blank\" title=\"Contact Us\"><strong>Contact Us → Here</strong></a></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_zhHJeG",
+        "richtext_iEXkqP"
+      ],
+      "name": "t:sections.rich_text.presets.rich_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "content_width": "sm",
+        "text_position": "center",
+        "remove_vertical_spacing": false
+      }
+    }
+  },
+  "order": [
+    "custom_liquid_YtMkCU",
+    "image_with_text_N9gVMD",
+    "media_grid_tN8b3a",
+    "media_grid_am39xd",
+    "rich_text_thUDAN"
+  ]
+}

@@ -1,0 +1,68 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_with_text_overlay_3iYqt4": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_rqFhde": {
+          "type": "subheading",
+          "settings": {
+            "text": "<strong>Find the perfect fit for every room</strong>"
+          }
+        },
+        "heading_f7Ax69": {
+          "type": "heading",
+          "settings": {
+            "text": "<strong>Linen Size Guides</strong>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_W7GWJe": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p><strong>From duvet covers to fitted sheets, towels to curtains — use our size guides to select the right dimensions for your space. </strong></p><p><strong>Whether you're outfitting a hotel or your home, we've got every measurement covered.<br/></strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_rqFhde",
+        "heading_f7Ax69",
+        "richtext_W7GWJe"
+      ],
+      "name": "t:sections.image_with_text_overlay.presets.image_with_text_overlay.name",
+      "settings": {
+        "color_scheme": "scheme-28c7d702-9088-499e-93c6-4fe777458476",
+        "image_size": "xs",
+        "image": "shopify://shop_images/linen-and-co-size-guides.webp",
+        "allow_transparent_header": false,
+        "reveal_on_scroll": true,
+        "remove_vertical_spacing": true,
+        "content_width": "lg",
+        "mobile_text_position": "place-self-center text-center",
+        "desktop_text_position": "sm:place-self-center sm:text-center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 45
+      }
+    },
+    "main": {
+      "type": "main-page",
+      "settings": {
+        "color_scheme": "",
+        "show_title": false,
+        "page_width": "sm"
+      }
+    }
+  },
+  "order": [
+    "image_with_text_overlay_3iYqt4",
+    "main"
+  ]
+}

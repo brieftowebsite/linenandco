@@ -1,0 +1,41 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "lc-collection-hub",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Shop by category",
+        "use_collection_description": true,
+        "show_quick_links": true,
+        "collections": [
+          "bath-towels-and-sheets",
+          "bath-mats",
+          "hotel-bathrobes-and-slippers",
+          "hotel-pool-and-beach-towels",
+          "hotel-bathroom-essentials"
+        ],
+        "quick_links_label": "Bath linen categories",
+        "row_eyebrow": "Shop",
+        "use_row_collection_descriptions": true,
+        "view_all_label": "View all",
+        "show_quick_buy": true,
+        "show_secondary_image": true,
+        "products_to_show": 12,
+        "products_per_row_desktop": 3,
+        "products_per_row_mobile": "2"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

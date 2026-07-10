@@ -1,0 +1,102 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "color_scheme": "scheme-2",
+        "show_title": true,
+        "page_width": "xs"
+      }
+    },
+    "hospitality_portal": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_L3b7WM": {
+          "type": "subheading",
+          "settings": {
+            "text": "<strong>Hospitality and trade supply</strong>"
+          }
+        },
+        "heading_LtwGYD": {
+          "type": "heading",
+          "settings": {
+            "text": "<strong>Hospitality linen supply that feels considered, not complicated</strong>",
+            "heading_tag": "h1"
+          }
+        },
+        "text_intro": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>For hotels, lodges, guesthouses, spas, restaurants, decorators, procurement teams and multi-property operators who need reliable hotel-quality linen, trade access, quotation support and a cleaner way to reorder.</p>"
+          }
+        },
+        "apply": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "Apply for Trade Pricing",
+            "url": "shopify://pages/trade-registration-form",
+            "background": "#ffffff",
+            "text_color": "#1c1c1c"
+          }
+        },
+        "quote": {
+          "type": "button",
+          "settings": {
+            "style": "outline",
+            "text": "Request a Quote",
+            "url": "shopify://pages/quotation-request",
+            "background": "#ffffff",
+            "text_color": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_L3b7WM",
+        "heading_LtwGYD",
+        "text_intro",
+        "apply",
+        "quote"
+      ],
+      "name": "Hospitality page hero",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "image_size": "sm",
+        "image": "shopify://shop_images/linen-and-co-hospitality-portal-guest-ready-linens.webp",
+        "mobile_image": "shopify://shop_images/linen-and-co-hospitality-portal-guest-ready-linen.webp",
+        "allow_transparent_header": true,
+        "reveal_on_scroll": false,
+        "remove_vertical_spacing": true,
+        "content_width": "lg",
+        "mobile_text_position": "place-self-end-center text-center",
+        "desktop_text_position": "sm:place-self-center-start sm:text-start",
+        "overlay_color": "#000000",
+        "overlay_opacity": 18
+      }
+    },
+    "lc_hospitality_hub": {
+      "type": "lc-hospitality-hub",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "bedroom_image": "shopify://shop_images/luxury-hotel-room-white-linen-city-view-linen-and-co-square-2.webp",
+        "bathroom_image": "shopify://shop_images/white-towels-and-bath-robes-luxury-hotel-bathroom-1-linen-and-co.webp",
+        "table_image": "shopify://shop_images/white-table-linen-outdoor-seaside-restaurant-linen-and-co.webp"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "hospitality_portal",
+    "lc_hospitality_hub"
+  ]
+}

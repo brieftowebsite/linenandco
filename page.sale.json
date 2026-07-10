@@ -1,0 +1,164 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_with_text_overlay_hAf4Rt": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading_KM79HW": {
+          "type": "subheading",
+          "settings": {
+            "text": "<strong>Premium linens, limited-time prices</strong>"
+          }
+        },
+        "heading_qpDH6x": {
+          "type": "heading",
+          "settings": {
+            "text": "<strong>Polycotton Percale 200TC Bed Linen – 30% Off</strong>",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_Lg3RRt": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p><strong>Our Polycotton Percale 200TC range delivers crisp, breathable comfort with commercial-grade durability—ideal for hotels, guesthouses, boutique lodges, and high-turnover laundries. </strong></p><p><strong>Smooth percale weave, excellent wash performance, and a clean, luxurious finish. </strong></p><p><strong>Limited-time saving on duvet covers, fitted sheets, flat sheets, and pillowcases.</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_KM79HW",
+        "heading_qpDH6x",
+        "richtext_Lg3RRt"
+      ],
+      "name": "t:sections.image_with_text_overlay.presets.image_with_text_overlay.name",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "image_size": "xs",
+        "image": "shopify://shop_images/premium-poycotton-percale-35-discount-linen-and-co-1.webp",
+        "allow_transparent_header": false,
+        "reveal_on_scroll": true,
+        "remove_vertical_spacing": true,
+        "content_width": "xs",
+        "mobile_text_position": "place-self-center-end text-end",
+        "desktop_text_position": "sm:place-self-center-start sm:text-start",
+        "overlay_color": "#393434",
+        "overlay_opacity": 7
+      }
+    },
+    "featured_collections_wwnemX": {
+      "type": "featured-collections",
+      "blocks": {
+        "collection_NncwTK": {
+          "type": "collection",
+          "settings": {
+            "collection": "polycotton-percale-200tc-bed-linen-35-off",
+            "products_count": 50,
+            "title": "",
+            "link_url": "",
+            "link_text": "Shop Now"
+          }
+        }
+      },
+      "block_order": [
+        "collection_NncwTK"
+      ],
+      "name": "t:sections.featured_collections.presets.featured_collections.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "hide_product_information": false,
+        "stack_products": true,
+        "products_per_row_mobile": "2",
+        "products_per_row_desktop": 5,
+        "horizontal_spacing_factor": 1.1,
+        "vertical_spacing_factor": 1,
+        "subheading": "<strong>Sale Now On!!</strong>"
+      }
+    },
+    "faq_4BEbqz": {
+      "type": "faq",
+      "blocks": {
+        "category_8qkeAM": {
+          "type": "category",
+          "settings": {
+            "title": "<strong>Specials</strong>",
+            "icon": "picto-star",
+            "icon_width": 20
+          }
+        },
+        "question_geYPxD": {
+          "type": "question",
+          "settings": {
+            "question": "<strong>Why Polycotton Percale 200TC?</strong>",
+            "answer": "<p>Polycotton Percale 200TC combines 50% cotton and 50% polyester for the best of both worlds: natural breathability with synthetic durability. </p><p>The percale weave creates a crisp, cool-to-touch finish that hospitality professionals trust. Machine-washable at 40–60°C, fade-resistant, and built to withstand commercial laundry cycles without compromise.</p>"
+          }
+        },
+        "question_pcmEgX": {
+          "type": "question",
+          "settings": {
+            "question": "<strong>What's Included in This Collection?</strong>",
+            "answer": "<ul><li>Duvet covers (all sizes: Single to Super King)</li><li>Fitted sheets (all sizes)</li><li>Flat sheets (all sizes)</li><li>Pillowcases (Standard, King, Continental)</li><li>Mattress protectors </li><li>Pillow Protectors</li></ul>"
+          }
+        },
+        "question_BBqJJt": {
+          "type": "question",
+          "settings": {
+            "question": "<strong>Who Can Use This?</strong>",
+            "answer": "<ul><li>Hotels and boutique lodges</li><li>Guesthouses and holiday rentals</li><li>Spas and wellness centres</li><li>Laundry services and bulk buyers</li><li>High-end residential properties</li></ul>"
+          }
+        },
+        "question_bfXxzz": {
+          "type": "question",
+          "settings": {
+            "question": "<strong>How Do I Care For It?</strong>",
+            "answer": "<ul><li>Wash at 40–60°C with mild detergent. </li><li>Tumble dry on low to medium heat. </li><li>Avoid bleach and fabric softener. </li><li>Follow care label for full warranty details. </li><li>Designed for 300+ commercial wash cycles—perfect for busy hospitality environments.</li></ul>"
+          }
+        }
+      },
+      "block_order": [
+        "category_8qkeAM",
+        "question_geYPxD",
+        "question_pcmEgX",
+        "question_BBqJJt",
+        "question_bfXxzz"
+      ],
+      "name": "t:sections.faq.presets.faq.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "show_categories": false,
+        "subheading": "Find answers about discounts, terms, and how to save",
+        "title": "Questions About Our Specials?",
+        "content": ""
+      }
+    },
+    "newsletter_YedXQ7": {
+      "type": "newsletter",
+      "name": "t:sections.newsletter.presets.newsletter.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "image_size": "auto",
+        "subheading": "Stay in the loop",
+        "title": "Newsletter",
+        "content": "<p>Be the first to know about specials, new arrivals, and hospitality tips.</p>",
+        "button_text": "Subscribe",
+        "overlay_color": "#000000",
+        "overlay_opacity": 0
+      }
+    }
+  },
+  "order": [
+    "image_with_text_overlay_hAf4Rt",
+    "featured_collections_wwnemX",
+    "faq_4BEbqz",
+    "newsletter_YedXQ7"
+  ]
+}

@@ -1,0 +1,267 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hospitality_location_hero": {
+      "type": "hospitality-location-hero",
+      "settings": {}
+    },
+    "rich_text_wK3cYN": {
+      "type": "rich-text",
+      "custom_css": [],
+      "name": "t:sections.rich_text.presets.rich_text.name",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": false,
+        "content_width": "lg",
+        "text_position": "center",
+        "remove_vertical_spacing": true
+      }
+    },
+    "blocks_tRgVRF": {
+      "type": "_blocks",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": false,
+        "remove_vertical_spacing": true,
+        "remove_horizontal_spacing": true
+      }
+    },
+    "tabs_mbtyzk": {
+      "type": "tabs",
+      "blocks": {
+        "tab_7dfU3n": {
+          "type": "tab",
+          "settings": {
+            "title": " Register for Trade  Pricing",
+            "content": "<ul><li>Apply for trade access to receive our hospitality price list and personalised support.</li><li>Trade pricing is available on approval</li><li>No minimum order required</li><li>Ideal for hotels, guesthouses, lodges, spas, designers, and bulk buyers</li><li>We’ll confirm lead times, sizing, and finishes before production</li></ul><p><a href=\"/pages/trade-registration-form\" target=\"_blank\" title=\"Create a Hospitality and Trade Account\"><strong>Register → Here</strong></a></p>",
+            "page": "",
+            "open_on_mobile": false
+          }
+        },
+        "tab_BmNDLj": {
+          "type": "tab",
+          "settings": {
+            "title": " How to Order",
+            "content": "<ul><li>Approved trade customers can log in with their Shopify customer account.</li><li>Browse collections and place orders directly with account pricing applied where available.</li><li>Use quick order for repeat products and variants.</li><li>For larger mixed-category orders, request a guided quotation.</li><li>Orders are confirmed immediately → payment confirms production → delivery with tracking.</li></ul><p><a href=\"/account/login\" target=\"_blank\" title=\"Customer Login\"><strong>Customer Login → Here</strong></a></p>",
+            "page": "",
+            "open_on_mobile": false
+          }
+        },
+        "tab_fNeB9E": {
+          "type": "tab",
+          "settings": {
+            "title": "Shop Online and Specials",
+            "content": "<p>You’re welcome to order directly through the online store for standard pricing and public specials.</p><p>Website specials may sometimes be better than trade pricing</p><p>For mixed-category bulk orders, trade pricing is handled via quotation</p><p>If you’re unsure, send your list and we’ll advise the best route</p><p><a href=\"/pages/contact\" target=\"_blank\" title=\"Contact Us\"><strong>Contact Us → Here</strong></a></p>",
+            "page": "",
+            "open_on_mobile": false
+          }
+        }
+      },
+      "block_order": [
+        "tab_7dfU3n",
+        "tab_BmNDLj",
+        "tab_fNeB9E"
+      ],
+      "name": "t:sections.tabs.presets.tab.name",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": true,
+        "subheading": "Your one-stop portal for trade pricing, bulk orders and exclusive specials.",
+        "title": "Hospitality Hub",
+        "text_alignment": "start"
+      }
+    },
+    "multi_column_n7hYPg": {
+      "type": "multi-column",
+      "blocks": {
+        "image_with_text_gU3CFp": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/luxury-hotel-room-white-linen-city-view-linen-and-co-square-2.webp",
+            "title": "<strong>Polycotton Percale </strong>",
+            "heading_tag": "h4",
+            "content": "<p><strong>200 Thread Count</strong></p><ul><li><a href=\"/collections/durable-polycotton-percale-fitted-sheets-200tc\" target=\"_blank\" title=\"Fitted Sheets - Polycotton Percale 200TC\">Fitted Sheets</a></li><li><a href=\"/collections/durable-polycotton-percale-flat-sheets-200tc\" target=\"_blank\" title=\"Flat Sheets - Polycotton 200TC\">Flat Sheets</a></li><li><a href=\"/collections/durable-polycotton-percale-200tc-duvet-covers\" target=\"_blank\" title=\"Duvet Cover Sets Polycotton 200TC\">Duvet Covers</a></li><li><a href=\"/collections/durable-polycotton-percale-pillow-cases-200tc\" target=\"_blank\" title=\"Pillow Cases - Polycotton 200TC\">Pillow Cases</a></li></ul>",
+            "link_url": "shopify://collections/hotel-bed-linen-polycotton-percale-200tc",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_akkzXh": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/luxury-hotel-room-white-linen-table-mountain-view-linen-and-co-square-1.webp",
+            "title": "<strong>100% Cotton Percale</strong>",
+            "heading_tag": "h4",
+            "content": "<p><strong>200 Thread Count</strong></p><ul><li><a href=\"/collections/premium-cotton-percale-fitted-sheets-200tc\" target=\"_blank\" title=\"Fitted Sheets - 100% Cotton 200TC\">Fitted Sheets</a></li><li><a href=\"/collections/premium-cotton-percale-flat-sheets-200tc\" target=\"_blank\" title=\"Flat Sheets - 100% Cotton 200TC\">Flat Sheets</a></li><li><a href=\"/collections/premium-cotton-percale-duvet-covers-200tc\" target=\"_blank\" title=\"Duvet Cover Sets 100% Cotton 200TC\">Duvet Covers</a></li><li><a href=\"/collections/premium-cotton-percale-pillow-cases-200tc\" target=\"_blank\" title=\"Pillow Cases - 100% Cotton 200TC\">Pillow Cases</a></li></ul>",
+            "link_url": "shopify://collections/hotel-bed-linen-cotton-percale-200tc",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_UxdKmP": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/luxury-hotel-room-white-linen-cliff-side-sea-view-linen-and-co-square-1.webp",
+            "title": "<strong>100% Cotton Percale</strong>",
+            "heading_tag": "h4",
+            "content": "<p><strong>300 Thread Count</strong></p><ul><li><a href=\"/products/white-cotton-percale-fitted-sheet-300tc\" target=\"_blank\" title=\"Cotton Percale Fitted Sheet 300TC – White\">Fitted Sheets</a></li><li><a href=\"/products/white-cotton-percale-flat-sheet-300tc\" target=\"_blank\" title=\"Cotton Percale Flat Sheet 300TC – White\">Flat Sheets</a></li><li><a href=\"/collections/luxury-cotton-percale-duvet-covers-300tc\" target=\"_blank\" title=\"Duvet Cover Sets 100% Cotton 300TC\">Duvet Covers</a></li><li><a href=\"/collections/luxury-cotton-percale-pillow-cases-300tc\" target=\"_blank\" title=\"Pillow Cases - 100% Cotton 300TC\">Pillow Cases</a></li></ul>",
+            "link_url": "shopify://collections/hotel-bed-linen-cotton-percale-300tc-white",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_UDWWgn": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/white-towels-and-bath-robes-luxury-hotel-bathroom-1-linen-and-co.webp",
+            "title": "<strong>Hotel Bath Linen</strong>",
+            "heading_tag": "h4",
+            "content": "<ul><li><a href=\"/collections/bath-towels-and-sheets\" title=\"Bath Towels\">Towels</a></li><li><a href=\"/collections/bath-mats\" target=\"_blank\" title=\"Bath Mats\">Bath mats</a></li><li><a href=\"/collections/bathrobes\" target=\"_blank\" title=\"Bathrobes\">Bathrobes </a></li><li><a href=\"/products/disposable-slippers\" target=\"_blank\" title=\"Disposable White Slippers\">Slippers</a></li></ul>",
+            "link_url": "shopify://collections/hotel-bathroom-essentials",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_YVTRkX": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/white-table-linen-outdoor-seaside-restaurant-linen-and-co.webp",
+            "title": "<strong>Hotel Table Linen</strong>",
+            "heading_tag": "h4",
+            "content": "<ul><li><a href=\"/products/napkins-polycotton\" target=\"_blank\" title=\"Napkins – Conlyn Weave Polycotton\">Napkins</a></li><li><a href=\"/products/table-cloth-overlay-polycotton\" target=\"_blank\" title=\"Table Overlay 90×90 – Conlyn Weave Polycotton\">Overlays</a></li><li><a href=\"/products/square-conlyn-polycotton-table-cloth\" target=\"_blank\" title=\"Square Tablecloths – Conlyn Weave Polycotton\">Square Table Cloth</a></li><li><a href=\"/products/rectangle-table-cloth-polycotton\" target=\"_blank\" title=\"Rectangular Tablecloths – Conlyn Weave Polycotton\">Rectangle Table Cloth</a></li><li><a href=\"/products/round-table-cloth-polycotton\" target=\"_blank\" title=\"Round Tablecloths – Conlyn Weave Polycotton\">Round Table Cloth</a></li></ul>",
+            "link_url": "shopify://collections/hotel-table-linen",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_fDmJJE": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/sheer-curtains-and-zebra-living-room-linen-and-co.webp",
+            "title": "<strong>Light Control</strong>",
+            "heading_tag": "h4",
+            "content": "<ul><li><a href=\"/collections/hotel-blockout-curtains\" target=\"_blank\" title=\"Hotel Blockout Curtains\">Curtains</a></li><li><a href=\"/collections/wood-eco-wood-venetian-blinds\" target=\"_blank\" title=\"Wood and Eco Wood 50mm Venetian Blinds\">Wooden Blinds</a></li><li><a href=\"/products/blockout-roller-blinds\" target=\"_blank\" title=\"Blockout Roller Blinds\">Roller Blinds</a></li><li><a href=\"/collections/zebra-blinds\" target=\"_blank\" title=\"Zebra Blinds\">Zebra Blinds</a></li><li><a href=\"/collections/curtain-hardware\" target=\"_blank\" title=\"Curtain Hardware\">Curtain Hardware</a></li></ul>",
+            "link_url": "shopify://pages/curtains-and-blinds",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_RyNhzb": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/hotel-duvet-inners-and-pillows-linen-and-co.webp",
+            "title": "<strong>Duvets and Pillows</strong>",
+            "heading_tag": "h4",
+            "content": "<ul><li><a href=\"/collections/luxury-microfibre-duvet-inners-and-pillows\" target=\"_blank\" title=\"Luxury Microfibre Duvet Inners and Pillows\">Luxury Microfibre</a></li><li><a href=\"/collections/hungarian-goose-down-duvet-inner-and-pillows\" target=\"_blank\" title=\"Hungarian Goose Down Duvet Inner and Pillows\">Hungarian Goose Down</a></li><li><a href=\"/products/natural-cotton-duvet-inner\" target=\"_blank\" title=\"Natural Cotton Duvet Inner\">Natural Cotton</a></li><li><a href=\"/products/duck-feather-pillows-twin-pack\" target=\"_blank\" title=\"Duck Feather Pillows – Twin Pack\">Duck Feather</a></li></ul>",
+            "link_url": "shopify://collections/hotel-duvet-inners-and-pillows",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_mhfBJf": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/quilted-pillow-protetectors-for-linen-and-co-protector-size-guide-size-guide-square.webp",
+            "title": "<strong>Mattress and Pillow Protectors</strong>",
+            "heading_tag": "h4",
+            "content": "<ul><li><a href=\"/collections/quilted-wetsafe-mattress-and-pillow-protectors\" target=\"_blank\" title=\"Quilted Wetsafe Mattress and Pillow Protectors\">Quilted Wetsafe</a></li><li><a href=\"/collections/towelling-wetsafe-mattress-and-pillow-protectors\" target=\"_blank\" title=\"Towelling Wetsafe Mattress and Pillow Protectors\">Towelling Wetsafe</a></li></ul>",
+            "link_url": "shopify://collections/hotel-mattress-pillow-protectors",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_WABPKc": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/scatters-and-runner-collection-linen-and-co.webp",
+            "title": "<strong>Decor</strong>",
+            "heading_tag": "h4",
+            "content": "<ul><li><a href=\"/products/chenille-scatter-cushion\" target=\"_blank\" title=\"Chenille Scatter Cushion\">Scatters</a></li><li><a href=\"/products/chenille-bed-end-runner\" target=\"_blank\" title=\"Chenille Bed End Runner\">Runners</a></li><li>Throws</li></ul><p></p>",
+            "link_url": "shopify://collections/hotel-decor",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_CnND3H": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/hotel-blanket-collection-1-linen-and-co.webp",
+            "title": "<strong>Blankets </strong>",
+            "heading_tag": "h4",
+            "content": "<ul><li><a href=\"/products/lily-hotel-blanket\" target=\"_blank\" title=\"Blanket Lily Hotel\">Lily Hotel</a></li><li><a href=\"/products/belfiore-hotel-blanket\" target=\"_blank\" title=\"Belfiore Hotel Blanket\">Belfiore</a></li><li><a href=\"/products/plush-microfibre-blanket\" target=\"_blank\" title=\"Plush Microfibre Blanket\">Plush Microfiber</a></li><li><a href=\"/products/cotton-cellular-blanket\" target=\"_blank\" title=\"Cotton Cellular Blanket\">Cotton Cellular</a></li></ul>",
+            "link_url": "shopify://collections/hotel-blankets",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_qYrCcT": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/quilted-mattress-convertor-linen-and-co-square-2.webp",
+            "title": "<strong>Toppers and Convertors</strong>",
+            "heading_tag": "h4",
+            "content": "<ul><li><a href=\"/products/quilted-mattress-convertor\" target=\"_blank\" title=\"Quilted Mattress Convertor\">Quilted </a></li><li><a href=\"/products/high-density-foam-mattress-convertor-and-topper\" target=\"_blank\" title=\"High Density Foam Mattress Convertor and Topper\">High Density Foam</a></li><li><a href=\"/products/latex-mattress-convertor-and-topper\" target=\"_blank\" title=\"Latex Mattress Convertor and Topper\">Latex</a></li><li><a href=\"/products/memory-foam-mattress-topper-and-converter\" target=\"_blank\" title=\"Memory Foam Mattress Topper and Converter\">Memory Foam</a></li></ul>",
+            "link_url": "shopify://collections/hotel-mattress-toppers-and-convertors",
+            "link_text": "Shop Collection →"
+          }
+        },
+        "image_with_text_XPGJRp": {
+          "type": "image_with_text",
+          "settings": {
+            "image": "shopify://shop_images/white-pillow-case-with-satin-stitch-and-embroidery-and-lables-linen-and-co.webp",
+            "title": "<strong>Customisation</strong>",
+            "heading_tag": "h4",
+            "content": "<ul><li><a href=\"/pages/satin-stitch\" target=\"_blank\" title=\"Satin Stitch\">Satin Stitch</a></li><li><a href=\"/pages/custom-embroidery\" target=\"_blank\" title=\"Custom Embroidery\">Embroidery</a></li><li><a href=\"/pages/custom-labels-branding\" target=\"_blank\" title=\"Custom Labels and Branding\">Labels</a></li><li><a href=\"/pages/custom-sizing\" target=\"_blank\" title=\"Custom Sizing\">Custom Sizing</a></li></ul>",
+            "link_url": "shopify://pages/embroidery-satin-stitch-branding",
+            "link_text": "View Page →"
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_gU3CFp",
+        "image_with_text_akkzXh",
+        "image_with_text_UxdKmP",
+        "image_with_text_UDWWgn",
+        "image_with_text_YVTRkX",
+        "image_with_text_fDmJJE",
+        "image_with_text_RyNhzb",
+        "image_with_text_mhfBJf",
+        "image_with_text_WABPKc",
+        "image_with_text_CnND3H",
+        "image_with_text_qYrCcT",
+        "image_with_text_XPGJRp"
+      ],
+      "name": "t:sections.multi_column.presets.multi_column.name",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": true,
+        "columns_per_row": 3,
+        "stack_on_mobile": true,
+        "overlap_image": false,
+        "content_alignment": "start",
+        "text_alignment": "start",
+        "spacing": "sm",
+        "subheading": "",
+        "title": "Our Hotel Collections",
+        "content": "<p>Browse our core categories below, or contact us if you need help specifying quantities, sizes, or a complete linen schedule for your rooms.</p>"
+      }
+    },
+    "contact_JrdKnh": {
+      "type": "contact",
+      "name": "t:sections.contact.presets.contact_form.name",
+      "settings": {
+        "color_scheme": "scheme-3",
+        "separate_section_with_border": true,
+        "subheading": "Questions about our linen collections? We're here to help.",
+        "title": "Get in Touch",
+        "content": "<ul><li>Call us → <a href=\"tel:+27101094950\" target=\"_blank\" title=\"tel:+27101094950\">010 109 4950</a>   </li><li>WhatsApp →<a href=\"https://wa.me/27662918292\" target=\"_blank\" title=\"https://wa.me/27662918292\"> 066 291 8292</a>   </li><li>Email → <a href=\"mailto:info@linenco.co.za\" target=\"_blank\">info@linenco.co.za</a></li></ul>"
+      }
+    }
+  },
+  "order": [
+    "hospitality_location_hero",
+    "rich_text_wK3cYN",
+    "blocks_tRgVRF",
+    "tabs_mbtyzk",
+    "multi_column_n7hYPg",
+    "contact_JrdKnh"
+  ]
+}

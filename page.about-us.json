@@ -1,0 +1,87 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "about_hero": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "subheading": {
+          "type": "subheading",
+          "settings": {
+            "text": "About Linen and Co"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Hotel-quality linen, custom sizing and direct support",
+            "heading_tag": "h1"
+          }
+        },
+        "text": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>We help homes, hotels, lodges, guesthouses, spas and decorators choose linen that looks beautiful, washes well, fits properly and keeps working after the first wash.</p>"
+          }
+        },
+        "button_hospitality": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "Hospitality & Trade",
+            "url": "shopify://pages/hospitality",
+            "background": "#ffffff",
+            "text_color": "#1c1c1c"
+          }
+        },
+        "button_quote": {
+          "type": "button",
+          "settings": {
+            "style": "outline",
+            "text": "Request a Quote",
+            "url": "shopify://pages/quotation-request",
+            "background": "#ffffff",
+            "text_color": "#ffffff"
+          }
+        }
+      },
+      "block_order": [
+        "subheading",
+        "heading",
+        "text",
+        "button_hospitality",
+        "button_quote"
+      ],
+      "settings": {
+        "color_scheme": "scheme-3",
+        "image_size": "sm",
+        "image": "shopify://shop_images/linen-and-co-about-us-hero.webp",
+        "allow_transparent_header": true,
+        "reveal_on_scroll": false,
+        "remove_vertical_spacing": true,
+        "content_width": "lg",
+        "mobile_text_position": "place-self-end-center text-center",
+        "desktop_text_position": "sm:place-self-center-start sm:text-start",
+        "overlay_color": "#000000",
+        "overlay_opacity": 22
+      }
+    },
+    "about_page": {
+      "type": "lc-about-page",
+      "settings": {
+        "color_scheme": "scheme-2"
+      }
+    }
+  },
+  "order": [
+    "about_hero",
+    "about_page"
+  ]
+}

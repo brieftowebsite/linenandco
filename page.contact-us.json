@@ -1,0 +1,99 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "rich_text_ViqU8G": {
+      "type": "rich-text",
+      "blocks": {
+        "subheading_WNbyKX": {
+          "type": "subheading",
+          "settings": {
+            "text": "Support and Trade Enquiries"
+          }
+        },
+        "heading_kbbeWK": {
+          "type": "heading",
+          "settings": {
+            "text": "Contact Linen and Co",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_JnqbB6": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Choose the right route below for customer support, trade registration, or a detailed quote. This page is kept as a simple contact hub; the main contact form lives on the Contact page.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_WNbyKX",
+        "heading_kbbeWK",
+        "richtext_JnqbB6"
+      ],
+      "name": "t:sections.rich_text.presets.rich_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "content_width": "lg",
+        "text_position": "center",
+        "remove_vertical_spacing": false
+      }
+    },
+    "tabs_YK6jEh": {
+      "type": "tabs",
+      "blocks": {
+        "tab_yrzfrh": {
+          "type": "tab",
+          "settings": {
+            "title": "Contact Us",
+            "content": "<p>For product advice, order support, custom sizing, hospitality linen or after-sales questions, use our main contact form.</p>",
+            "page": "contact",
+            "open_on_mobile": false
+          }
+        },
+        "tab_MPzMdy": {
+          "type": "tab",
+          "settings": {
+            "title": "Trade Registration",
+            "content": "<p>Hotels, guesthouses, lodges, interior decorators, spas and other approved trade customers can apply for account pricing through the trade registration form.</p>",
+            "page": "trade-registration-form",
+            "open_on_mobile": false
+          }
+        },
+        "tab_6VB8Xz": {
+          "type": "tab",
+          "settings": {
+            "title": "Quotation Request",
+            "content": "<p>For bulk orders, mixed-category hospitality projects, custom sizing, embroidery or branded linen, send a quotation request with quantities, sizes and deadlines.</p>",
+            "page": "quotation-request",
+            "open_on_mobile": false
+          }
+        }
+      },
+      "block_order": [
+        "tab_yrzfrh",
+        "tab_MPzMdy",
+        "tab_6VB8Xz"
+      ],
+      "name": "t:sections.tabs.presets.tab.name",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": false,
+        "subheading": "Support, trade and quotation requests",
+        "title": "How can we help?",
+        "text_alignment": "start"
+      }
+    }
+  },
+  "order": [
+    "rich_text_ViqU8G",
+    "tabs_YK6jEh"
+  ]
+}

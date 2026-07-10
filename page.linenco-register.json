@@ -1,0 +1,75 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "register_handoff": {
+      "type": "rich-text",
+      "blocks": {
+        "subheading": {
+          "type": "subheading",
+          "settings": {
+            "text": "Trade Registration"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Register for Trade Pricing",
+            "heading_tag": "h1"
+          }
+        },
+        "copy": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>We now use Shopify native customer accounts for approved hospitality and trade customers. Please use the trade registration form so we can review your business details and connect your customer account correctly.</p>"
+          }
+        },
+        "button": {
+          "type": "button",
+          "settings": {
+            "style": "solid",
+            "text": "Open Trade Registration",
+            "url": "shopify://pages/trade-registration-form",
+            "background": "#1c1c1c",
+            "text_color": "#ffffff"
+          }
+        },
+        "login": {
+          "type": "button",
+          "settings": {
+            "style": "outline",
+            "text": "Customer Login",
+            "url": "/account/login",
+            "background": "",
+            "text_color": ""
+          }
+        }
+      },
+      "block_order": [
+        "subheading",
+        "heading",
+        "copy",
+        "button",
+        "login"
+      ],
+      "name": "Trade registration handoff",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": false,
+        "content_width": "md",
+        "text_position": "center",
+        "remove_vertical_spacing": false
+      }
+    }
+  },
+  "order": [
+    "register_handoff"
+  ]
+}

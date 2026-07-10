@@ -1,0 +1,57 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "lc-collection-hub",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "eyebrow": "Shop by category",
+        "heading": "Shop Linen Collections",
+        "intro": "Browse Linen and Co collections for home, hospitality and trade. Start with the category you need, then shop the key ranges inside each collection.",
+        "use_collection_description": false,
+        "show_quick_links": true,
+        "collections": [
+          "duvet-covers",
+          "fitted-sheets",
+          "flat-sheets",
+          "pillow-cases",
+          "duvet-inners",
+          "pillows",
+          "mattress-protector",
+          "pillow-protectors",
+          "bath-towels-and-sheets",
+          "bath-mats",
+          "hotel-bathrobes-and-slippers",
+          "hotel-blankets",
+          "quilted-bedspreads",
+          "blockout-curtains",
+          "curtain-hardware",
+          "blinds",
+          "table-linen",
+          "mattress-toppers-and-convertors",
+          "decorative-accessories"
+        ],
+        "quick_links_label": "Shop categories",
+        "row_eyebrow": "Shop",
+        "use_row_collection_descriptions": true,
+        "view_all_label": "View all",
+        "show_quick_buy": true,
+        "show_secondary_image": true,
+        "products_to_show": 8,
+        "products_per_row_desktop": 4,
+        "products_per_row_mobile": "2"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,69 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection-banner": {
+      "type": "collection-banner",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "image_size": "xs",
+        "allow_transparent_header": false,
+        "show_image": false,
+        "reveal": false,
+        "enable_parallax": false,
+        "show_collection_title": true,
+        "show_collection_description": true,
+        "description_eyebrow": "Collection overview",
+        "description_color_scheme": "scheme-1",
+        "show_breadcrumb": false,
+        "content_width": "lg",
+        "text_alignment": "left",
+        "overlay_color": "#000000",
+        "overlay_opacity": 24
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "hide_product_information": false,
+        "products_per_page": 48,
+        "products_per_row_mobile": "2",
+        "products_size_desktop": "medium",
+        "show_grid_mode_selector": true,
+        "horizontal_spacing_factor": 0.6,
+        "vertical_spacing_factor": 0.7,
+        "filter_layout": "sidebar",
+        "quick_links_menu": "",
+        "show_sort_by": true,
+        "show_filters": true,
+        "show_results_count": true,
+        "show_filter_group_name": true,
+        "show_filter_values_count": true,
+        "open_filters_by_default": false
+      }
+    },
+    "collection_metafields": {
+      "type": "lc-collection-metafield-content",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "separate_section_with_border": true,
+        "guide_heading": "Helpful ways to shop",
+        "guide_intro": "",
+        "faq_heading": "Quick answers"
+      }
+    }
+  },
+  "order": [
+    "collection-banner",
+    "main",
+    "collection_metafields"
+  ]
+}

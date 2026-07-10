@@ -1,0 +1,515 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "image_with_text_overlay_tDQqBf": {
+      "type": "image-with-text-overlay",
+      "blocks": {
+        "heading_rLtTrx": {
+          "type": "heading",
+          "settings": {
+            "text": "<strong>Support & FAQ</strong>",
+            "heading_tag": "h2"
+          }
+        },
+        "richtext_hrQbUF": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p><strong>Find quick answers about Linen and Co products, ordering, delivery, care, and trade services. Need personalized support? Contact us anytime.</strong></p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_rLtTrx",
+        "richtext_hrQbUF"
+      ],
+      "name": "t:sections.image_with_text_overlay.presets.image_with_text_overlay.name",
+      "settings": {
+        "color_scheme": "scheme-28c7d702-9088-499e-93c6-4fe777458476",
+        "image_size": "xs",
+        "image": "shopify://shop_images/white-linen-for-faq-support-and-contact-linen-and-co-landscape.webp",
+        "mobile_image": "shopify://shop_images/white-linen-for-faq-support-and-contact-linen-and-co-portrait.webp",
+        "allow_transparent_header": false,
+        "reveal_on_scroll": true,
+        "remove_vertical_spacing": true,
+        "content_width": "md",
+        "mobile_text_position": "place-self-center text-center",
+        "desktop_text_position": "sm:place-self-center sm:text-center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 30
+      }
+    },
+    "rich_text_JUjMgN": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_XGj8XB": {
+          "type": "heading",
+          "settings": {
+            "text": "Support and FAQ",
+            "heading_tag": "h1"
+          }
+        },
+        "richtext_bC9ciE": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>Welcome to Linen and Co Support. Here you'll find answers to common questions about our products, ordering, delivery, care, and trade services. </p><p>If you need further assistance, please don’t hesitate to contact us directly via email, phone, or WhatsApp. We’re here to help!</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_XGj8XB",
+        "richtext_bC9ciE"
+      ],
+      "name": "t:sections.rich_text.presets.rich_text.name",
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": true,
+        "content_width": "lg",
+        "text_position": "start",
+        "remove_vertical_spacing": false
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "category_GbC6TD": {
+          "type": "category",
+          "settings": {
+            "title": "Orders and Payment",
+            "icon": "none",
+            "icon_width": 16
+          }
+        },
+        "question-1": {
+          "type": "question",
+          "settings": {
+            "question": "How do I place an order?",
+            "answer": "<p>You can place an order directly on our website. If you need help choosing sizes, fabrics, or quantities (especially for hospitality), contact us and we’ll guide you through the best options for your space and budget.</p>"
+          }
+        },
+        "question-2": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer trade pricing?",
+            "answer": "<p>Yes. We supply hospitality and trade clients with dedicated pricing. You can apply by completing our <a href=\"https://www.linenco.co.za/pages/trade-registration-form\" target=\"_blank\"><strong>Trade Registration Form</strong></a>, or contact us directly and we’ll assist.</p>"
+          }
+        },
+        "question_9Fi3Aj": {
+          "type": "question",
+          "settings": {
+            "question": "When do you start production?",
+            "answer": "<p>Production starts once full payment has been received and your order details have been confirmed.</p>"
+          }
+        },
+        "question-3": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer deposits or credit terms?",
+            "answer": "<p>No. We require full payment before production and we do not offer credit facilities.</p>"
+          }
+        },
+        "question_mrCTjK": {
+          "type": "question",
+          "settings": {
+            "question": "Can I change or cancel my order?",
+            "answer": "<p> If production has not started yet, we’ll do our best to help. Once production has started (especially for custom items), changes and cancellations may not be possible. Please contact us as soon as possible with your order number.</p>"
+          }
+        },
+        "question_WXnE9i": {
+          "type": "question",
+          "settings": {
+            "question": "Is my payment secure ?",
+            "answer": "<ul><li>Yes. All payments on Linen and Co are processed securely through <strong>Yoco</strong>, a leading PCI DSS-compliant payment gateway trusted by over 200,000 South African businesses. </li><li>Your card details are encrypted via SSL and are never stored on our servers. </li><li>We accept all major credit and debit cards. If you have any concerns about your payment, please <a href=\"https://help.shopify.com/en/pages/contact?utm_source=sidekick\" target=\"_blank\">contact us</a>.</li></ul>"
+          }
+        },
+        "category": {
+          "type": "category",
+          "settings": {
+            "title": "Lead Times and Delivery",
+            "icon": "none",
+            "icon_width": 16
+          }
+        },
+        "question_JRaGPU": {
+          "type": "question",
+          "settings": {
+            "question": "How long will my order take?",
+            "answer": "<p> Ready-made items are typically dispatched within 2–4 business days. </p><p>Made-to-order items generally take 3–14 working days depending on the product and order size.</p>"
+          }
+        },
+        "question_DfHPRc": {
+          "type": "question",
+          "settings": {
+            "question": "Do custom orders take longer?",
+            "answer": "<p>Yes. Custom sizing and bespoke orders may require additional lead time. Embroidery can add approximately 1–2 weeks depending on complexity and volumes.</p>"
+          }
+        },
+        "question_tL7mWU": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer rush or urgent orders?",
+            "answer": "<p>Yes — absolutely. If you have an urgent deadline, contact us as soon as possible with your requirements. We’ll confirm what’s achievable and prioritise production and delivery where we can.</p>"
+          }
+        },
+        "question_nWrkPb": {
+          "type": "question",
+          "settings": {
+            "question": "Will I receive tracking?",
+            "answer": "<p>Yes, express delivery is available in many areas. Delivery timelines depend on your location and courier availability.</p>"
+          }
+        },
+        "question_UPzWDD": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer express delivery?",
+            "answer": "<p>Yes, express delivery is available in many areas. Delivery timelines depend on your location and courier availability.</p>"
+          }
+        },
+        "question_7e6kTz": {
+          "type": "question",
+          "settings": {
+            "question": "Do you deliver outside South Africa?",
+            "answer": "<p>We deliver within South Africa and to select African countries. If you’re outside South Africa, contact us with your location and order requirements and we’ll confirm options.</p>"
+          }
+        },
+        "category_T4gDMt": {
+          "type": "category",
+          "settings": {
+            "title": " Returns and Refunds",
+            "icon": "none",
+            "icon_width": 16
+          }
+        },
+        "question_jLf3yg": {
+          "type": "question",
+          "settings": {
+            "question": "Can I return my order if I change my mind?",
+            "answer": "<p>Because most Linen and Co products are made to order, we do not accept returns for change of mind or incorrect ordering. If you’re unsure about sizing, fabric, or suitability, please contact us before placing your order — we’re happy to advise.</p>"
+          }
+        },
+        "question_WMB4JW": {
+          "type": "question",
+          "settings": {
+            "question": "Are any items non-returnable for hygiene reasons?",
+            "answer": "<p>Yes. For hygiene and safety reasons, certain items cannot be returned or exchanged unless they are faulty or defective. If you’re unsure whether an item is eligible, please contact us before ordering.</p>"
+          }
+        },
+        "question_3N8Mfr": {
+          "type": "question",
+          "settings": {
+            "question": "What if my item is faulty or defective?",
+            "answer": "<p>If you believe an item is faulty or defective, please contact us as soon as possible with your order number and photos. We’ll assess the issue and advise the next steps in line with our quality guarantee.</p>"
+          }
+        },
+        "question_7DmVLW": {
+          "type": "question",
+          "settings": {
+            "question": "Do you accept returns without authorisation?",
+            "answer": "<p>No. All returns must be pre-arranged and authorised by Linen and Co. Unarranged or unsolicited returns will not be accepted.</p>"
+          }
+        },
+        "question_cEqa4K": {
+          "type": "question",
+          "settings": {
+            "question": "How are refunds handled?",
+            "answer": "<p>Refunds for approved returns (for example, faulty/defective items) are processed after inspection and confirmation. We aim to resolve approved refunds promptly.</p>"
+          }
+        },
+        "question_LPFQaL": {
+          "type": "question",
+          "settings": {
+            "question": "What about commercial / hospitality returns?",
+            "answer": "<p> Commercial and hospitality return terms may differ depending on the project and order type. Please contact us and we’ll confirm the applicable terms for your order.</p>"
+          }
+        },
+        "question_BifbHt": {
+          "type": "question",
+          "settings": {
+            "question": "Where can I read the full Returns and Refund Policy?",
+            "answer": "<p>For complete details, please see our <a href=\"https://www.linenco.co.za/pages/hotel-linen-returns-quality-guarantee\" target=\"_blank\">Full policy here →<strong> Returns Policy</strong></a><strong>.</strong></p>"
+          }
+        },
+        "category_yzTnxB": {
+          "type": "category",
+          "settings": {
+            "title": "Product Care, Quality and Sizing",
+            "icon": "none",
+            "icon_width": 16
+          }
+        },
+        "question_eetG8R": {
+          "type": "question",
+          "settings": {
+            "question": "Where can I find the correct sizes?",
+            "answer": "<p>You can view all our product sizing information on our Size Guides page.</p><p><strong><br/></strong><a href=\"https://www.linenco.co.za/pages/size-guides\" target=\"_blank\"><strong>View here → Size Guides</strong></a></p>"
+          }
+        },
+        "question_mj9Fwf": {
+          "type": "question",
+          "settings": {
+            "question": "How should I care for my linens to keep them looking their best?",
+            "answer": "<p>Proper care extends the life and appearance of your linens. We recommend following the specific care instructions for each fabric. </p><p>For detailed guides, please visit our <a href=\"https://www.linenco.co.za/pages/hospitality-care-guides\" target=\"_blank\"><strong>Care Guides</strong></a><strong>.</strong></p>"
+          }
+        },
+        "question_ahpfjT": {
+          "type": "question",
+          "settings": {
+            "question": "What washing temperatures should I use?",
+            "answer": "<p>Washing temperatures vary by fabric type. Polycotton percale can handle warmer washes, while cotton percale benefits from moderate temperatures. </p><p>For exact instructions, refer to our <a href=\"https://www.linenco.co.za/pages/hospitality-care-guides\" target=\"_blank\"><strong>Care Guides</strong></a><strong>.</strong></p>"
+          }
+        },
+        "question_EhaWMg": {
+          "type": "question",
+          "settings": {
+            "question": "Can I tumble dry and iron my linens?",
+            "answer": "<p>Yes, but follow the care instructions for each product to avoid damage. Our care guides provide detailed advice on drying and ironing best practices.</p>"
+          }
+        },
+        "question_tRwrtr": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer a warranty on your products?",
+            "answer": "<p>Yes, we stand by the quality of our linens. Warranty is valid when care instructions are followed correctly. Damage from improper care, such as bleaching or overheating, is not covered.</p>"
+          }
+        },
+        "question_6dH9Rm": {
+          "type": "question",
+          "settings": {
+            "question": "How do I claim warranty?",
+            "answer": "<p>Contact us with your purchase details and photos of the issue. We will assess your claim and guide you through the process.</p>"
+          }
+        },
+        "category_gqpE34": {
+          "type": "category",
+          "settings": {
+            "title": "Customisation andBespoke Services",
+            "icon": "none",
+            "icon_width": 16
+          }
+        },
+        "question_98ieMD": {
+          "type": "question",
+          "settings": {
+            "question": "What can I customise?",
+            "answer": "<p>We offer a range of custom options depending on the product, including bespoke sizing, embroidery/branding, and tailored finishes. If you’re not sure what’s possible, contact us with what you need and we’ll advise.</p>"
+          }
+        },
+        "question_qXLjWh": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer embroidery and branding for hospitality?",
+            "answer": "<p>Yes. We offer embroidery, monograms, and branding for hospitality and trade clients. Share your logo or requirements and we’ll guide you on placement, thread options, and lead times.</p><p><br/><a href=\"https://www.linenco.co.za/pages/custom-embroidery\" target=\"_blank\"><strong>View here → Custom Embroidery</strong></a></p><p><a href=\"https://www.linenco.co.za/pages/satin-stitch\" target=\"_blank\"><strong>View here → Satin Stitch</strong></a></p><p><a href=\"https://www.linenco.co.za/pages/custom-labels-branding\" target=\"_blank\"><strong>View here → Custom Labels & Branding</strong></a></p>"
+          }
+        },
+        "question_Kyfbqz": {
+          "type": "question",
+          "settings": {
+            "question": "Can you make custom sizes?",
+            "answer": "<p>Yes. Many of our products can be made to custom sizes. Send us your measurements (and the product you’re looking at) and we’ll confirm feasibility and pricing.</p>"
+          }
+        },
+        "question_G7Gryk": {
+          "type": "question",
+          "settings": {
+            "question": "How long do custom orders take?",
+            "answer": "<p>Lead times vary depending on the product and the level of customisation. We’ll confirm an estimated timeline once we have your requirements. (Embroidery may require additional time.)</p>"
+          }
+        },
+        "question_jWVeXy": {
+          "type": "question",
+          "settings": {
+            "question": "Can you help me choose the right fabric and finish?",
+            "answer": "<p>Absolutely. If you’re ordering for hospitality, we can recommend the most suitable fabric, finish, and closure options based on your use case, laundering, and budget.</p>"
+          }
+        },
+        "question_HKe3Xp": {
+          "type": "question",
+          "settings": {
+            "question": "Where do I start with a custom or bulk order?",
+            "answer": "<p>The easiest way is to contact us with what you need (product, quantities, sizes, and any branding). We’ll come back with recommendations and a quote.</p><p><a href=\"https://www.linenco.co.za/pages/hospitality\" target=\"_blank\"><strong>View here → Hospitality Hub</strong></a></p><p><a href=\"https://www.linenco.co.za/pages/quotation-request\" target=\"_blank\"><strong>View here → Request a Quote</strong></a></p>"
+          }
+        },
+        "category_DdXkrh": {
+          "type": "category",
+          "settings": {
+            "title": "Trade and Hospitality Clients",
+            "icon": "none",
+            "icon_width": 16
+          }
+        },
+        "question_meKr8a": {
+          "type": "question",
+          "settings": {
+            "question": "Who qualifies for trade pricing?",
+            "answer": "<p>Trade pricing is available to hospitality and industry professionals, including hotels, guesthouses, lodges, spas, interior designers, decorators, and other trade clients.</p><p><strong><br/></strong><a href=\"https://www.linenco.co.za/pages/trade-registration-form\" target=\"_blank\"><strong>View here → Trade Registration Form</strong></a></p>"
+          }
+        },
+        "question_NCwrcd": {
+          "type": "question",
+          "settings": {
+            "question": "Is there a minimum order quantity for trade or hospitality?",
+            "answer": "<p>No — we don’t require minimum order quantities for trade or hospitality clients. If you’re ordering in volume, we can also advise on the most cost-effective options for your operation.</p>"
+          }
+        },
+        "question_QiXMzj": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer bulk discounts?",
+            "answer": "<p>Yes. Bulk discounts may apply depending on product type and order volume. Contact us with your quantities and we’ll confirm the best pricing available.</p>"
+          }
+        },
+        "question_4hrP4V": {
+          "type": "question",
+          "settings": {
+            "question": "Can you help me choose the right products for my property?",
+            "answer": "<p>Yes. We can recommend the best fabric, finish, and product mix based on your guest experience goals, laundering requirements, and budget.</p>"
+          }
+        },
+        "question_iqyiBR": {
+          "type": "question",
+          "settings": {
+            "question": "Can you supply custom sizes, branding, or embroidery for hospitality?",
+            "answer": "<p>A: Yes. We offer bespoke sizing and branding options for hospitality clients, including embroidery and custom labels where suitable.</p><p><br/><a href=\"https://www.linenco.co.za/pages/hospitality\" target=\"_blank\"><strong>View here → Hospitality Hub</strong></a></p><p><a href=\"https://www.linenco.co.za/pages/quotation-request\" target=\"_blank\"><strong>View here → Request a Quote</strong></a></p>"
+          }
+        },
+        "question_MBMQNk": {
+          "type": "question",
+          "settings": {
+            "question": "Do you offer rush or urgent orders for hospitality?",
+            "answer": "<p>Yes — absolutely. If you have an urgent deadline, contact us as soon as possible with your requirements. We’ll confirm what’s achievable and prioritise production and delivery where we can.</p>"
+          }
+        },
+        "question_A9PygH": {
+          "type": "question",
+          "settings": {
+            "question": "Where do I start if I need a quote for my property?",
+            "answer": "<p> Start by telling us what you need (product type, quantities, sizes, and any customisation). We’ll come back with recommendations and a quote.</p><p><strong><br/></strong><a href=\"https://www.linenco.co.za/pages/quotation-request\" target=\"_blank\"><strong>View here → Request a Quote</strong></a></p>"
+          }
+        },
+        "category_Yy6qci": {
+          "type": "category",
+          "settings": {
+            "title": "Contact and Support",
+            "icon": "none",
+            "icon_width": 16
+          }
+        },
+        "question_gqqzF4": {
+          "type": "question",
+          "settings": {
+            "question": "How do I contact Linen and Co?",
+            "answer": "<p>You can contact us via email, phone, or WhatsApp and we’ll assist with product questions, sizing, trade enquiries, and quotes.<br/></p><ul><li>Email: <a href=\"mailto:info@linenco.co.za\" target=\"_blank\">info@linenco.co.za</a></li><li>Phone: 010 109 4950</li><li>WhatsApp: 066 291 8292</li></ul><p><a href=\"https://www.linenco.co.za/pages/contact\" target=\"_blank\"><strong>View here → Contact Us</strong></a></p>"
+          }
+        },
+        "question_jRMcq6": {
+          "type": "question",
+          "settings": {
+            "question": "What information should I include when I contact you?",
+            "answer": "<p>To help us assist you quickly, please include your order number (if applicable), the product name(s), sizes/quantities, and any deadlines (especially for hospitality or urgent orders).</p>"
+          }
+        },
+        "question_DQ7JDB": {
+          "type": "question",
+          "settings": {
+            "question": "How quickly will you respond?",
+            "answer": "<p>We aim to respond within 48 business hours. Urgent requests are prioritised where possible — please include “Urgent” in your message and your deadline.</p>"
+          }
+        },
+        "question_GDpNmC": {
+          "type": "question",
+          "settings": {
+            "question": "Can you help me choose the right products and sizes?",
+            "answer": "<p> Yes. We’re happy to advise on fabric options, sizing, and the best product mix for your home or hospitality property.</p>"
+          }
+        },
+        "question_Vdxfwe": {
+          "type": "question",
+          "settings": {
+            "question": "Where can I find answers to common questions?",
+            "answer": "<p>Our Support & FAQ page covers ordering, delivery, returns, care, customisation, and trade services.</p><p><a href=\"https://www.linenco.co.za/pages/support-and-faq\" target=\"_blank\"><strong>View here → Support & FAQ</strong></a></p>"
+          }
+        },
+        "question_hJzbY3": {
+          "type": "question",
+          "settings": {
+            "question": "I’m a hotel or guesthouse — where do I start?",
+            "answer": "<p>Start by telling us what you need (product type, quantities, sizes, and any deadlines or branding). We’ll guide you on the best options for hospitality use and come back with recommendations and a quote.</p><p><strong><br/></strong><a href=\"https://www.linenco.co.za/pages/hospitality\" target=\"_blank\"><strong>View here → Hospitality Hub</strong></a></p><p><a href=\"https://www.linenco.co.za/pages/quotation-request\" target=\"_blank\"><strong>View here → Request a Quote</strong></a></p>"
+          }
+        }
+      },
+      "block_order": [
+        "category_GbC6TD",
+        "question-1",
+        "question-2",
+        "question_9Fi3Aj",
+        "question-3",
+        "question_mrCTjK",
+        "question_WXnE9i",
+        "category",
+        "question_JRaGPU",
+        "question_DfHPRc",
+        "question_tL7mWU",
+        "question_nWrkPb",
+        "question_UPzWDD",
+        "question_7e6kTz",
+        "category_T4gDMt",
+        "question_jLf3yg",
+        "question_WMB4JW",
+        "question_3N8Mfr",
+        "question_7DmVLW",
+        "question_cEqa4K",
+        "question_LPFQaL",
+        "question_BifbHt",
+        "category_yzTnxB",
+        "question_eetG8R",
+        "question_mj9Fwf",
+        "question_ahpfjT",
+        "question_EhaWMg",
+        "question_tRwrtr",
+        "question_6dH9Rm",
+        "category_gqpE34",
+        "question_98ieMD",
+        "question_qXLjWh",
+        "question_Kyfbqz",
+        "question_G7Gryk",
+        "question_jWVeXy",
+        "question_HKe3Xp",
+        "category_DdXkrh",
+        "question_meKr8a",
+        "question_NCwrcd",
+        "question_QiXMzj",
+        "question_4hrP4V",
+        "question_iqyiBR",
+        "question_MBMQNk",
+        "question_A9PygH",
+        "category_Yy6qci",
+        "question_gqqzF4",
+        "question_jRMcq6",
+        "question_DQ7JDB",
+        "question_GDpNmC",
+        "question_Vdxfwe",
+        "question_hJzbY3"
+      ],
+      "settings": {
+        "color_scheme": "",
+        "separate_section_with_border": false,
+        "show_categories": true,
+        "subheading": "",
+        "title": "",
+        "content": ""
+      }
+    }
+  },
+  "order": [
+    "image_with_text_overlay_tDQqBf",
+    "rich_text_JUjMgN",
+    "faq"
+  ]
+}

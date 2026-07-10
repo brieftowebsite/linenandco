@@ -1,0 +1,65 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "collection-banner": {
+      "type": "collection-banner",
+      "settings": {
+        "color_scheme": "scheme-28c7d702-9088-499e-93c6-4fe777458476",
+        "image_size": "xs",
+        "allow_transparent_header": false,
+        "show_image": true,
+        "reveal": false,
+        "enable_parallax": false,
+        "show_collection_title": true,
+        "show_collection_description": false,
+        "show_breadcrumb": true,
+        "content_width": "sm",
+        "text_alignment": "center",
+        "overlay_color": "#000000",
+        "overlay_opacity": 24
+      }
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "color_scheme": "scheme-ed1a146f-6c2e-420a-844c-8f87f20b1780",
+        "hide_product_information": true,
+        "products_per_page": 48,
+        "products_per_row_mobile": "2",
+        "products_size_desktop": "medium",
+        "show_grid_mode_selector": true,
+        "horizontal_spacing_factor": 0.6,
+        "vertical_spacing_factor": 0.7,
+        "filter_layout": "sidebar",
+        "quick_links_menu": "",
+        "show_sort_by": true,
+        "show_filters": true,
+        "show_results_count": true,
+        "show_filter_group_name": true,
+        "show_filter_values_count": true,
+        "open_filters_by_default": false
+      }
+    },
+    "lc-collection-intro": {
+      "type": "lc-collection-intro",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "show_read_more": true,
+        "intro_content": ""
+      }
+    }
+  },
+  "order": [
+    "collection-banner",
+    "lc-collection-intro",
+    "main"
+  ]
+}

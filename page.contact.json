@@ -1,0 +1,95 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "intro": {
+      "type": "rich-text",
+      "blocks": {
+        "subheading": {
+          "type": "subheading",
+          "settings": {
+            "text": "Customer Care"
+          }
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "text": "Contact Linen and Co",
+            "heading_tag": "h1"
+          }
+        },
+        "copy": {
+          "type": "richtext",
+          "settings": {
+            "content": "<p>For product advice, custom sizing, hospitality linen, quotations, order updates, or after-sales support, send us a message and we will route it to the right person.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "subheading",
+        "heading",
+        "copy"
+      ],
+      "name": "Contact intro",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": false,
+        "content_width": "lg",
+        "text_position": "center",
+        "remove_vertical_spacing": false
+      }
+    },
+    "contact_form": {
+      "type": "contact",
+      "blocks": {
+        "phone": {
+          "type": "text",
+          "settings": {
+            "title": "Phone number",
+            "use_long_text": false,
+            "required": false
+          }
+        },
+        "company": {
+          "type": "text",
+          "settings": {
+            "title": "Company / property name",
+            "use_long_text": false,
+            "required": false
+          }
+        },
+        "enquiry": {
+          "type": "dropdown",
+          "settings": {
+            "title": "How can we help?",
+            "values": "Product advice, Custom sizing, Hospitality or trade, Quotation request, Order support, Returns or after-sales"
+          }
+        }
+      },
+      "block_order": [
+        "phone",
+        "company",
+        "enquiry"
+      ],
+      "name": "Contact form",
+      "settings": {
+        "color_scheme": "scheme-2",
+        "separate_section_with_border": false,
+        "subheading": "Contact details",
+        "title": "Send us a message",
+        "content": "<p>Email <a href=\"mailto:info@linenco.co.za\">info@linenco.co.za</a>, call <a href=\"tel:+27101094950\">010 109 4950</a>, or WhatsApp <a href=\"https://wa.me/27662918292\">066 291 8292</a>. For trade or hospitality, include your property type, quantities, sizes, and deadline so we can help quickly.</p>"
+      }
+    }
+  },
+  "order": [
+    "intro",
+    "contact_form"
+  ]
+}
