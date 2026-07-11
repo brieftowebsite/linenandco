@@ -529,6 +529,10 @@
       "taped_point_2": "Uses curtain hooks or gliders",
       "taped_point_3": "Adjustable gathered finish"
     },
+    "faq": {
+      "label": "Product help",
+      "heading": "Frequently asked questions"
+    },
     "measure": {
       "label": "How to measure",
       "heading": "Width, drop, then heading",

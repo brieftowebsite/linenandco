@@ -353,6 +353,7 @@
 #lc-curtain-swatches,
 #lc-curtain-lifestyle,
 #lc-how-to-measure,
+#lc-faq,
 #lc-contact-cta {
   scroll-margin-top: calc(var(--sticky-area-height, 0px) + 48px) !important;
 }
@@ -2786,7 +2787,101 @@ h1.product-title {
 
 
 /* ------------------------------------------------------------
-   18. CONTACT CTA
+   18. PRODUCT FAQ
+   ------------------------------------------------------------ */
+
+.lc-product-faq {
+  padding: 42px 0;
+}
+
+.lc-product-faq__inner {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+.lc-product-faq__heading {
+  margin-bottom: 22px;
+}
+
+.lc-product-faq__list {
+  border-top: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.lc-product-faq__item {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.lc-product-faq__question {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 0;
+  color: rgba(0, 0, 0, 0.9);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.35;
+  cursor: pointer;
+  list-style: none;
+}
+
+.lc-product-faq__question::-webkit-details-marker {
+  display: none;
+}
+
+.lc-product-faq__question::after {
+  content: "+";
+  flex: 0 0 auto;
+  color: rgba(0, 0, 0, 0.65);
+  font-size: 1.15rem;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.lc-product-faq__item[open] .lc-product-faq__question::after {
+  content: "−";
+}
+
+.lc-product-faq__answer {
+  max-width: 820px;
+  padding: 0 32px 18px 0;
+  color: rgba(0, 0, 0, 0.72);
+  font-size: 0.84rem;
+  line-height: 1.55;
+}
+
+.lc-product-faq__answer > :first-child {
+  margin-top: 0;
+}
+
+.lc-product-faq__answer > :last-child {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 999px) {
+  .lc-product-faq {
+    padding: 30px 0;
+  }
+
+  .lc-product-faq__heading {
+    margin-bottom: 16px;
+  }
+
+  .lc-product-faq__question {
+    gap: 14px;
+    padding: 15px 0;
+    font-size: 0.78rem;
+  }
+
+  .lc-product-faq__answer {
+    padding: 0 26px 15px 0;
+    font-size: 0.74rem;
+  }
+}
+
+/* ------------------------------------------------------------
+   19. CONTACT CTA
    ------------------------------------------------------------ */
 
 .lc-contact-cta {

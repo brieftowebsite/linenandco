@@ -18,6 +18,19 @@
   assign why_choose_content = profile.why_choose
   assign ideal_uses_content = profile.ideal_uses
   assign care_content = profile.care_summary | default: profile.intro_text
+  assign faq_items = product.metafields.custom.faq.value
+  assign has_valid_faq = false
+
+  for item in faq_items
+    assign faq_question = item.question.value | default: item.question | strip
+    assign faq_answer = item.answer.value | default: item.answer
+    assign faq_answer_html = faq_answer.html | default: item.answer.html | default: faq_answer
+
+    if faq_question != blank and faq_answer_html != blank
+      assign has_valid_faq = true
+      break
+    endif
+  endfor
 
   assign has_heading_styles = false
   if profile.heading_style_heading != blank or profile.eyelet_image != blank or profile.eyelet_content != blank or profile.taped_image != blank or profile.taped_content != blank
@@ -73,6 +86,10 @@
 
       {%- if htm != blank -%}
         <a href="#lc-how-to-measure" class="lc-anchor-nav__link">How To Measure</a>
+      {%- endif -%}
+
+      {%- if has_valid_faq -%}
+        <a href="#lc-faq" class="lc-anchor-nav__link">FAQ</a>
       {%- endif -%}
 
       <a href="#lc-contact-cta" class="lc-anchor-nav__link">Support</a>
