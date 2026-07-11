@@ -1,91 +1,79 @@
 {% doc %}
-Renders an editorial comparison of eyelet and taped curtain headings.
+Renders the Eyelet and Taped comparison stored on curtain_profile.
 
-@param {product} product - Current curtain product.
-@param {string} current_heading - Eyelet or Taped when known.
+@param {object} profile - Curtain profile metaobject.
 {% enddoc %}
 
-{%- assign eyelet_media = blank -%}
-{%- assign taped_media = blank -%}
-{%- for media in product.media -%}
-  {%- assign media_alt_down = media.alt | downcase -%}
-  {%- if eyelet_media == blank and media_alt_down contains 'eyelet' -%}
-    {%- if media_alt_down contains 'product view' or media_alt_down contains 'lifestyle view' -%}
-      {%- assign eyelet_media = media -%}
-    {%- endif -%}
-  {%- endif -%}
-  {%- if taped_media == blank and media_alt_down contains 'tape' or taped_media == blank and media_alt_down contains 'taped' -%}
-    {%- if media_alt_down contains 'product view' or media_alt_down contains 'lifestyle view' -%}
-      {%- assign taped_media = media -%}
-    {%- endif -%}
-  {%- endif -%}
-{%- endfor -%}
-{%- if current_heading == 'Eyelet' and eyelet_media == blank -%}
-  {%- assign eyelet_media = product.featured_media -%}
-{%- elsif current_heading == 'Taped' and taped_media == blank -%}
-  {%- assign taped_media = product.featured_media -%}
-{%- endif -%}
+{%- liquid
+  assign label = profile.heading_style_label | default: 'Heading Style'
+  assign heading = profile.heading_style_heading
+  assign current_heading = profile.current_heading_style.value | default: profile.current_heading_style | downcase
+  assign eyelet_image = profile.eyelet_image
+  assign eyelet_content = profile.eyelet_content
+  assign taped_image = profile.taped_image
+  assign taped_content = profile.taped_content
 
-<section class="lc-profile-section lc-curtain-heading-guide" id="lc-curtain-heading-guide">
-  <div class="lc-profile-section__inner">
-    <span class="lc-label">{{ 'curtain_profile.heading_guide.label' | t }}</span>
-    <h2 class="lc-profile-section__heading">{{ 'curtain_profile.heading_guide.heading' | t }}</h2>
-    <p class="lc-curtain-heading-guide__intro">{{ 'curtain_profile.heading_guide.intro' | t }}</p>
+  assign has_heading_content = false
+  if heading != blank or eyelet_image != blank or eyelet_content != blank or taped_image != blank or taped_content != blank
+    assign has_heading_content = true
+  endif
+-%}
 
-    <div class="lc-curtain-heading-guide__grid">
-      <article class="lc-curtain-heading-option">
-        {%- if eyelet_media != blank and eyelet_media.preview_image != blank -%}
-          <div class="lc-curtain-heading-option__image">
-            <img
-              src="{{ eyelet_media.preview_image | image_url: width: 900 }}"
-              srcset="{{ eyelet_media.preview_image | image_url: width: 500 }} 500w, {{ eyelet_media.preview_image | image_url: width: 700 }} 700w, {{ eyelet_media.preview_image | image_url: width: 900 }} 900w"
-              sizes="(max-width: 749px) 100vw, 50vw"
-              alt="{{ 'curtain_profile.heading_guide.eyelet_alt' | t: product: product.title | escape }}"
-              width="900"
-              height="675"
-              loading="lazy">
-          </div>
+{%- if has_heading_content -%}
+  <section class="lc-curtain-section lc-curtain-heading-styles" id="lc-curtain-heading-styles">
+    <div class="lc-curtain-section__inner">
+      <div class="lc-curtain-title-row lc-curtain-title-row--center">
+        <span class="lc-curtain-kicker">{{ label | escape }}</span>
+        {%- if heading != blank -%}<h2>{{ heading | escape }}</h2>{%- endif -%}
+      </div>
+
+      <div class="lc-curtain-heading-grid">
+        {%- if eyelet_image != blank or eyelet_content != blank -%}
+          <article class="lc-curtain-heading-card{% if current_heading == 'eyelet' %} is-active{% endif %}">
+            {%- if eyelet_image != blank -%}
+              <a class="lc-curtain-heading-card__image" href="{{ eyelet_image | image_url: width: 2400 }}" data-lc-profile-zoom data-pswp-width="{{ eyelet_image.width }}" data-pswp-height="{{ eyelet_image.height }}" aria-label="Zoom image: Eyelet heading detail">
+                <img
+                  src="{{ eyelet_image | image_url: width: 900 }}"
+                  srcset="{{ eyelet_image | image_url: width: 500 }} 500w, {{ eyelet_image | image_url: width: 700 }} 700w, {{ eyelet_image | image_url: width: 900 }} 900w"
+                  sizes="(max-width: 749px) 100vw, 50vw"
+                  alt="Eyelet heading detail for {{ profile.product_name | escape }}"
+                  width="{{ eyelet_image.width }}"
+                  height="{{ eyelet_image.height }}"
+                  loading="lazy">
+              </a>
+            {%- endif -%}
+            <div class="lc-curtain-heading-card__top">
+              <h3>Eyelet</h3>
+              {%- if current_heading == 'eyelet' -%}<span>Current style</span>{%- endif -%}
+            </div>
+            {%- if eyelet_content != blank -%}<div class="lc-curtain-heading-card__copy rte">{{ eyelet_content | metafield_tag }}</div>{%- endif -%}
+          </article>
         {%- endif -%}
-        <div class="lc-curtain-heading-option__header">
-          <h3>{{ 'curtain_profile.heading_guide.eyelet' | t }}</h3>
-          {%- if current_heading == 'Eyelet' -%}
-            <span class="lc-curtain-heading-option__current">{{ 'curtain_profile.heading_guide.current' | t }}</span>
-          {%- endif -%}
-        </div>
-        <p>{{ 'curtain_profile.heading_guide.eyelet_copy' | t }}</p>
-        <ul>
-          <li>{{ 'curtain_profile.heading_guide.eyelet_point_1' | t }}</li>
-          <li>{{ 'curtain_profile.heading_guide.eyelet_point_2' | t }}</li>
-          <li>{{ 'curtain_profile.heading_guide.eyelet_point_3' | t }}</li>
-        </ul>
-      </article>
 
-      <article class="lc-curtain-heading-option">
-        {%- if taped_media != blank and taped_media.preview_image != blank -%}
-          <div class="lc-curtain-heading-option__image">
-            <img
-              src="{{ taped_media.preview_image | image_url: width: 900 }}"
-              srcset="{{ taped_media.preview_image | image_url: width: 500 }} 500w, {{ taped_media.preview_image | image_url: width: 700 }} 700w, {{ taped_media.preview_image | image_url: width: 900 }} 900w"
-              sizes="(max-width: 749px) 100vw, 50vw"
-              alt="{{ 'curtain_profile.heading_guide.taped_alt' | t: product: product.title | escape }}"
-              width="900"
-              height="675"
-              loading="lazy">
-          </div>
+        {%- if taped_image != blank or taped_content != blank -%}
+          <article class="lc-curtain-heading-card{% if current_heading == 'taped' %} is-active{% endif %}">
+            {%- if taped_image != blank -%}
+              <a class="lc-curtain-heading-card__image" href="{{ taped_image | image_url: width: 2400 }}" data-lc-profile-zoom data-pswp-width="{{ taped_image.width }}" data-pswp-height="{{ taped_image.height }}" aria-label="Zoom image: Taped heading detail">
+                <img
+                  src="{{ taped_image | image_url: width: 900 }}"
+                  srcset="{{ taped_image | image_url: width: 500 }} 500w, {{ taped_image | image_url: width: 700 }} 700w, {{ taped_image | image_url: width: 900 }} 900w"
+                  sizes="(max-width: 749px) 100vw, 50vw"
+                  alt="Taped heading detail for {{ profile.product_name | escape }}"
+                  width="{{ taped_image.width }}"
+                  height="{{ taped_image.height }}"
+                  loading="lazy">
+              </a>
+            {%- endif -%}
+            <div class="lc-curtain-heading-card__top">
+              <h3>Taped</h3>
+              {%- if current_heading == 'taped' -%}<span>Current style</span>{%- endif -%}
+            </div>
+            {%- if taped_content != blank -%}<div class="lc-curtain-heading-card__copy rte">{{ taped_content | metafield_tag }}</div>{%- endif -%}
+          </article>
         {%- endif -%}
-        <div class="lc-curtain-heading-option__header">
-          <h3>{{ 'curtain_profile.heading_guide.taped' | t }}</h3>
-          {%- if current_heading == 'Taped' -%}
-            <span class="lc-curtain-heading-option__current">{{ 'curtain_profile.heading_guide.current' | t }}</span>
-          {%- endif -%}
-        </div>
-        <p>{{ 'curtain_profile.heading_guide.taped_copy' | t }}</p>
-        <ul>
-          <li>{{ 'curtain_profile.heading_guide.taped_point_1' | t }}</li>
-          <li>{{ 'curtain_profile.heading_guide.taped_point_2' | t }}</li>
-          <li>{{ 'curtain_profile.heading_guide.taped_point_3' | t }}</li>
-        </ul>
-      </article>
+      </div>
+
+      {%- render 'lc-curtain-swatch-gallery', profile: profile, integrated: true -%}
     </div>
-  </div>
-</section>
+  </section>
+{%- endif -%}

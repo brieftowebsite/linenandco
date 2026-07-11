@@ -15,6 +15,8 @@
   assign profile_image_2 = pp.image_2
   assign calculated_name = pp.product_name | default: pp.name | default: product.title
   assign ideal_uses_content = pp.ideal_uses
+  assign profile_button_url = profile_cta_url | default: '/blogs/industries-we-serve'
+  assign profile_button_label = profile_cta_label | default: 'Explore Industries We Serve'
 -%}
 
 {%- if ideal_uses_content != blank -%}
@@ -22,7 +24,7 @@
   {%- if profile_image_2 != blank -%}
     {%- comment -%} Split Layout: Image on Left, Text on Right {%- endcomment -%}
     <div class="lc-profile-section__split">
-      <div class="lc-profile-section__image">
+      {%- if enable_zoom -%}<a class="lc-profile-section__image lc-profile-section__image--zoomable" href="{{ profile_image_2 | image_url: width: 2400 }}" data-lc-profile-zoom data-pswp-width="{{ profile_image_2.width }}" data-pswp-height="{{ profile_image_2.height }}" aria-label="Zoom image: Ideal uses for {{ calculated_name | escape }}">{%- else -%}<div class="lc-profile-section__image">{%- endif -%}
         {%- comment -%} Serves lightweight browser-optimized sizes using srcset {%- endcomment -%}
         <img
           src="{{ profile_image_2 | image_url: width: 700 }}"
@@ -33,10 +35,10 @@
           "
           sizes="(max-width: 749px) 100vw, 50vw"
           alt="Ideal uses for {{ calculated_name | escape }}"
-          width="1600"
-          height="896"
+          width="{{ profile_image_2.width }}"
+          height="{{ profile_image_2.height }}"
           loading="lazy">
-      </div>
+      {%- if enable_zoom -%}</a>{%- else -%}</div>{%- endif -%}
       
       <div class="lc-profile-section__text">
         <span class="lc-label">Ideal Uses</span>
@@ -44,8 +46,8 @@
         <div class="lc-bullets rte">
           {{ ideal_uses_content | metafield_tag }}
         </div>
-        <a href="/blogs/industries-we-serve" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
-          Explore Industries We Serve
+        <a href="{{ profile_button_url }}" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
+          {{ profile_button_label | escape }}
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
           </svg>
@@ -61,8 +63,8 @@
       <div class="lc-bullets rte">
         {{ ideal_uses_content | metafield_tag }}
       </div>
-      <a href="/blogs/industries-we-serve" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
-        Explore Industries We Serve
+      <a href="{{ profile_button_url }}" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
+        {{ profile_button_label | escape }}
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
           <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
         </svg>

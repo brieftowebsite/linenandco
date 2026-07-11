@@ -2,7 +2,7 @@
 Renders the curtain-profile fabric swatch image grid from a curtain_profile metaobject.
 
 @param {object} profile - Curtain profile metaobject.
-@param {string} section_id - Parent section ID for stable anchors.
+@param {boolean} integrated - Renders inside the heading-style section when true.
 {% enddoc %}
 
 {%- liquid
@@ -14,8 +14,12 @@ Renders the curtain-profile fabric swatch image grid from a curtain_profile meta
 -%}
 
 {%- if swatch_images != blank -%}
-  <div class="lc-curtain-section lc-curtain-swatches" id="lc-curtain-swatches-{{ section_id }}">
-    <div class="lc-curtain-section__inner">
+  {%- if integrated -%}
+    <div class="lc-curtain-swatches lc-curtain-swatches--integrated" id="lc-curtain-swatches">
+  {%- else -%}
+    <section class="lc-curtain-section lc-curtain-swatches" id="lc-curtain-swatches">
+      <div class="lc-curtain-section__inner">
+  {%- endif -%}
       <div class="lc-curtain-title-row">
         <span class="lc-curtain-kicker">{{ swatch_label | escape }}</span>
         {%- if swatch_heading != blank -%}
@@ -35,7 +39,7 @@ Renders the curtain-profile fabric swatch image grid from a curtain_profile meta
             endif
           -%}
           <figure class="lc-curtain-swatch">
-            <div class="lc-curtain-swatch__image">
+            <a class="lc-curtain-swatch__image" href="{{ swatch_image | image_url: width: 2400 }}" data-lc-profile-zoom data-pswp-width="{{ swatch_image.width }}" data-pswp-height="{{ swatch_image.height }}" aria-label="Zoom swatch: {{ swatch_name | default: swatch_heading | default: profile.product_name | escape }}">
               <img
                 src="{{ swatch_image | image_url: width: 520 }}"
                 srcset="
@@ -45,16 +49,20 @@ Renders the curtain-profile fabric swatch image grid from a curtain_profile meta
                 "
                 sizes="(max-width: 749px) 46vw, 180px"
                 alt="{{ swatch_name | default: swatch_heading | default: profile.product_name | escape }}"
-                width="520"
-                height="520"
+                width="{{ swatch_image.width }}"
+                height="{{ swatch_image.height }}"
                 loading="lazy">
-            </div>
+            </a>
             {%- if swatch_name != blank -%}
               <figcaption>{{ swatch_name | escape }}</figcaption>
             {%- endif -%}
           </figure>
         {%- endfor -%}
       </div>
+  {%- if integrated -%}
     </div>
-  </div>
+  {%- else -%}
+      </div>
+    </section>
+  {%- endif -%}
 {%- endif -%}

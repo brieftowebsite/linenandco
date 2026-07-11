@@ -9,8 +9,8 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "lc-main-product",
+    "curtain_profile": {
+      "type": "lc-curtain-product-profile",
       "settings": {
         "color_scheme": "scheme-1",
         "allow_transparent_header": false,
@@ -27,19 +27,9 @@
         "enable_image_zoom": true,
         "max_image_zoom_level": 2
       }
-    },
-    "curtain_colours": {
-      "type": "lc-ready-made-curtain-colours-section",
-      "settings": {}
-    },
-    "curtain_profile": {
-      "type": "lc-curtain-product-profile",
-      "settings": {}
     }
   },
   "order": [
-    "main",
-    "curtain_colours",
     "curtain_profile"
   ]
 }

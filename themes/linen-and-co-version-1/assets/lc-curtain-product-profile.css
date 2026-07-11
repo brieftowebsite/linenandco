@@ -8,6 +8,17 @@
   color: var(--lc-curtain-text);
 }
 
+lc-profile-zoom-gallery.lc-curtain-profile {
+  display: block;
+}
+
+.lc-curtain-profile [data-lc-profile-zoom] {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  cursor: zoom-in;
+}
+
 .lc-curtain-nav {
   position: sticky;
   top: 0;
@@ -65,7 +76,7 @@
 .lc-curtain-care h2,
 .lc-curtain-help h2 {
   margin: 0;
-  font-size: clamp(1.15rem, 2.4vw, 2.05rem);
+  font-size: clamp(1.25rem, 1.8vw, 1.65rem);
   line-height: 1.16;
   font-weight: 560;
   letter-spacing: -.02em;
@@ -121,8 +132,8 @@
 .lc-curtain-heading-grid { grid-template-columns: repeat(2, 1fr); }
 .lc-curtain-step-grid { grid-template-columns: repeat(3, 1fr); }
 .lc-curtain-detail-grid { grid-template-columns: repeat(4, 1fr); }
-.lc-curtain-swatch-grid { grid-template-columns: repeat(auto-fit, minmax(130px, 180px)); }
-.lc-curtain-lifestyle-grid { grid-template-columns: repeat(4, 1fr); }
+.lc-curtain-swatch-grid { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); max-width: 920px; }
+.lc-curtain-lifestyle-grid { grid-template-columns: repeat(2, 1fr); }
 
 .lc-curtain-feature-card,
 .lc-curtain-heading-card,
@@ -173,15 +184,15 @@
 .lc-curtain-heading-card { position: relative; }
 .lc-curtain-heading-card.is-active { border-color: #000; box-shadow: inset 0 0 0 1px #000; }
 .lc-curtain-heading-card__image {
-  aspect-ratio: 1;
+  aspect-ratio: auto;
   margin: -24px -24px 18px;
   overflow: hidden;
   background: #ececea;
 }
 .lc-curtain-heading-card__image img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   display: block;
 }
 .lc-curtain-heading-card__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
@@ -228,17 +239,117 @@
 }
 .lc-curtain-swatch__image,
 .lc-curtain-lifestyle-card__image {
+  position: relative;
   overflow: hidden;
   background: #ececea;
 }
-.lc-curtain-swatch__image { aspect-ratio: 1; }
-.lc-curtain-lifestyle-card__image { aspect-ratio: 1; }
+.lc-curtain-swatch__image { aspect-ratio: auto; }
+.lc-curtain-lifestyle-card__image { aspect-ratio: auto; }
 .lc-curtain-swatch__image img,
 .lc-curtain-lifestyle-card__image img {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: auto;
+  object-fit: contain;
   display: block;
+}
+
+.lc-curtain-swatches--integrated {
+  margin-top: 42px;
+  padding-top: 38px;
+  border-top: 1px solid var(--lc-curtain-line);
+}
+
+.lc-curtain-swatches--integrated .lc-curtain-title-row {
+  margin-bottom: 20px;
+}
+
+.lc-curtain-profile .lc-profile-section__image {
+  aspect-ratio: auto;
+  background: #f2f2f0;
+}
+
+.lc-curtain-profile .lc-profile-section__image img {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
+}
+
+[data-lc-zoom] {
+  position: relative;
+  cursor: zoom-in;
+}
+
+[data-lc-zoom]::after {
+  content: "+";
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.68);
+  color: #ffffff;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+[data-lc-zoom]:hover::after,
+[data-lc-zoom]:focus-visible::after {
+  opacity: 1;
+}
+
+[data-lc-zoom]:focus-visible {
+  outline: 2px solid #000000;
+  outline-offset: 3px;
+}
+
+.lc-lightbox {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  padding: 56px 24px 24px;
+  background: rgba(0, 0, 0, 0.94);
+}
+
+.lc-lightbox.is-open { display: flex; }
+
+.lc-lightbox__img {
+  max-width: 92vw;
+  max-height: 82vh;
+  object-fit: contain;
+}
+
+.lc-lightbox__label {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lc-lightbox__close {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  padding: 4px 8px;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
 }
 .lc-curtain-swatch figcaption,
 .lc-curtain-lifestyle-card figcaption {
@@ -301,13 +412,23 @@
   .lc-curtain-hero__copy { position: static; width: auto; padding: 22px 16px; box-shadow: none; background: #fff; }
   .lc-curtain-title-row { margin-bottom: 20px; }
   .lc-curtain-feature-grid,
-  .lc-curtain-heading-grid,
   .lc-curtain-step-grid,
   .lc-curtain-lifestyle-grid,
   .lc-curtain-care__inner { grid-template-columns: 1fr; }
+  .lc-curtain-heading-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .lc-curtain-swatch-grid { grid-template-columns: repeat(2, 1fr); }
   .lc-curtain-detail-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
   .lc-curtain-detail { min-height: 84px; padding: 14px; }
   .lc-curtain-help__inner { padding: 44px 16px; }
   .lc-curtain-help__buttons { flex-direction: column; }
+
+  .lc-curtain-heading-card { padding: 12px; }
+  .lc-curtain-heading-card__image { margin: -12px -12px 12px; }
+  .lc-curtain-heading-card__top { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .lc-curtain-heading-card__top h3 { font-size: 0.9rem; }
+  .lc-curtain-heading-card__top span { padding: 4px 6px; font-size: 0.48rem; }
+  .lc-curtain-heading-card__copy,
+  .lc-curtain-heading-card__copy :is(p, li) { font-size: 0.68rem; line-height: 1.35; }
+
+  .lc-curtain-swatches--integrated { margin-top: 28px; padding-top: 26px; }
 }

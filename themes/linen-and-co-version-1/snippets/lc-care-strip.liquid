@@ -10,25 +10,20 @@
   assign calculated_name = pp.product_name | default: pp.name | default: product.title
   assign profile_care_url = pp.care_guide_url
   assign care_content = pp.care_summary | default: pp.intro_text
-  assign is_ready_made_curtain = false
-
-  if product.template_suffix == 'lc-ready-made-curtain' or product.tags contains 'Ready-Made Curtains'
-    assign is_ready_made_curtain = true
-  endif
 -%}
 
 {%- if care_content != blank -%}
 <section class="lc-profile-section lc-care-strip" id="lc-care">
   <div class="lc-profile-section__split">
     <div class="lc-profile-section__text">
-      <span class="lc-label">{%- if is_ready_made_curtain -%}Care Notes{%- else -%}Care Guide{%- endif -%}</span>
+      <span class="lc-label">Care Guide</span>
       <h2 class="lc-profile-section__heading">
-        {%- if is_ready_made_curtain -%}Care Notes For Your {{ calculated_name | escape }}{%- else -%}Caring For Your {{ calculated_name | escape }}{%- endif -%}
+        Caring For Your {{ calculated_name | escape }}
       </h2>
       <div class="rte lc-body-text lc-bullets">
         {{ care_content | metafield_tag }}
       </div>
-      {%- if profile_care_url != blank and is_ready_made_curtain == false -%}
+      {%- if profile_care_url != blank -%}
         <a href="{{ profile_care_url }}" class="lc-profile-btn" target="_blank" rel="noopener noreferrer">
           View Full Care Guide
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -39,7 +34,7 @@
     </div>
 
     {%- if profile_image_3 != blank -%}
-    <div class="lc-profile-section__image">
+    {%- if enable_zoom -%}<a class="lc-profile-section__image lc-profile-section__image--zoomable" href="{{ profile_image_3 | image_url: width: 2400 }}" data-lc-profile-zoom data-pswp-width="{{ profile_image_3.width }}" data-pswp-height="{{ profile_image_3.height }}" aria-label="Zoom image: Care guide for {{ calculated_name | escape }}">{%- else -%}<div class="lc-profile-section__image">{%- endif -%}
       <img
         src="{{ profile_image_3 | image_url: width: 700 }}"
         srcset="
@@ -49,10 +44,10 @@
         "
         sizes="(max-width: 749px) 100vw, 50vw"
         alt="Care notes imagery for {{ calculated_name | escape }}"
-        width="1600"
-        height="896"
+        width="{{ profile_image_3.width }}"
+        height="{{ profile_image_3.height }}"
         loading="lazy">
-    </div>
+    {%- if enable_zoom -%}</a>{%- else -%}</div>{%- endif -%}
     {%- endif -%}
   </div>
 </section>

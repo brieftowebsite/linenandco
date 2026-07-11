@@ -21,6 +21,7 @@
 {%- endcomment -%}
 
 {%- liquid
+  assign curtain_profile = curtain_profile | default: blank
   assign pp = pp | default: product.metafields.custom.product_profile.value
 
   assign thread_count        = pp.thread_count
@@ -40,6 +41,25 @@
   assign feature_4 = pp.feature_4
   assign feature_5 = pp.feature_5
   assign feature_6 = pp.feature_6
+
+  if curtain_profile != blank
+    assign thread_count = blank
+    assign composition = curtain_profile.composition
+    assign tog_rating = blank
+    assign weight = curtain_profile.fabric_weight
+    assign warmth_rating = curtain_profile.light_control
+    assign weave = curtain_profile.weave_type
+    assign laundry_rating = curtain_profile.laundry_rating
+    assign drying_method = curtain_profile.drying_method
+    assign hypoallergenic = false
+    assign sustainability_note = curtain_profile.sustainability_note
+    assign feature_1 = curtain_profile.lining_type
+    assign feature_2 = curtain_profile.width_drop_options
+    assign feature_3 = curtain_profile.current_heading_style.value | default: curtain_profile.current_heading_style
+    assign feature_4 = blank
+    assign feature_5 = blank
+    assign feature_6 = blank
+  endif
 
   assign thread_count_display = blank
   if thread_count != blank
@@ -71,6 +91,10 @@
     unless warmth_downcase contains 'warmth'
       assign warmth_display = warmth_display | append: ' Warmth'
     endunless
+  endif
+
+  if curtain_profile != blank
+    assign warmth_display = curtain_profile.light_control
   endif
 
   assign weave_display = blank

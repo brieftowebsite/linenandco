@@ -17,7 +17,6 @@
 
 {%- assign form_id = product_form_id -%}
 {%- assign product_info_heading = profile_heading | default: product.metafields.custom.product_h1_heading.value | default: product.metafields.custom.product_h1_heading | default: product.title -%}
-{%- assign badges = product.metafields.custom.badges.value -%}
 
 <product-rerender
   id="lc-product-info-rerender-{{ section.id }}"
@@ -26,17 +25,6 @@
 >
   <div class="product-info {% if center_basic_info %}product-info--center{% endif %}">
     <div class="product-info__block-list">
-
-      {%- if badges != blank -%}
-        <div class="lc-product-info__badges lc-trust-strip__badges product-trust-strip__badges" aria-label="Product badges">
-          {%- for badge in badges -%}
-            {%- assign normalized_badge = badge | strip | downcase -%}
-            {%- unless normalized_badge contains 'off' or normalized_badge contains 'sale' or normalized_badge contains 'save' -%}
-              <span class="lc-badge product-badge">{{ badge | escape }}</span>
-            {%- endunless -%}
-          {%- endfor -%}
-        </div>
-      {%- endif -%}
 
       <h1 class="product-title">{{ product_info_heading | escape }}</h1>
 

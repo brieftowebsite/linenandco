@@ -2,7 +2,6 @@
 Renders the bottom lifestyle gallery from a curtain_profile metaobject.
 
 @param {object} profile - Curtain profile metaobject.
-@param {string} section_id - Parent section ID for stable anchors.
 {% enddoc %}
 
 {%- liquid
@@ -13,7 +12,7 @@ Renders the bottom lifestyle gallery from a curtain_profile metaobject.
 -%}
 
 {%- if lifestyle_images != blank -%}
-  <div class="lc-curtain-section lc-curtain-lifestyle" id="lc-curtain-lifestyle-{{ section_id }}">
+  <section class="lc-curtain-section lc-curtain-lifestyle" id="lc-curtain-lifestyle">
     <div class="lc-curtain-section__inner">
       <div class="lc-curtain-title-row">
         <span class="lc-curtain-kicker">Lifestyle gallery</span>
@@ -34,7 +33,7 @@ Renders the bottom lifestyle gallery from a curtain_profile metaobject.
             endif
           -%}
           <figure class="lc-curtain-lifestyle-card">
-            <div class="lc-curtain-lifestyle-card__image">
+            <a class="lc-curtain-lifestyle-card__image" href="{{ lifestyle_image | image_url: width: 2400 }}" data-lc-profile-zoom data-pswp-width="{{ lifestyle_image.width }}" data-pswp-height="{{ lifestyle_image.height }}" aria-label="Zoom image: {{ lifestyle_caption | default: lifestyle_heading | default: profile.product_name | escape }}">
               <img
                 src="{{ lifestyle_image | image_url: width: 900 }}"
                 srcset="
@@ -45,10 +44,10 @@ Renders the bottom lifestyle gallery from a curtain_profile metaobject.
                 "
                 sizes="(max-width: 749px) 100vw, 25vw"
                 alt="{{ lifestyle_caption | default: lifestyle_heading | default: profile.product_name | escape }}"
-                width="1254"
-                height="1254"
+                width="{{ lifestyle_image.width }}"
+                height="{{ lifestyle_image.height }}"
                 loading="lazy">
-            </div>
+            </a>
             {%- if lifestyle_caption != blank -%}
               <figcaption>{{ lifestyle_caption | escape }}</figcaption>
             {%- endif -%}
@@ -56,5 +55,5 @@ Renders the bottom lifestyle gallery from a curtain_profile metaobject.
         {%- endfor -%}
       </div>
     </div>
-  </div>
+  </section>
 {%- endif -%}

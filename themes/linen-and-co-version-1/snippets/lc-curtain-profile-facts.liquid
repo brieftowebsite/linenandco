@@ -1,80 +1,51 @@
 {% doc %}
-Renders concise facts for a ready-made curtain product.
+Renders the technical details stored on the assigned curtain_profile metaobject.
 
-@param {product} product - Current curtain product.
-@param {object} pp - Product profile metaobject.
-@param {string} curtain_type - Sheer or Blockout.
-@param {string} current_heading - Eyelet or Taped when known.
+@param {object} profile - Curtain profile metaobject.
 {% enddoc %}
 
-{%- assign sold_as = pp.weight.value | default: pp.weight -%}
-{%- assign fabric = pp.composition.value | default: pp.composition -%}
-{%- assign texture = pp.weave_type.value | default: pp.weave_type -%}
-{%- assign colours = pp.available_colours.value | default: pp.available_colours -%}
-{%- if colours == blank -%}
-  {%- for option in product.options_with_values -%}
-    {%- assign option_name_down = option.name | downcase -%}
-    {%- if option_name_down == 'colour' or option_name_down == 'color' or option_name_down == 'pattern' -%}
-      {%- assign colours = option.values | join: ', ' -%}
-      {%- break -%}
-    {%- endif -%}
-  {%- endfor -%}
-{%- endif -%}
-{%- if sold_as == blank -%}
-  {%- assign sold_as = 'curtain_profile.facts.sold_as_value' | t -%}
-{%- endif -%}
+{%- liquid
+  assign composition = profile.composition.value | default: profile.composition
+  assign fabric_weight = profile.fabric_weight.value | default: profile.fabric_weight
+  assign weave_type = profile.weave_type.value | default: profile.weave_type
+  assign lining_type = profile.lining_type.value | default: profile.lining_type
+  assign light_control = profile.light_control.value | default: profile.light_control
+  assign width_drop_options = profile.width_drop_options.value | default: profile.width_drop_options
+  assign laundry_rating = profile.laundry_rating.value | default: profile.laundry_rating
+  assign drying_method = profile.drying_method.value | default: profile.drying_method
+  assign sustainability_note = profile.sustainability_note.value | default: profile.sustainability_note
+  assign available_colours = profile.available_colours.value | default: profile.available_colours
+  assign range = profile.range.value | default: profile.range
+  assign current_heading_style = profile.current_heading_style.value | default: profile.current_heading_style
 
-<section class="lc-profile-section lc-curtain-profile-facts" id="lc-curtain-details">
-  <div class="lc-profile-section__inner">
-    <span class="lc-label">{{ 'curtain_profile.facts.label' | t }}</span>
-    <h2 class="lc-profile-section__heading">{{ 'curtain_profile.facts.heading' | t }}</h2>
+  assign has_details = false
+  if range != blank or available_colours != blank or current_heading_style != blank or composition != blank or fabric_weight != blank or weave_type != blank or lining_type != blank or light_control != blank or width_drop_options != blank or laundry_rating != blank or drying_method != blank or sustainability_note != blank
+    assign has_details = true
+  endif
+-%}
 
-    <dl class="lc-curtain-profile-facts__grid">
-      <div class="lc-curtain-profile-facts__item">
-        <dt>{{ 'curtain_profile.facts.sold_as' | t }}</dt>
-        <dd>{{ sold_as | escape }}</dd>
+{%- if has_details -%}
+  <section class="lc-curtain-section lc-curtain-details" id="lc-curtain-details">
+    <div class="lc-curtain-section__inner">
+      <div class="lc-curtain-title-row">
+        <span class="lc-curtain-kicker">Curtain Details</span>
+        <h2>At a glance</h2>
       </div>
-      {%- if current_heading != blank -%}
-        <div class="lc-curtain-profile-facts__item">
-          <dt>{{ 'curtain_profile.facts.heading_style' | t }}</dt>
-          <dd>{{ current_heading | escape }}</dd>
-        </div>
-      {%- endif -%}
-      <div class="lc-curtain-profile-facts__item">
-        <dt>{{ 'curtain_profile.facts.light_control' | t }}</dt>
-        <dd>{{ curtain_type | escape }}</dd>
+
+      <div class="lc-curtain-detail-grid">
+        {%- if range != blank -%}<div class="lc-curtain-detail"><span>Range</span><strong>{{ range | escape }}</strong></div>{%- endif -%}
+        {%- if available_colours != blank -%}<div class="lc-curtain-detail"><span>Available colours</span><strong>{{ available_colours | escape }}</strong></div>{%- endif -%}
+        {%- if current_heading_style != blank -%}<div class="lc-curtain-detail"><span>Heading style</span><strong>{{ current_heading_style | capitalize | escape }}</strong></div>{%- endif -%}
+        {%- if composition != blank -%}<div class="lc-curtain-detail"><span>Composition</span><strong>{{ composition | escape }}</strong></div>{%- endif -%}
+        {%- if fabric_weight != blank -%}<div class="lc-curtain-detail"><span>Fabric weight</span><strong>{{ fabric_weight | escape }}</strong></div>{%- endif -%}
+        {%- if weave_type != blank -%}<div class="lc-curtain-detail"><span>Weave type</span><strong>{{ weave_type | escape }}</strong></div>{%- endif -%}
+        {%- if lining_type != blank -%}<div class="lc-curtain-detail"><span>Lining type</span><strong>{{ lining_type | escape }}</strong></div>{%- endif -%}
+        {%- if light_control != blank -%}<div class="lc-curtain-detail"><span>Light control</span><strong>{{ light_control | escape }}</strong></div>{%- endif -%}
+        {%- if width_drop_options != blank -%}<div class="lc-curtain-detail"><span>Width / drop options</span><strong>{{ width_drop_options | escape }}</strong></div>{%- endif -%}
+        {%- if laundry_rating != blank -%}<div class="lc-curtain-detail"><span>Laundry rating</span><strong>{{ laundry_rating | escape }}</strong></div>{%- endif -%}
+        {%- if drying_method != blank -%}<div class="lc-curtain-detail"><span>Drying method</span><strong>{{ drying_method | escape }}</strong></div>{%- endif -%}
+        {%- if sustainability_note != blank -%}<div class="lc-curtain-detail"><span>Sustainability note</span><strong>{{ sustainability_note | escape }}</strong></div>{%- endif -%}
       </div>
-      {%- if fabric != blank -%}
-        <div class="lc-curtain-profile-facts__item">
-          <dt>{{ 'curtain_profile.facts.fabric' | t }}</dt>
-          <dd>{{ fabric | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if texture != blank -%}
-        <div class="lc-curtain-profile-facts__item">
-          <dt>{{ 'curtain_profile.facts.texture' | t }}</dt>
-          <dd>{{ texture | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- if colours != blank -%}
-        <div class="lc-curtain-profile-facts__item">
-          <dt>{{ 'curtain_profile.facts.colours' | t }}</dt>
-          <dd>{{ colours | escape }}</dd>
-        </div>
-      {%- endif -%}
-      {%- for option in product.options_with_values -%}
-        {%- assign option_name_down = option.name | downcase -%}
-        {%- assign show_option = true -%}
-        {%- if option_name_down == 'colour' or option_name_down == 'color' or option_name_down == 'pattern' or option_name_down == 'header' or option_name_down == 'heading' -%}
-          {%- assign show_option = false -%}
-        {%- endif -%}
-        {%- if show_option -%}
-          <div class="lc-curtain-profile-facts__item">
-            <dt>{{ option.name | escape }}</dt>
-            <dd>{{ option.values | join: ', ' | escape }}</dd>
-          </div>
-        {%- endif -%}
-      {%- endfor -%}
-    </dl>
-  </div>
-</section>
+    </div>
+  </section>
+{%- endif -%}

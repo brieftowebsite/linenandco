@@ -10,7 +10,43 @@
    ------------------------------------------------------------ */
 
 .lc-product-gallery-wrap {
+  position: relative;
   grid-area: product-gallery;
+}
+
+.lc-product-gallery__badges {
+  position: absolute;
+  inset-block-start: 12px;
+  inset-inline-start: 12px;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.lc-product-gallery__badges .badge-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.lc-product-gallery__badges .badge {
+  min-height: 26px;
+  padding: 5px 10px;
+  border: 0;
+  border-radius: 0;
+  color: #ffffff;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.lc-product-gallery__badges .badge--custom,
+.lc-product-gallery__badges .badge--new {
+  background: #171717;
+}
+
+.lc-product-gallery__badges .badge--on-sale {
+  background: #ef3434;
 }
 
 .product-gallery__thumbnail-rail-button {
@@ -18,6 +54,10 @@
 }
 
 @media screen and (min-width: 1000px) {
+  .lc-product-gallery-wrap:has(.product-gallery--desktop-carousel-thumbnails-left) .lc-product-gallery__badges {
+    inset-inline-start: calc(clamp(4.5rem, 5.4vw, 5.65rem) + clamp(1.25rem, 1.8vw, 2rem) + 12px);
+  }
+
   .shopify-section--main-product .product-gallery--desktop-carousel-thumbnails-left {
     --product-gap: clamp(1.125rem, 1.4vw, 1.625rem);
     --product-gallery-gap: clamp(1.25rem, 1.8vw, 2rem);
@@ -307,9 +347,14 @@
 #lc-care,
 #lc-compare-styles,
 #lc-colours,
+#lc-curtain-colours,
+#lc-curtain-details,
+#lc-curtain-heading-styles,
+#lc-curtain-swatches,
+#lc-curtain-lifestyle,
 #lc-how-to-measure,
 #lc-contact-cta {
-  scroll-margin-top: calc(var(--sticky-area-height, 0px) + 56px) !important;
+  scroll-margin-top: calc(var(--sticky-area-height, 0px) + 48px) !important;
 }
 
 .shopify-section--header,
@@ -381,28 +426,29 @@ x-drawer[open] {
   }
 }
 
-/* Desktop needs a stronger, easier-to-scan sticky anchor bar. */
+/* Keep the desktop anchor bar compact enough for long product profiles. */
 @media screen and (min-width: 1000px) {
   .lc-anchor-nav__inner {
-    height: 56px !important;
+    height: 42px !important;
   }
 
   .lc-anchor-nav__links {
-    gap: 10px !important;
+    gap: 3px !important;
   }
 
   .lc-anchor-nav__link {
-    min-height: 56px !important;
-    padding: 0 16px !important;
-    font-size: 0.76rem !important;
-    font-weight: 600 !important;
-    color: rgba(255, 255, 255, 0.84) !important;
-    border-bottom-width: 3px !important;
+    min-height: 42px !important;
+    padding: 0 9px !important;
+    font-size: 0.6rem !important;
+    font-weight: 550 !important;
+    letter-spacing: 0.055em !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    border-bottom-width: 2px !important;
   }
 
   .lc-anchor-nav__link--shop,
   .lc-anchor-nav__link--shop.lc-shop-now-visible {
-    margin-right: 14px !important;
+    margin-right: 6px !important;
   }
 
   #lc-what-is-it,
@@ -412,9 +458,14 @@ x-drawer[open] {
   #lc-care,
   #lc-compare-styles,
   #lc-colours,
+  #lc-curtain-colours,
+  #lc-curtain-details,
+  #lc-curtain-heading-styles,
+  #lc-curtain-swatches,
+  #lc-curtain-lifestyle,
   #lc-how-to-measure,
   #lc-contact-cta {
-    scroll-margin-top: calc(var(--sticky-area-height, 0px) + 72px) !important;
+    scroll-margin-top: calc(var(--sticky-area-height, 0px) + 52px) !important;
   }
 }
 
@@ -553,7 +604,8 @@ h1.product-title {
     font-size: 1rem !important;
     line-height: 1.12 !important;
     text-align: center !important;
-    white-space: nowrap !important;
+    white-space: normal !important;
+    text-wrap: balance;
     margin-left: auto !important;
     margin-right: auto !important;
     padding-left: var(--container-gutter, 16px) !important;
@@ -572,10 +624,10 @@ h1.product-title {
   .product-info h1.product-title,
   .product-info .lc-order-form-title,
   h1.product-title {
-    font-size: 0.82rem !important;
-    line-height: 1.1 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    font-size: 0.94rem !important;
+    line-height: 1.18 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
   }
 }
 
@@ -1699,7 +1751,7 @@ h1.product-title {
 
 .lc-complementary-products__item {
   display: grid;
-  grid-template-rows: 170px 76px 40px;
+  grid-template-rows: auto 76px 40px;
   gap: 10px;
   min-width: 0;
   height: 100%;
@@ -1708,9 +1760,10 @@ h1.product-title {
 .lc-complementary-products__img-wrap {
   display: block;
   width: 100%;
-  height: 150px;
+  height: auto;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
-  background: #f3f3f3;
+  background: transparent;
   text-decoration: none;
 }
 
@@ -1719,7 +1772,7 @@ h1.product-title {
   display: block;
   width: 100% !important;
   height: 100% !important;
-  object-fit: contain !important;
+  object-fit: cover !important;
   object-position: center;
 }
 

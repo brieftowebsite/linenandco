@@ -50,22 +50,8 @@
   endif
 -%}
 
-{%- capture sale_badge_markup -%}
-  {%- render 'product-badges',
-    product: product,
-    variant: current_variant,
-    types: 'discount',
-    context: 'product'
-  -%}
-{%- endcapture -%}
-{%- assign sale_badge_markup = sale_badge_markup | strip -%}
-
 <div class="lc-price-row" data-lc-price-row>
   <div class="lc-price-row__price">
-    {%- if sale_badge_markup != blank -%}
-      <span class="lc-price-row__sale-badge">{{ sale_badge_markup }}</span>
-    {%- endif -%}
-
     {%- render 'price-list',
       product: product,
       variant: current_variant,

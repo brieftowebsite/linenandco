@@ -23,7 +23,7 @@
   <div class="lc-profile-section__split">
     
     {%- if profile_hero != blank -%}
-    <div class="lc-profile-section__image">
+    {%- if enable_zoom -%}<a class="lc-profile-section__image lc-profile-section__image--zoomable" href="{{ profile_hero | image_url: width: 2400 }}" data-lc-profile-zoom data-pswp-width="{{ profile_hero.width }}" data-pswp-height="{{ profile_hero.height }}" aria-label="Zoom image: {{ calculated_name | escape }}">{%- else -%}<div class="lc-profile-section__image">{%- endif -%}
       {%- comment -%} Upgraded to serving fluid browser-optimized sizes using responsive srcsets {%- endcomment -%}
       <img
         src="{{ profile_hero | image_url: width: 700 }}"
@@ -34,11 +34,11 @@
         "
         sizes="(max-width: 749px) 100vw, 50vw"
         alt="{{ calculated_name | escape }}"
-        width="1600"
-        height="896"
+        width="{{ profile_hero.width }}"
+        height="{{ profile_hero.height }}"
         loading="lazy"
         style="width: 100%; height: 100%; object-fit: cover;">
-    </div>
+    {%- if enable_zoom -%}</a>{%- else -%}</div>{%- endif -%}
     {%- endif -%}
     
     <div class="lc-profile-section__text">

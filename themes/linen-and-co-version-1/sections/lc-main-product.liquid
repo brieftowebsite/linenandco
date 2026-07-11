@@ -122,6 +122,15 @@
       <div class="product">
 
         <div class="lc-product-gallery-wrap">
+          <div class="lc-product-gallery__badges" aria-label="Product badges">
+            {%- render 'product-badges',
+              product: product,
+              variant: product.selected_or_first_available_variant,
+              types: 'custom, discount',
+              context: 'product'
+            -%}
+          </div>
+
           {%- if product.media.size > 0 -%}
             {%- render 'product-gallery',
               product: product,

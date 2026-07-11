@@ -1,20 +1,27 @@
 {%- comment -%}
-  ======================================================================================================================
-  SNIPPET: lc-anchor-nav.liquid
-  Store: Linen and Co
-  Purpose: Sticky anchor navigation bar for PDP profile sections.
-  ======================================================================================================================
+  Sticky PDP navigation. Standard products read product_profile; ready-made
+  curtains read only curtain_profile and link to the curtain-specific sections.
 {%- endcomment -%}
 
 {%- liquid
-  assign description_content = pp.what_is_it
-  assign why_choose_content = pp.why_choose
-  assign ideal_uses_content = pp.ideal_uses
-  assign care_content = pp.care_summary | default: pp.intro_text
   assign is_ready_made_curtain = false
-
   if product.template_suffix == 'lc-ready-made-curtain' or product.tags contains 'Ready-Made Curtains'
     assign is_ready_made_curtain = true
+  endif
+
+  assign profile = pp
+  if is_ready_made_curtain and curtain_profile != blank
+    assign profile = curtain_profile
+  endif
+
+  assign description_content = profile.description | default: profile.what_is_it
+  assign why_choose_content = profile.why_choose
+  assign ideal_uses_content = profile.ideal_uses
+  assign care_content = profile.care_summary | default: profile.intro_text
+
+  assign has_heading_styles = false
+  if profile.heading_style_heading != blank or profile.eyelet_image != blank or profile.eyelet_content != blank or profile.taped_image != blank or profile.taped_content != blank
+    assign has_heading_styles = true
   endif
 -%}
 
@@ -27,32 +34,41 @@
         <a href="#lc-what-is-it" class="lc-anchor-nav__link">Description</a>
       {%- endif -%}
 
-      {%- if has_included != blank -%}
-        <a href="#lc-whats-included" class="lc-anchor-nav__link">What's Included</a>
-      {%- endif -%}
-
-      {%- if why_choose_content != blank -%}
-        <a href="#lc-why-choose" class="lc-anchor-nav__link">Why Choose</a>
-      {%- endif -%}
-
-      {%- if ideal_uses_content != blank -%}
-        <a href="#lc-ideal-uses" class="lc-anchor-nav__link">Ideal Uses</a>
-      {%- endif -%}
-
-      {%- if st != blank -%}
-        <a href="#lc-compare-styles" class="lc-anchor-nav__link">
-          {%- if is_ready_made_curtain -%}Colours{%- else -%}Compare Styles{%- endif -%}
-        </a>
-      {%- endif -%}
-
-      {%- if care_content != blank -%}
-        <a href="#lc-care" class="lc-anchor-nav__link">
-          {%- if is_ready_made_curtain -%}Care Notes{%- else -%}Care Guide{%- endif -%}
-        </a>
-      {%- endif -%}
-
-      {%- if ac != blank -%}
-        <a href="#lc-colours" class="lc-anchor-nav__link">Available Colours</a>
+      {%- if is_ready_made_curtain -%}
+        {%- if why_choose_content != blank -%}
+          <a href="#lc-why-choose" class="lc-anchor-nav__link">Why Choose</a>
+        {%- endif -%}
+        {%- if ideal_uses_content != blank -%}
+          <a href="#lc-ideal-uses" class="lc-anchor-nav__link">Ideal Uses</a>
+        {%- endif -%}
+        {%- if care_content != blank -%}
+          <a href="#lc-care" class="lc-anchor-nav__link">Care Guide</a>
+        {%- endif -%}
+        {%- if has_heading_styles -%}
+          <a href="#lc-curtain-heading-styles" class="lc-anchor-nav__link">Heading Styles</a>
+        {%- endif -%}
+        {%- if profile.lifestyle_images != blank -%}
+          <a href="#lc-curtain-lifestyle" class="lc-anchor-nav__link">Lifestyle</a>
+        {%- endif -%}
+      {%- else -%}
+        {%- if has_included != blank -%}
+          <a href="#lc-whats-included" class="lc-anchor-nav__link">What's Included</a>
+        {%- endif -%}
+        {%- if why_choose_content != blank -%}
+          <a href="#lc-why-choose" class="lc-anchor-nav__link">Why Choose</a>
+        {%- endif -%}
+        {%- if ideal_uses_content != blank -%}
+          <a href="#lc-ideal-uses" class="lc-anchor-nav__link">Ideal Uses</a>
+        {%- endif -%}
+        {%- if st != blank -%}
+          <a href="#lc-compare-styles" class="lc-anchor-nav__link">Compare Styles</a>
+        {%- endif -%}
+        {%- if care_content != blank -%}
+          <a href="#lc-care" class="lc-anchor-nav__link">Care Guide</a>
+        {%- endif -%}
+        {%- if ac != blank -%}
+          <a href="#lc-colours" class="lc-anchor-nav__link">Available Colours</a>
+        {%- endif -%}
       {%- endif -%}
 
       {%- if htm != blank -%}
